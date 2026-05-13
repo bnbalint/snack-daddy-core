@@ -2,12 +2,13 @@ package server
 
 import (
 	. "fmt"
-	"github.com/labstack/echo/v4"
 	"log/slog"
 	"net/http"
 	"os"
 	"snack-daddy-core/internal/database"
 	"snack-daddy-core/internal/models"
+
+	"github.com/labstack/echo/v4"
 )
 
 // this is our microservice
@@ -19,28 +20,32 @@ type SnackDaddyCoreService interface {
 
 	// Teams
 	GetAllTeams(ctx echo.Context) error
+	AddTeam(ctx echo.Context) error
 
 	// Users
 	GetAllUsers(ctx echo.Context) error
+	AddUser(ctx echo.Context) error
 
 	// Snacks
 	GetAllSnacks(ctx echo.Context) error
+	AddSnack(ctx echo.Context) error
 
 	// Allergies
 	GetAllAllergies(ctx echo.Context) error
+	AddAllergy(ctx echo.Context) error
 
 	// Snack Log
 }
 
 // this is our web server
-type EchoServer struct {
+type SnackDaddyEchoServer struct {
 	echo   *echo.Echo
-	DB     database.DatabaseClient
+	DB     database.SnackDaddyDatabaseClient
 	Logger *slog.Logger
 }
 
-func NewEchoServer(db database.DatabaseClient, logger slog.Logger) SnackDaddyCoreService {
-	server := &EchoServer{
+func NewSnackDaddyEchoServer(db database.SnackDaddyDatabaseClient, logger slog.Logger) SnackDaddyCoreService {
+	server := &SnackDaddyEchoServer{
 		echo:   echo.New(),
 		DB:     db,
 		Logger: &logger,
@@ -49,14 +54,14 @@ func NewEchoServer(db database.DatabaseClient, logger slog.Logger) SnackDaddyCor
 	return server
 }
 
-func (server *EchoServer) registerRoutes() {
+func (server *SnackDaddyEchoServer) registerRoutes() {
 	server.echo.GET("/readiness", server.Readiness)
 	server.echo.GET("/liveness", server.Liveness)
 
 	// teams
 	teams := server.echo.Group("/teams")
 	teams.GET("", server.GetAllTeams)
-	// teams.POST("", server.AddCustomer)
+	teams.POST("", server.AddTeam)
 	// teams.GET("/:id", server.GetCustomerById)
 	// teams.PUT("/:id", server.UpdateCustomer)
 	// teams.DELETE("/:id", server.DeleteCustomer)
@@ -64,20 +69,23 @@ func (server *EchoServer) registerRoutes() {
 	// users
 	users := server.echo.Group("/users")
 	users.GET("", server.GetAllUsers)
+	users.POST("", server.AddUser)
 
 	// snacks
 	snacks := server.echo.Group("/snacks")
 	snacks.GET("", server.GetAllSnacks)
+	snacks.POST("", server.AddSnack)
 
 	// allergies
 	allergies := server.echo.Group("/allergies")
 	allergies.GET("", server.GetAllAllergies)
+	allergies.POST("", server.AddAllergy)
 
 }
 
 // Start the server on port [environment var = APP_PORT] or
 // port 4242 if the env var is not defined
-func (server *EchoServer) Start() error {
+func (server *SnackDaddyEchoServer) Start() error {
 	port := os.Getenv("app_port")
 	if port == "" {
 		server.Logger.Warn("APP_PORT not defined, will use default port")
@@ -96,7 +104,7 @@ func (server *EchoServer) Start() error {
 //
 //	--> 200 if ready
 //	--> 500 if not ready
-func (server *EchoServer) Readiness(ctx echo.Context) error {
+func (server *SnackDaddyEchoServer) Readiness(ctx echo.Context) error {
 	ready := server.DB.Ready()
 	server.Logger.Info("Readiness reading", "ready", ready)
 	if ready {
@@ -106,7 +114,7 @@ func (server *EchoServer) Readiness(ctx echo.Context) error {
 }
 
 // Determine the Liveness of the server
-func (server *EchoServer) Liveness(ctx echo.Context) error {
+func (server *SnackDaddyEchoServer) Liveness(ctx echo.Context) error {
 	server.Logger.Info("Liveness: OK")
 	return ctx.JSON(http.StatusOK, models.Health{Status: "OK"})
 }

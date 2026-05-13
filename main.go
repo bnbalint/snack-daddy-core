@@ -50,7 +50,7 @@ func main() {
 	/*
 	 * create the service
 	 */
-	server := server.NewEchoServer(databaseClient, *logger)
+	server := server.NewSnackDaddyEchoServer(databaseClient, *logger)
 
 	/*
 	 * start the service

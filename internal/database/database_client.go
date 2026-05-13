@@ -8,31 +8,36 @@ import (
 	"snack-daddy-core/internal/models"
 )
 
-// general client for talking to database
-
-type DatabaseClient interface {
+// Client for talking to the SnackDaddy database
+type SnackDaddyDatabaseClient interface {
 	Ready() bool
 
 	// Teams
 	GetAllTeams(ctx context.Context) ([]models.Team, error)
+	AddTeam(ctx context.Context, team *models.Team) (*models.Team, error)
 
 	// Users
 	GetAllUsers(ctx context.Context) ([]models.User, error)
+	AddUser(ctx context.Context, user *models.User) (*models.User, error)
 
 	// Snacks
 	GetAllSnacks(ctx context.Context) ([]models.Snack, error)
+	AddSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error)
 
 	// Allergies
 	GetAllAllergies(ctx context.Context) ([]models.Allergy, error)
+	AddAllergy(ctx context.Context, allergy *models.Allergy) (*models.Allergy, error)
 
 	// Snack Log
 }
 
-type Client struct {
+type DatabaseClient struct {
 	DB *gorm.DB
 }
 
-func NewDatabaseClient(host string, user string, password string, dbname string, port int32, sslmode string) (DatabaseClient, error) {
+// Create a new DatabaseClient using the provided credentials
+// Currently EVIL and will print credentials
+func NewDatabaseClient(host string, user string, password string, dbname string, port int32, sslmode string) (SnackDaddyDatabaseClient, error) {
 
 	// collect the connection information into a single string
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", host, user, password, dbname, port, sslmode)
@@ -44,12 +49,14 @@ func NewDatabaseClient(host string, user string, password string, dbname string,
 	}
 
 	// create the client
-	client := Client{DB: db}
+	client := DatabaseClient{DB: db}
 
 	return client, nil
 }
 
-func (client Client) Ready() bool {
+// Determine if the databsase is ready
+// Performs a basic SELECT statement to determine readiness
+func (client DatabaseClient) Ready() bool {
 	var ready string
 	tx := client.DB.Raw("SELECT 1 as ready").Scan(&ready)
 	if tx.Error != nil {
