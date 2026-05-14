@@ -21,55 +21,63 @@ type mockDB struct {
 	addTeamFunc     func(ctx context.Context, team *models.Team) (*models.Team, error)
 }
 
-func (m *mockDB) Ready() bool {
+func (mock *mockDB) Ready() bool {
 	return true
 }
 
-func (m *mockDB) GetAllTeams(ctx context.Context) ([]models.Team, error) {
-	if m.getAllTeamsFunc != nil {
-		return m.getAllTeamsFunc(ctx)
+func (mock *mockDB) GetAllTeams(ctx context.Context) ([]models.Team, error) {
+	if mock.getAllTeamsFunc != nil {
+		return mock.getAllTeamsFunc(ctx)
 	}
 	return nil, nil
 }
 
-func (m *mockDB) AddTeam(ctx context.Context, team *models.Team) (*models.Team, error) {
-	if m.addTeamFunc != nil {
-		return m.addTeamFunc(ctx, team)
+func (mock *mockDB) AddTeam(ctx context.Context, team *models.Team) (*models.Team, error) {
+	if mock.addTeamFunc != nil {
+		return mock.addTeamFunc(ctx, team)
 	}
 	return nil, nil
 }
 
 // Stub implementations for other methods
-func (m *mockDB) GetAllUsers(ctx context.Context) ([]models.User, error) {
+func (mock *mockDB) GetAllUsers(ctx context.Context) ([]models.User, error) {
 	panic("not implemented")
 }
 
-func (m *mockDB) AddUser(ctx context.Context, user *models.User) (*models.User, error) {
+func (mock *mockDB) AddUser(ctx context.Context, user *models.User) (*models.User, error) {
 	panic("not implemented")
 }
 
-func (m *mockDB) GetAllSnacks(ctx context.Context) ([]models.Snack, error) {
+func (mock *mockDB) GetAllSnacks(ctx context.Context) ([]models.Snack, error) {
 	panic("not implemented")
 }
 
-func (m *mockDB) AddSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error) {
+func (mock *mockDB) AddSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error) {
 	panic("not implemented")
 }
 
-func (m *mockDB) GetAllAllergies(ctx context.Context) ([]models.Allergy, error) {
+func (mock *mockDB) GetAllAllergies(ctx context.Context) ([]models.Allergy, error) {
 	panic("not implemented")
 }
 
-func (m *mockDB) AddAllergy(ctx context.Context, allergy *models.Allergy) (*models.Allergy, error) {
+func (mock *mockDB) AddAllergy(ctx context.Context, allergy *models.Allergy) (*models.Allergy, error) {
 	panic("not implemented")
 }
 
-func TestGetAllTeams(t *testing.T) {
+// ---------------------------------------------------------------------
+// GetAllTeams
+// .
+// Tests
+//   - success
+//   - database error
+func TestGetAllTeams(testFramework *testing.T) {
+
+	// Define the tests
 	tests := []struct {
 		name           string
 		mockTeams      []models.Team
-		mockError      error
 		expectedStatus int
+		mockError      error
 		expectedBody   bool // true if body should contain teams
 	}{
 		{
@@ -78,25 +86,26 @@ func TestGetAllTeams(t *testing.T) {
 				{ID: 1, Name: "Team A"},
 				{ID: 2, Name: "Team B"},
 			},
-			mockError:      nil,
 			expectedStatus: http.StatusOK,
+			mockError:      nil,
 			expectedBody:   true,
 		},
 		{
 			name:           "database error",
 			mockTeams:      nil,
-			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
 			expectedStatus: http.StatusInternalServerError,
+			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
 			expectedBody:   false,
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	// Run each test
+	for _, testData := range tests {
+		testFramework.Run(testData.name, func(testFramework *testing.T) {
 			// Setup mock
 			mock := &mockDB{
 				getAllTeamsFunc: func(ctx context.Context) ([]models.Team, error) {
-					return tt.mockTeams, tt.mockError
+					return testData.mockTeams, testData.mockError
 				},
 			}
 
@@ -108,89 +117,100 @@ func TestGetAllTeams(t *testing.T) {
 			}
 
 			// Create request
-			req := httptest.NewRequest(http.MethodGet, "/teams", nil)
+			request := httptest.NewRequest(http.MethodGet, "/teams", nil)
 			rec := httptest.NewRecorder()
-			ctx := echo.New().NewContext(req, rec)
+			ctx := echo.New().NewContext(request, rec)
 
 			// Call handler
 			err := server.GetAllTeams(ctx)
 			if err != nil {
-				t.Errorf("GetAllTeams returned error: %v", err)
+				testFramework.Errorf("GetAllTeams returned error: %v", err)
 			}
 
 			// Check status
-			if rec.Code != tt.expectedStatus {
-				t.Errorf("expected status %d, got %d", tt.expectedStatus, rec.Code)
+			if rec.Code != testData.expectedStatus {
+				testFramework.Errorf("expected status %d, got %d", testData.expectedStatus, rec.Code)
 			}
 
 			// Check body if expected
-			if tt.expectedBody {
+			if testData.expectedBody {
 				var teams []models.Team
 				if err := json.Unmarshal(rec.Body.Bytes(), &teams); err != nil {
-					t.Errorf("failed to unmarshal response: %v", err)
+					testFramework.Errorf("failed to unmarshal response: %v", err)
 				}
-				if len(teams) != len(tt.mockTeams) {
-					t.Errorf("expected %d teams, got %d", len(tt.mockTeams), len(teams))
+				if len(teams) != len(testData.mockTeams) {
+					testFramework.Errorf("expected %d teams, got %d", len(testData.mockTeams), len(teams))
 				}
 			}
 		})
 	}
 }
 
-func TestAddTeam(t *testing.T) {
+// ---------------------------------------------------------------------
+// AddTeam
+// .
+// Tests
+//   - success
+//   - bind error
+//   - conflict error
+//   - database error
+func TestAddTeam(testFramework *testing.T) {
+
+	// Define the tests
 	tests := []struct {
 		name           string
 		requestBody    string
-		mockReturnTeam *models.Team
-		mockError      error
 		expectedStatus int
+		mockError      error
 		expectBody     bool
+		mockReturnTeam *models.Team
 	}{
 		{
-			name:        "success",
-			requestBody: `{"name":"New Team","rink":"Rink A","level":"Beginner"}`,
+			name:           "success",
+			requestBody:    `{"name":"Mules","rink":"Baierl","level":"D5"}`,
+			expectedStatus: http.StatusCreated,
+			mockError:      nil,
+			expectBody:     true,
 			mockReturnTeam: &models.Team{
 				ID:    1,
-				Name:  "New Team",
-				Rink:  "Rink A",
-				Level: "Beginner",
+				Name:  "Mules",
+				Rink:  "Baierl",
+				Level: "D5",
 			},
-			mockError:      nil,
-			expectedStatus: http.StatusCreated,
-			expectBody:     true,
 		},
 		{
 			name:           "bind error",
 			requestBody:    "invalid json",
-			mockReturnTeam: nil,
-			mockError:      nil,
 			expectedStatus: http.StatusUnsupportedMediaType,
+			mockError:      nil,
 			expectBody:     false,
+			mockReturnTeam: nil,
 		},
 		{
 			name:           "conflict error",
-			requestBody:    `{"name":"Existing Team","rink":"Rink B","level":"Advanced"}`,
-			mockReturnTeam: nil,
-			mockError:      &database_errors.ConflictError{},
+			requestBody:    `{"name":"Mules","rink":"Baierl","level":"D5"}`,
 			expectedStatus: http.StatusConflict,
+			mockError:      &database_errors.ConflictError{},
 			expectBody:     false,
+			mockReturnTeam: nil,
 		},
 		{
 			name:           "database error",
-			requestBody:    `{"name":"Team C","rink":"Rink C","level":"Intermediate"}`,
-			mockReturnTeam: nil,
-			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
+			requestBody:    `{"name":"Mules","rink":"Baierl","level":"D5"}`,
 			expectedStatus: http.StatusInternalServerError,
+			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
 			expectBody:     false,
+			mockReturnTeam: nil,
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	// Run each test
+	for _, testData := range tests {
+		testFramework.Run(testData.name, func(testFramework *testing.T) {
 			// Setup mock
 			mock := &mockDB{
 				addTeamFunc: func(ctx context.Context, team *models.Team) (*models.Team, error) {
-					return tt.mockReturnTeam, tt.mockError
+					return testData.mockReturnTeam, testData.mockError
 				},
 			}
 
@@ -202,31 +222,31 @@ func TestAddTeam(t *testing.T) {
 			}
 
 			// Create request body
-			body := []byte(tt.requestBody)
-			req := httptest.NewRequest(http.MethodPost, "/teams", bytes.NewReader(body))
-			req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+			body := []byte(testData.requestBody)
+			request := httptest.NewRequest(http.MethodPost, "/teams", bytes.NewReader(body))
+			request.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 			rec := httptest.NewRecorder()
-			ctx := echo.New().NewContext(req, rec)
+			ctx := echo.New().NewContext(request, rec)
 
 			// Call handler
 			err := server.AddTeam(ctx)
 			if err != nil {
-				t.Errorf("AddTeam returned error: %v", err)
+				testFramework.Errorf("AddTeam returned error: %v", err)
 			}
 
 			// Check status
-			if rec.Code != tt.expectedStatus {
-				t.Errorf("expected status %d, got %d", tt.expectedStatus, rec.Code)
+			if rec.Code != testData.expectedStatus {
+				testFramework.Errorf("expected status %d, got %d", testData.expectedStatus, rec.Code)
 			}
 
 			// Check body if expected
-			if tt.expectBody {
+			if testData.expectBody {
 				var team models.Team
 				if err := json.Unmarshal(rec.Body.Bytes(), &team); err != nil {
-					t.Errorf("failed to unmarshal response: %v", err)
+					testFramework.Errorf("failed to unmarshal response: %v", err)
 				}
-				if team.ID != tt.mockReturnTeam.ID || team.Name != tt.mockReturnTeam.Name {
-					t.Errorf("expected team %+v, got %+v", tt.mockReturnTeam, team)
+				if team.ID != testData.mockReturnTeam.ID || team.Name != testData.mockReturnTeam.Name {
+					testFramework.Errorf("expected team %+v, got %+v", testData.mockReturnTeam, team)
 				}
 			}
 		})
