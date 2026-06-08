@@ -15,16 +15,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// mockDB implements SnackDaddyDatabaseClient for testing
-type mockDB struct {
-	getAllTeamsFunc func(ctx context.Context) ([]models.Team, error)
-	addTeamFunc     func(ctx context.Context, team *models.Team) (*models.Team, error)
-}
-
-func (mock *mockDB) Ready() bool {
-	return true
-}
-
 func (mock *mockDB) GetAllTeams(ctx context.Context) ([]models.Team, error) {
 	if mock.getAllTeamsFunc != nil {
 		return mock.getAllTeamsFunc(ctx)
@@ -37,31 +27,6 @@ func (mock *mockDB) AddTeam(ctx context.Context, team *models.Team) (*models.Tea
 		return mock.addTeamFunc(ctx, team)
 	}
 	return nil, nil
-}
-
-// Stub implementations for other methods
-func (mock *mockDB) GetAllUsers(ctx context.Context) ([]models.User, error) {
-	panic("not implemented")
-}
-
-func (mock *mockDB) AddUser(ctx context.Context, user *models.User) (*models.User, error) {
-	panic("not implemented")
-}
-
-func (mock *mockDB) GetAllSnacks(ctx context.Context) ([]models.Snack, error) {
-	panic("not implemented")
-}
-
-func (mock *mockDB) AddSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error) {
-	panic("not implemented")
-}
-
-func (mock *mockDB) GetAllAllergies(ctx context.Context) ([]models.Allergy, error) {
-	panic("not implemented")
-}
-
-func (mock *mockDB) AddAllergy(ctx context.Context, allergy *models.Allergy) (*models.Allergy, error) {
-	panic("not implemented")
 }
 
 // ---------------------------------------------------------------------
