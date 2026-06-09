@@ -23,10 +23,10 @@ The full details of a beer league hockey team that a user might be a member of
 | name           | TEXT NOT NULL                                   | The name of the team                                                                         |
 | rink           | rinks NOT NULL                                  | The primary rink that this team plays at - "rinks" is an enum type                           |
 | level          | levels NOT NULL                                 | The level of the team - "levels" is an enum type                                             |
-| primary_color  | TEXT                                            | The primary color of the team                                                                |
-| seconary_color | TEXT                                            | The secondary color of the team                                                              |
-| ternary_color  | TEXT                                            | The third color of the team                                                                  |
-| logo_url       | TEXT                                            | The path to the team logo                                                                    |
+| primary_color  | TEXT NOT NULL                                   | The primary color of the team                                                                |
+| seconary_color | TEXT NOT NULL                                   | The secondary color of the team                                                              |
+| ternary_color  | TEXT NOT NULL DEFAULT ''                        | The third color of the team, "" if no third color exists                                     |
+| logo_url       | TEXT NOT NULL DEFAULT ''                        | The path to the team logo, "" if no image url exists                                         |
 | created_at     | TIMESTAMP DEFAULT now()                         | The time this row was created, UTC time                                                      |
 | updated_at     | TIMESTAMP DEFAULT now()                         | The time this row was last updated, UTC time                                                 |
 
@@ -51,8 +51,8 @@ A list of snacks with flavor profile, difficulty, and optional recipe URL
 | name       | TEXT NOT NULL                                   | The name of the snack                                                                                          |
 | sweet      | BOOLEAN NOT NULL                                | Whether the snack is considered sweet                                                                          |
 | savory     | BOOLEAN NOT NULL                                | Whether the snack is considered savory                                                                         |
-| difficulty | INT                                             | Arbitrary rating by Britni on the difficulty of the recipe - includes time to prepare and ingredients required |
-| recipe_url | TEXT                                            | The url of the recipe                                                                                          |
+| difficulty | INT NOT NULL                                    | Arbitrary rating by Britni on the difficulty of the recipe - includes time to prepare and ingredients required |
+| recipe_url | TEXT NOT NULL DEFAULT ''                        | The url of the recipe, "" if no url exists                                                                     |
 | created_at | TIMESTAMP DEFAULT now()                         | The time this row was created, UTC time                                                                        |
 | updated_at | TIMESTAMP DEFAULT now()                         | The time this row was last updated, UTC time                                                                   |
 

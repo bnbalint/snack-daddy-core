@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"time"
 )
 
@@ -10,8 +9,8 @@ type Snack struct {
 	Name       string
 	Sweet      bool
 	Savory     bool
-	Difficulty sql.NullInt64
-	RecipeUrl  sql.NullString
+	Difficulty int
+	RecipeUrl  string
 	Allergies  []Allergy `gorm:"many2many:snack_allergies;joinForeignKey:SnackId;joinReferences:AllergyId"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time

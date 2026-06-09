@@ -35,10 +35,10 @@ CREATE TABLE teams (
     name TEXT NOT NULL,
     rink rinks_enum NOT NULL,
     level levels_enum NOT NULL,
-    primary_color TEXT,
-    seconary_color TEXT,
-    ternary_color TEXT,
-    logo_url TEXT,
+    primary_color TEXT NOT NULL,
+    seconary_color TEXT NOT NULL,
+    ternary_color TEXT NOT NULL DEFAULT '',
+    logo_url TEXT NOT NULL DEFAULT '',
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
 );
@@ -49,8 +49,8 @@ COMMENT ON COLUMN teams.rink IS 'The primary rink that this team plays at';
 COMMENT ON COLUMN teams.level IS 'The level of the team';
 COMMENT ON COLUMN teams.primary_color IS 'The primary color of the team';
 COMMENT ON COLUMN teams.seconary_color IS 'The secondary color of the team';
-COMMENT ON COLUMN teams.ternary_color IS 'The third color of the team';
-COMMENT ON COLUMN teams.logo_url IS 'The path to the team logo';
+COMMENT ON COLUMN teams.ternary_color IS 'The third color of the team, defaults to "" if not third color exists';
+COMMENT ON COLUMN teams.logo_url IS 'The path to the team logo, defaults to "" if no image url exists';
 COMMENT ON COLUMN teams.created_at IS 'The time this row was created, UTC time';
 COMMENT ON COLUMN teams.updated_at IS 'The time this row was last updated, UTC time';
 
@@ -125,8 +125,8 @@ CREATE TABLE snacks (
     name TEXT NOT NULL,
     sweet BOOLEAN NOT NULL,
     savory BOOLEAN NOT NULL,
-    difficulty INT,
-    recipe_url TEXT,
+    difficulty INT NOT NULL,
+    recipe_url TEXT NOT NULL DEFAULT '',
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
 );
@@ -135,7 +135,7 @@ COMMENT ON COLUMN snacks.id IS 'The unique snack identifier. Primary key for thi
 COMMENT ON COLUMN snacks.name IS 'The name of the snack';
 COMMENT ON COLUMN snacks.sweet IS 'Whether the snack is considered sweet';
 COMMENT ON COLUMN snacks.savory IS 'Whether the snack is considered savory';
-COMMENT ON COLUMN snacks.recipe_url IS 'The url of the recipe';
+COMMENT ON COLUMN snacks.recipe_url IS 'The url of the recipe, defaults to "" if no url exists';
 COMMENT ON COLUMN snacks.difficulty IS 'Arbitrary rating by Britni on the difficulty of the recipe - includes time to prepare and ingredients required. Scale of 1 (easy) to 10 (monstrous)';
 COMMENT ON COLUMN snacks.created_at IS 'The time this row was created, UTC time';
 COMMENT ON COLUMN snacks.updated_at IS 'The time this row was last updated, UTC time';

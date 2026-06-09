@@ -10,10 +10,10 @@ type Team struct {
 	Name           string
 	Rink           string
 	Level          string
-	PrimaryColor   sql.NullString
-	SecondaryColor sql.NullString
-	TernaryColor   sql.NullString
-	LogoUrl        sql.NullString
+	PrimaryColor   string
+	SecondaryColor string
+	TernaryColor   string
+	LogoUrl        string
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
