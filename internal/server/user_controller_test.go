@@ -3,7 +3,6 @@ package server
 import (
 	"bytes"
 	"context"
-	"database/sql"
 	"encoding/json"
 	"log/slog"
 	"net/http"
@@ -31,22 +30,22 @@ func (mock *mockDB) AddUser(ctx context.Context, user *models.User) (*models.Use
 }
 
 // ---------------------------------------------------------------------
-// GetAllUser
+// GetAllUsers
 // .
 // Tests
 //   - success
 //   - database error
-func TestGetAllUsers(testFramework *testing.T) {
+func Test_GetAllUsers(testFramework *testing.T) {
 
 	TEAM_MULES := models.Team{
 		ID:             1,
 		Name:           "Mules",
 		Rink:           "Bairel",
 		Level:          "D5",
-		PrimaryColor:   sql.NullString{String: "Gold", Valid: true},
-		SecondaryColor: sql.NullString{String: "Black", Valid: true},
-		TernaryColor:   sql.NullString{String: "Brick Red", Valid: true},
-		LogoUrl:        sql.NullString{String: "", Valid: false},
+		PrimaryColor:   "Gold",
+		SecondaryColor: "Black",
+		TernaryColor:   "Brick Red",
+		LogoUrl:        "",
 	}
 
 	// Define the tests
@@ -131,18 +130,20 @@ func TestGetAllUsers(testFramework *testing.T) {
 //   - bind error
 //   - conflict error
 //   - database error
-func TestAddUser(testFramework *testing.T) {
+func Test_AddUser(testFramework *testing.T) {
 
-	TEAM_MULES := models.Team{
-		ID:             1,
-		Name:           "Mules",
-		Rink:           "Bairel",
-		Level:          "D5",
-		PrimaryColor:   sql.NullString{String: "Gold", Valid: true},
-		SecondaryColor: sql.NullString{String: "Black", Valid: true},
-		TernaryColor:   sql.NullString{String: "Brick Red", Valid: true},
-		LogoUrl:        sql.NullString{String: "", Valid: false},
-	}
+	// {"ID", 1, "name":"Mules", "rink":"Baierl", "level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUlr", ""}
+
+	// TEAM_MULES := models.Team{
+	// 	ID:             1,
+	// 	Name:           "Mules",
+	// 	Rink:           "Bairel",
+	// 	Level:          "D5",
+	// 	PrimaryColor:   "Gold",
+	// 	SecondaryColor: "Black",
+	// 	TernaryColor:   "Brick Red",
+	// 	LogoUrl:        "",
+	// }
 
 	// Define the tests
 	tests := []struct {
@@ -154,8 +155,8 @@ func TestAddUser(testFramework *testing.T) {
 		mockReturnUser *models.User
 	}{
 		{
-			name:           "success",
-			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [{"ID", 1, "name":"Mules","rink":"Baierl","level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed"}], "Allergies": []}`,
+			name:           "success - empty teams, empty allergies",
+			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [], "Allergies": []}`,
 			expectedStatus: http.StatusCreated,
 			mockError:      nil,
 			expectBody:     true,
@@ -164,7 +165,7 @@ func TestAddUser(testFramework *testing.T) {
 				FirstName: "Ricky",
 				LastName:  "Hosfelt",
 				Email:     "r.h@gmail.com",
-				Teams:     []models.Team{TEAM_MULES},
+				Teams:     []models.Team{},
 				Allergies: []models.Allergy{},
 			},
 		},
@@ -178,7 +179,7 @@ func TestAddUser(testFramework *testing.T) {
 		},
 		{
 			name:           "conflict error",
-			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [{"ID", 1, "name":"Mules","rink":"Baierl","level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed"}], "Allergies": []}`,
+			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [{"ID", 1, "name":"Mules","rink":"Baierl","level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl", ""}], "Allergies": []}`,
 			expectedStatus: http.StatusConflict,
 			mockError:      &database_errors.ConflictError{},
 			expectBody:     false,
@@ -186,7 +187,7 @@ func TestAddUser(testFramework *testing.T) {
 		},
 		{
 			name:           "database error",
-			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [{"ID", 1, "name":"Mules","rink":"Baierl","level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed"}], "Allergies": []}`,
+			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [{"ID", 1, "name":"Mules","rink":"Baierl","level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl", ""}], "Allergies": []}`,
 			expectedStatus: http.StatusInternalServerError,
 			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
 			expectBody:     false,

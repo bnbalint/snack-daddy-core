@@ -35,7 +35,7 @@ func (mock *mockDB) AddTeam(ctx context.Context, team *models.Team) (*models.Tea
 // Tests
 //   - success
 //   - database error
-func TestGetAllTeams(testFramework *testing.T) {
+func Test_GetAllTeams(testFramework *testing.T) {
 
 	// Define the tests
 	tests := []struct {
@@ -119,7 +119,7 @@ func TestGetAllTeams(testFramework *testing.T) {
 //   - bind error
 //   - conflict error
 //   - database error
-func TestAddTeam(testFramework *testing.T) {
+func Test_AddTeam(testFramework *testing.T) {
 
 	// Define the tests
 	tests := []struct {

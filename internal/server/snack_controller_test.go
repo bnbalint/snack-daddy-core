@@ -3,7 +3,6 @@ package server
 import (
 	"bytes"
 	"context"
-	"database/sql"
 	"encoding/json"
 	"log/slog"
 	"net/http"
@@ -36,7 +35,7 @@ func (mock *mockDB) AddSnack(ctx context.Context, snack *models.Snack) (*models.
 // Tests
 //   - success
 //   - database error
-func TestGetAllSnacks(testFramework *testing.T) {
+func Test_GetAllSnacks(testFramework *testing.T) {
 
 	// Define the tests
 	tests := []struct {
@@ -49,8 +48,8 @@ func TestGetAllSnacks(testFramework *testing.T) {
 		{
 			name: "success",
 			mockSnacks: []models.Snack{
-				{ID: 1, Name: "Rice Crispie Treat", Sweet: true, Savory: false, Difficulty: sql.NullInt64{Int64: 2, Valid: true}, RecipeUrl: sql.NullString{String: "", Valid: false}},
-				{ID: 2, Name: "Bacon Crackers", Sweet: false, Savory: true, Difficulty: sql.NullInt64{Int64: 2, Valid: true}, RecipeUrl: sql.NullString{String: "", Valid: false}},
+				{ID: 1, Name: "Rice Crispie Treat", Sweet: true, Savory: false, Difficulty: 2, RecipeUrl: ""},
+				{ID: 2, Name: "Bacon Crackers", Sweet: false, Savory: true, Difficulty: 3, RecipeUrl: ""},
 			},
 			expectedStatus: http.StatusOK,
 			mockError:      nil,
@@ -120,7 +119,7 @@ func TestGetAllSnacks(testFramework *testing.T) {
 //   - bind error
 //   - conflict error
 //   - database error
-func TestAddSnack(testFramework *testing.T) {
+func Test_AddSnack(testFramework *testing.T) {
 
 	// Define the tests
 	tests := []struct {
@@ -142,7 +141,7 @@ func TestAddSnack(testFramework *testing.T) {
 				Name:       "Rice Crispie Treat",
 				Sweet:      true,
 				Savory:     false,
-				Difficulty: sql.NullInt64{Int64: 2, Valid: true},
+				Difficulty: 2,
 			},
 		},
 		{

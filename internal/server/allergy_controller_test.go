@@ -41,7 +41,7 @@ func (mock *mockDB) AddAllergy(ctx context.Context, allergy *models.Allergy) (*m
 // Tests
 //   - success
 //   - database error
-func TestGetAllAllergies(testFramework *testing.T) {
+func Test_GetAllAllergies(testFramework *testing.T) {
 
 	// Define the tests
 	tests := []struct {
@@ -125,7 +125,7 @@ func TestGetAllAllergies(testFramework *testing.T) {
 //   - bind error
 //   - conflict error
 //   - database error
-func TestAddAllergy(testFramework *testing.T) {
+func Test_AddAllergy(testFramework *testing.T) {
 
 	// Define the tests
 	tests := []struct {
