@@ -93,25 +93,25 @@ COMMENT ON TRIGGER update_users_updated_at ON users IS 'Update the updated_at ti
 
 
 /*
- * allergies table
+ * ingredients table
  * this is a table because we will likely need to add more values over time
  */
-CREATE TABLE allergies (
+CREATE TABLE ingredients (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
 );
-COMMENT ON TABLE allergies IS 'Possible food related allergies';
-COMMENT ON COLUMN allergies.id IS 'The unique allergy identifier. Primary key for this table - assigned during insert to the table';
-COMMENT ON COLUMN allergies.name IS 'The basic name of the allergy';
-COMMENT ON COLUMN allergies.created_at IS 'The time this row was created, UTC time';
-COMMENT ON COLUMN allergies.updated_at IS 'The time this row was last updated, UTC time';
+COMMENT ON TABLE ingredients IS 'Possible ingredients for snacks or items that a user might be allergic to';
+COMMENT ON COLUMN ingredients.id IS 'The unique ingredient identifier. Primary key for this table - assigned during insert to the table';
+COMMENT ON COLUMN ingredients.name IS 'The basic name of the ingredient';
+COMMENT ON COLUMN ingredients.created_at IS 'The time this row was created, UTC time';
+COMMENT ON COLUMN ingredients.updated_at IS 'The time this row was last updated, UTC time';
 
--- add the trigger to allergies
-CREATE TRIGGER update_allergies_updated_at
-BEFORE UPDATE ON allergies FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-COMMENT ON TRIGGER update_allergies_updated_at ON allergies IS 'Update the updated_at timestamp column for the allergies table';
+-- add the trigger to ingredients
+CREATE TRIGGER update_ingredients_updated_at
+BEFORE UPDATE ON ingredients FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+COMMENT ON TRIGGER update_ingredients_updated_at ON ingredients IS 'Update the updated_at timestamp column for the allingredientsergies table';
 
 
 

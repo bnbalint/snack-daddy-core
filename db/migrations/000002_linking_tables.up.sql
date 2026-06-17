@@ -35,14 +35,14 @@ COMMENT ON TRIGGER update_team_membership_updated_at ON team_membership IS 'Upda
  *
  */
 CREATE TABLE user_allergies (
-    allergy_id INT REFERENCES allergies(id) ON DELETE CASCADE,
+    ingredient_id INT REFERENCES ingredients(id) ON DELETE CASCADE,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now(),
-    PRIMARY KEY (allergy_id, user_id)
+    PRIMARY KEY (ingredient_id, user_id)
 );
 COMMENT ON TABLE user_allergies IS 'Which users have allergies';
-COMMENT ON COLUMN user_allergies.allergy_id IS 'The id from the allergies table';
+COMMENT ON COLUMN user_allergies.ingredient_id IS 'The id from the ingredients table';
 COMMENT ON COLUMN user_allergies.user_id IS 'The id from the users table';
 COMMENT ON COLUMN user_allergies.created_at IS 'The time this row was created, UTC time';
 COMMENT ON COLUMN user_allergies.updated_at IS 'The time this row was last updated, UTC time';
@@ -57,27 +57,27 @@ COMMENT ON TRIGGER update_user_allergies_updated_at ON user_allergies IS 'Update
 
 
 /*
- * snack_allergies table
+ * snack_ingredients table
  *
  */
-CREATE TABLE snack_allergies (
-    allergy_id INT REFERENCES allergies(id) ON DELETE CASCADE,
+CREATE TABLE snack_ingredients (
+    ingredient_id INT REFERENCES ingredients(id) ON DELETE CASCADE,
     snack_id INT REFERENCES snacks(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now(),
-    PRIMARY KEY (allergy_id, snack_id)
+    PRIMARY KEY (ingredient_id, snack_id)
 );
-COMMENT ON TABLE snack_allergies IS 'Which snacks have allergies';
-COMMENT ON COLUMN snack_allergies.allergy_id IS 'The id from the allergies table';
-COMMENT ON COLUMN snack_allergies.snack_id IS 'The id from the snack table';
-COMMENT ON COLUMN snack_allergies.created_at IS 'The time this row was created, UTC time';
-COMMENT ON COLUMN snack_allergies.updated_at IS 'The time this row was last updated, UTC time';
+COMMENT ON TABLE snack_ingredients IS 'The ingredients for each snack';
+COMMENT ON COLUMN snack_ingredients.ingredient_id IS 'The id from the ingredients table';
+COMMENT ON COLUMN snack_ingredients.snack_id IS 'The id from the snacks table';
+COMMENT ON COLUMN snack_ingredients.created_at IS 'The time this row was created, UTC time';
+COMMENT ON COLUMN snack_ingredients.updated_at IS 'The time this row was last updated, UTC time';
 
 
--- add the trigger to snack_allergies
-CREATE TRIGGER update_snack_allergies_updated_at
-BEFORE UPDATE ON snack_allergies FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-COMMENT ON TRIGGER update_snack_allergies_updated_at ON snack_allergies IS 'Update the updated_at timestamp column for the snack_allergies table';
+-- add the trigger to snack_ingredients
+CREATE TRIGGER update_snack_ingredients_updated_at
+BEFORE UPDATE ON snack_ingredients FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+COMMENT ON TRIGGER update_snack_ingredients_updated_at ON snack_ingredients IS 'Update the updated_at timestamp column for the snack_ingredients table';
 
 
 

@@ -1,7 +1,7 @@
 
 -- Drop base tables, should they already exists
 DROP TABLE IF EXISTS snacks;
-DROP TABLE IF EXISTS allergies;
+DROP TABLE IF EXISTS ingredients;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS teams;
 
