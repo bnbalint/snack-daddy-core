@@ -59,8 +59,8 @@ func Test_GetAllUsers(testFramework *testing.T) {
 		{
 			name: "success",
 			mockUsers: []models.User{
-				{ID: 1, FirstName: "Ricky", LastName: "Hosfelt", Email: "r.h@gmail.com", Teams: []models.Team{TEAM_MULES}, Allergies: []models.Allergy{}},
-				{ID: 2, FirstName: "Britni", LastName: "Hosfelt", Email: "b@gmail.com", Teams: []models.Team{}, Allergies: []models.Allergy{}},
+				{ID: 1, FirstName: "Ricky", LastName: "Hosfelt", Email: "r.h@gmail.com", Teams: []models.Team{TEAM_MULES}, Allergies: []models.Ingredient{}},
+				{ID: 2, FirstName: "Britni", LastName: "Hosfelt", Email: "b@gmail.com", Teams: []models.Team{}, Allergies: []models.Ingredient{}},
 			},
 			expectedStatus: http.StatusOK,
 			mockError:      nil,
@@ -166,7 +166,7 @@ func Test_AddUser(testFramework *testing.T) {
 				LastName:  "Hosfelt",
 				Email:     "r.h@gmail.com",
 				Teams:     []models.Team{},
-				Allergies: []models.Allergy{},
+				Allergies: []models.Ingredient{},
 			},
 		},
 		{

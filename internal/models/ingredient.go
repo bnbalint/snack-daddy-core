@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type Allergy struct {
+type Ingredient struct {
 	ID        int
 	Name      string
 	CreatedAt time.Time

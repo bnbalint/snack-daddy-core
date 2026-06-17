@@ -118,7 +118,7 @@ COMMENT ON TRIGGER update_ingredients_updated_at ON ingredients IS 'Update the u
 
 /*
  * snacks table
- * Allergies are recorded in the snack_allergies table
+ * Ingredients are recorded in the snack_ingredients table
  */
 CREATE TABLE snacks (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

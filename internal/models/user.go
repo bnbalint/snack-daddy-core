@@ -7,8 +7,8 @@ type User struct {
 	FirstName string
 	LastName  string
 	Email     string
-	Teams     []Team    `gorm:"many2many:team_membership;joinForeignKey:UserId;joinReferences:TeamId"`
-	Allergies []Allergy `gorm:"many2many:user_allergies;joinForeignKey:UserId;joinReferences:AllergyId"`
+	Teams     []Team       `gorm:"many2many:team_membership;joinForeignKey:UserId;joinReferences:TeamId"`
+	Allergies []Ingredient `gorm:"many2many:user_allergies;joinForeignKey:UserId;joinReferences:IngredientId"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

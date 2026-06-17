@@ -3,9 +3,10 @@ package database
 import (
 	"context"
 	"fmt"
+	"snack-daddy-core/internal/models"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"snack-daddy-core/internal/models"
 )
 
 // Client for talking to the SnackDaddy database
@@ -24,9 +25,9 @@ type SnackDaddyDatabaseClient interface {
 	GetAllSnacks(ctx context.Context) ([]models.Snack, error)
 	AddSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error)
 
-	// Allergies
-	GetAllAllergies(ctx context.Context) ([]models.Allergy, error)
-	AddAllergy(ctx context.Context, allergy *models.Allergy) (*models.Allergy, error)
+	// Ingredients
+	GetAllIngredients(ctx context.Context) ([]models.Ingredient, error)
+	AddIngredient(ctx context.Context, ingredient *models.Ingredient) (*models.Ingredient, error)
 
 	// Snack Log
 }

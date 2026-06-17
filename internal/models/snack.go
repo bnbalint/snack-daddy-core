@@ -5,13 +5,13 @@ import (
 )
 
 type Snack struct {
-	ID         int
-	Name       string
-	Sweet      bool
-	Savory     bool
-	Difficulty int
-	RecipeUrl  string
-	Allergies  []Allergy `gorm:"many2many:snack_allergies;joinForeignKey:SnackId;joinReferences:AllergyId"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	ID          int
+	Name        string
+	Sweet       bool
+	Savory      bool
+	Difficulty  int
+	RecipeUrl   string
+	Ingredients []Ingredient `gorm:"many2many:snack_ingredients;joinForeignKey:SnackId;joinReferences:IngredientId"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }

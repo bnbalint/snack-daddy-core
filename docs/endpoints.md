@@ -14,15 +14,15 @@
 
 
 
-## Allergies
+## Ingredients
 ---
 
-### GET all allergies
- - USAGE: List on [Allergy Entry](./frontend.md#allergy-entry)
- - GET  `/allergies`
+### GET all ingredients
+ - USAGE: List on [Ingredient Entry](./frontend.md#ingredient-entry)
+ - GET  `/ingredients`
 
-### Add to allergies
- - USAGE: Submit on [Allergy Entry](./frontend.md#allergy-entry)
+### Add to ingredients
+ - USAGE: Submit on [Ingredient Entry](./frontend.md#ingredient-entry)
  - POST
 
 
