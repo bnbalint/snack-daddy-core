@@ -3,9 +3,9 @@ package database
 import (
 	"context"
 	"database/sql"
-	"testing"
-
+	"fmt"
 	"snack-daddy-core/internal/models"
+	"testing"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -72,11 +72,18 @@ func TestIngredientRepository(testingFramework *testing.T) {
 	// Get the dynamic connection host (no port) from the running container (needed to create client)
 	dbHost, err := postgresContainer.Host(ctx)
 	if err != nil {
-		testingFramework.Fatalf("failed to get connecdb host string: %s", err)
+		testingFramework.Fatalf("failed to get connection host string: %s", err)
+	}
+
+	// Get the dynamic connection port from the running container (needed to create client)
+	dbPort, err := postgresContainer.MappedPort(ctx, "5432")
+	if err != nil {
+		testingFramework.Fatalf("failed to get connection port string: %s", err)
 	}
 
 	// Create the Database Client, using the credentials & info from the testcontainer
-	repo, err := NewDatabaseClient(dbHost, dbUser, dbPassword, dbName, 5432, "disable")
+	fmt.Printf("host=%s user=%s password=%s dbname=%s  dbPort=%s", dbHost, dbUser, dbPassword, dbName, dbPort)
+	repo, err := NewDatabaseClient(dbHost, dbUser, dbPassword, dbName, int32(dbPort.Num()), "disable")
 	if err != nil {
 		testingFramework.Fatalf("failed to create DatabaseClient: %s", err)
 	}
@@ -99,6 +106,8 @@ func TestIngredientRepository(testingFramework *testing.T) {
 		if savedIngredient.ID == 0 {
 			t.Error("expected ingredient ID to be populated, got 0")
 		}
+
+		fmt.Print("Added ingredient = ", savedIngredient)
 	})
 
 	// --- Subtest: Get All Ingredients ---
@@ -111,5 +120,7 @@ func TestIngredientRepository(testingFramework *testing.T) {
 		if len(ingredients) == 0 {
 			t.Errorf("expected some ingredients, got '%d'", len(ingredients))
 		}
+
+		fmt.Print("Retrieved ingredients = ", ingredients)
 	})
 }

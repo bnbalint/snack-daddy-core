@@ -37,7 +37,6 @@ type DatabaseClient struct {
 }
 
 // Create a new DatabaseClient using the provided credentials
-// TODO: Currently EVIL and will print credentials
 func NewDatabaseClient(host string, user string, password string, dbname string, port int32, sslmode string) (SnackDaddyDatabaseClient, error) {
 
 	// collect the connection information into a single string
