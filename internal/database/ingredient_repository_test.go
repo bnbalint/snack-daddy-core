@@ -18,7 +18,7 @@ func TestIngredientRepository(testingFramework *testing.T) {
 	//  TESTS
 	//
 
-	// --- Subtest: Create Ingredient ---
+	// --- Subtest: Add Ingredient ---
 	testingFramework.Run("Add Ingredient", func(t *testing.T) {
 		ingredient := models.Ingredient{
 			Name: "Pecan",

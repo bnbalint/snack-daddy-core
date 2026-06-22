@@ -132,14 +132,14 @@ func Test_AddTeam(testFramework *testing.T) {
 	}{
 		{
 			name:           "success",
-			requestBody:    `{"name":"Mules","rink":"Baierl","level":"D5"}`,
+			requestBody:    `{"name":"Mules","rink":"BAIREL","level":"D5"}`,
 			expectedStatus: http.StatusCreated,
 			mockError:      nil,
 			expectBody:     true,
 			mockReturnTeam: &models.Team{
 				ID:    1,
 				Name:  "Mules",
-				Rink:  "Baierl",
+				Rink:  "BAIREL",
 				Level: "D5",
 			},
 		},
@@ -153,7 +153,7 @@ func Test_AddTeam(testFramework *testing.T) {
 		},
 		{
 			name:           "conflict error",
-			requestBody:    `{"name":"Mules","rink":"Baierl","level":"D5"}`,
+			requestBody:    `{"name":"Mules","rink":"BAIREL","level":"D5"}`,
 			expectedStatus: http.StatusConflict,
 			mockError:      &database_errors.ConflictError{},
 			expectBody:     false,
@@ -161,7 +161,7 @@ func Test_AddTeam(testFramework *testing.T) {
 		},
 		{
 			name:           "database error",
-			requestBody:    `{"name":"Mules","rink":"Baierl","level":"D5"}`,
+			requestBody:    `{"name":"Mules","rink":"BAIREL","level":"D5"}`,
 			expectedStatus: http.StatusInternalServerError,
 			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
 			expectBody:     false,
