@@ -59,8 +59,8 @@ func Test_GetAllUsers(testFramework *testing.T) {
 		{
 			name: "success",
 			mockUsers: []models.User{
-				{ID: 1, FirstName: "Ricky", LastName: "Hosfelt", Email: "r.h@gmail.com", Teams: []models.Team{TEAM_MULES}, Allergies: []models.Ingredient{}},
-				{ID: 2, FirstName: "Britni", LastName: "Hosfelt", Email: "b@gmail.com", Teams: []models.Team{}, Allergies: []models.Ingredient{}},
+				{ID: 1, FirstName: "Roger", LastName: "Hogwarts", Email: "r.h@gmail.com", Teams: []models.Team{TEAM_MULES}, Allergies: []models.Ingredient{}},
+				{ID: 2, FirstName: "Brandi", LastName: "Hogwarta", Email: "b@gmail.com", Teams: []models.Team{}, Allergies: []models.Ingredient{}},
 			},
 			expectedStatus: http.StatusOK,
 			mockError:      nil,
@@ -132,18 +132,21 @@ func Test_GetAllUsers(testFramework *testing.T) {
 //   - database error
 func Test_AddUser(testFramework *testing.T) {
 
-	// {"ID", 1, "name":"Mules", "rink":"BAIREL", "level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUlr", ""}
+	TEAM_MULES := models.Team{
+		ID:             1,
+		Name:           "Mules",
+		Rink:           "BAIREL",
+		Level:          "D5",
+		PrimaryColor:   "Gold",
+		SecondaryColor: "Black",
+		TernaryColor:   "Brick Red",
+		LogoUrl:        "",
+	}
 
-	// TEAM_MULES := models.Team{
-	// 	ID:             1,
-	// 	Name:           "Mules",
-	// 	Rink:           "BAIREL",
-	// 	Level:          "D5",
-	// 	PrimaryColor:   "Gold",
-	// 	SecondaryColor: "Black",
-	// 	TernaryColor:   "Brick Red",
-	// 	LogoUrl:        "",
-	// }
+	ALLERGY_PECAN := models.Ingredient{
+		ID:   1,
+		Name: "Pecan",
+	}
 
 	// Define the tests
 	tests := []struct {
@@ -155,15 +158,60 @@ func Test_AddUser(testFramework *testing.T) {
 		mockReturnUser *models.User
 	}{
 		{
-			name:           "success - empty teams, empty allergies",
-			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [], "Allergies": []}`,
+			name:           "success",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": [{"Name": "Pecan"}]}`,
 			expectedStatus: http.StatusCreated,
 			mockError:      nil,
 			expectBody:     true,
 			mockReturnUser: &models.User{
 				ID:        1,
-				FirstName: "Ricky",
-				LastName:  "Hosfelt",
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
+				Email:     "r.h@gmail.com",
+				Teams:     []models.Team{TEAM_MULES},
+				Allergies: []models.Ingredient{ALLERGY_PECAN},
+			},
+		},
+		{
+			name:           "success_noAllergies",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": []}`,
+			expectedStatus: http.StatusCreated,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnUser: &models.User{
+				ID:        1,
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
+				Email:     "r.h@gmail.com",
+				Teams:     []models.Team{TEAM_MULES},
+				Allergies: []models.Ingredient{},
+			},
+		},
+		{
+			name:           "success_noTeams",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [], "Allergies": [{"Name": "Pecan"}]}`,
+			expectedStatus: http.StatusCreated,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnUser: &models.User{
+				ID:        1,
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
+				Email:     "r.h@gmail.com",
+				Teams:     []models.Team{},
+				Allergies: []models.Ingredient{ALLERGY_PECAN},
+			},
+		},
+		{
+			name:           "success_noTeams_noAllergies",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com"}`,
+			expectedStatus: http.StatusCreated,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnUser: &models.User{
+				ID:        1,
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
 				Email:     "r.h@gmail.com",
 				Teams:     []models.Team{},
 				Allergies: []models.Ingredient{},
@@ -179,7 +227,7 @@ func Test_AddUser(testFramework *testing.T) {
 		},
 		{
 			name:           "conflict error",
-			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [{"ID", 1, "name":"Mules","rink":"BAIREL","level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl", ""}], "Allergies": []}`,
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink":"BAIREL", "Level": "D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": []}`,
 			expectedStatus: http.StatusConflict,
 			mockError:      &database_errors.ConflictError{},
 			expectBody:     false,
@@ -187,7 +235,7 @@ func Test_AddUser(testFramework *testing.T) {
 		},
 		{
 			name:           "database error",
-			requestBody:    `{"ID": 1, "FirstName": "Ricky", "LastName": "Hosfelt", "Email": "r.h@gmail.com", "Teams": [{"ID", 1, "name":"Mules","rink":"BAIREL","level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl", ""}], "Allergies": []}`,
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink": "BAIREL", "Level": "D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": []}`,
 			expectedStatus: http.StatusInternalServerError,
 			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
 			expectBody:     false,
@@ -220,7 +268,7 @@ func Test_AddUser(testFramework *testing.T) {
 			ctx := echo.New().NewContext(request, rec)
 
 			// Call handler
-			err := server.AddTeam(ctx)
+			err := server.AddUser(ctx)
 			if err != nil {
 				testFramework.Errorf("AddUser returned error: %v", err)
 			}

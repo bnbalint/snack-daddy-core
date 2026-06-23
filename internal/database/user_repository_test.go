@@ -31,8 +31,8 @@ func TestUserRepository(testingFramework *testing.T) {
 	// --- Subtest: Add User ---
 	testingFramework.Run("Add User", func(t *testing.T) {
 		user := models.User{
-			FirstName: "Ricky",
-			LastName:  "Hosfelt",
+			FirstName: "Roger",
+			LastName:  "Hogwarts",
 			Email:     "r.h@gmail.com",
 			Teams:     []models.Team{TEAM_MULES},
 			Allergies: []models.Ingredient{},
