@@ -35,6 +35,8 @@ type SnackDaddyCoreService interface {
 	AddIngredient(ctx echo.Context) error
 
 	// Snack Log
+	GetSnackLog(ctx echo.Context) error
+	AddToSnackLog(ctx echo.Context) error
 }
 
 // this is our web server
@@ -80,6 +82,11 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	ingredients := server.echo.Group("/ingredients")
 	ingredients.GET("", server.GetAllIngredients)
 	ingredients.POST("", server.AddIngredient)
+
+	// snacklog
+	snackLog := server.echo.Group("/snack-log")
+	snackLog.GET("", server.GetSnackLog)
+	snackLog.POST("", server.AddToSnackLog)
 
 }
 

@@ -19,6 +19,9 @@ type mockDB struct {
 
 	getAllUsersFunc func(ctx context.Context) ([]models.User, error)
 	addUserFunc     func(ctx context.Context, snack *models.User) (*models.User, error)
+
+	getSnackLogFunc   func(ctx context.Context) ([]models.SnackLog, error)
+	addToSnackLogFunc func(ctx context.Context, snack *models.SnackLog) (*models.SnackLog, error)
 }
 
 func (mock *mockDB) Ready() bool {

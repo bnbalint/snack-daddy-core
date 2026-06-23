@@ -53,7 +53,7 @@
 
 ### Add to snacks
  - USAGE: Submit on [Snack Entry](./frontend.md#snack-entry)
- - POST
+ - POST `/snacks`
 
 
 ### Update snacks
@@ -70,11 +70,11 @@
 
 ## Add to snack_log
  - USAGE: Submit on [Log Snack Delivery](./frontend.md#log-snack-delivery)
- - POST
+ - POST `/snack-log`
 
 ## GET all snack_log
  - USAGE: View on [View Snack Log](frontend.md#view-snack-log)
- - GET
+ - GET `/snack-log`
 
 
 
