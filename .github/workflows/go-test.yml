@@ -1,0 +1,33 @@
+name: Go Test
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch: {}
+
+
+jobs:
+  test:
+    name: Run Go Tests with TestContainers
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+
+      - name: Install Dependencies
+        run: go mod download
+
+      - name: Run Go Tests
+        env:
+          TESTCONTAINERS_RYUK_DISABLED: "false"
+        run: go test -v -timeout 10m ./...
