@@ -47,18 +47,24 @@
 
 # User Facing
 
-## Account Creation
+## Register User
  - First name
  - Last name
  - Email
  - Team(s)  [or a spouse]
  - Allergies (checkboxes)
    - option for other with text --> this needs to be emailed to Britni so it can be added to the backend
+ - Password
 
 
-## Login
+## Login User
  - ??
 
+## Logout User
+  - 
+
+## Forgot Password
+   -
 
 ## View / Modify User Settings
  - View user details

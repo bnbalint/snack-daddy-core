@@ -1,6 +1,7 @@
 package main
 
 import (
+	//"context"
 	"fmt"
 	"log/slog"
 	"os"
@@ -9,6 +10,13 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
+	//"github.com/zitadel/zitadel-go/v3/pkg/zitadel"
+)
+
+const (
+	zitadelDomain = "http://localhost:8080" // TODO - update when we move out of development
+	projectID     = "378866658279686147"    // SnackDaddy's Zitadel Project ID
+	clientId      = "378866830212661251"    // SnackDaddy's Zitadel ClientID
 )
 
 func main() {
@@ -46,6 +54,10 @@ func main() {
 	if err != nil {
 		logger.Error("Failed to initialize Database Client", "error", err)
 	}
+
+	/*
+	 * connect to Zitadel
+	 */
 
 	/*
 	 * create the service
