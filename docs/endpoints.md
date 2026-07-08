@@ -200,10 +200,10 @@
           "Name": "Mules",
           "Rink": "BAIREL",
           "Level": "D5",
-          "PrimaryColor": "#b88907",
-          "SecondaryColor": "#000000",
-          "TernaryColor": "#c42323",
-          "LogoUrl": "",
+          "Primary_Color": "#b88907",
+          "Secondary_Color": "#000000",
+          "Ternary_Color": "#c42323",
+          "Logo_Url": "",
           "Created_At": "2026-06-25T12:00:00Z",
           "Updated_At": "2026-06-25T12:00:00Z"
           }
@@ -298,7 +298,7 @@
             "Name": "Marshmallow",
             "Created_At": "2026-06-25T12:00:00Z",
             "Updated_At": "2026-06-25T12:00:00Z"
-          },
+          }
         ]
       }
     ```
