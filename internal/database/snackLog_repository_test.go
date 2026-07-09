@@ -20,7 +20,7 @@ func TestSnackLogRepository(testingFramework *testing.T) {
 	//
 
 	SNACK := models.Snack{
-		Name:       "Rice Crispie Treat",
+		Name:       "SnackLogRepoSnack",
 		Sweet:      true,
 		Savory:     false,
 		Difficulty: 2,
@@ -28,12 +28,12 @@ func TestSnackLogRepository(testingFramework *testing.T) {
 	}
 
 	TEAM := models.Team{
-		Name:           "Mules",
+		Name:           "SnackLogRepoTeam",
 		Rink:           "BAIREL",
 		Level:          "D5",
-		PrimaryColor:   "#b88907",
+		PrimaryColor:   "#63ddb4",
 		SecondaryColor: "#000000",
-		TernaryColor:   "#c42323",
+		TernaryColor:   "#0df033",
 		LogoUrl:        "",
 	}
 

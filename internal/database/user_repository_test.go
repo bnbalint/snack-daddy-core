@@ -18,23 +18,27 @@ func TestUserRepository(testingFramework *testing.T) {
 	//  TESTS
 	//
 
-	TEAM_MULES := models.Team{
-		Name:           "Mules",
+	TEAM := models.Team{
+		Name:           "UserRepoTestTeam",
 		Rink:           "BAIREL",
 		Level:          "D5",
-		PrimaryColor:   "#b88907",
+		PrimaryColor:   "#2c54c0",
 		SecondaryColor: "#000000",
-		TernaryColor:   "#c42323",
+		TernaryColor:   "#e967b7",
 		LogoUrl:        "",
 	}
 
 	// --- Subtest: Add User ---
 	testingFramework.Run("Add User", func(t *testing.T) {
+
+		// first we need to make sure the team has been added to the test database
+		DbClient.AddTeam(ctx, &TEAM)
+
 		user := models.User{
 			FirstName: "Roger",
 			LastName:  "Hogwarts",
 			Email:     "r.h@gmail.com",
-			Teams:     []models.Team{TEAM_MULES},
+			Teams:     []models.Team{TEAM},
 			Allergies: []models.Ingredient{},
 		}
 
