@@ -31,9 +31,6 @@ func TestUserRepository(testingFramework *testing.T) {
 	// --- Subtest: Add User ---
 	testingFramework.Run("Add User", func(t *testing.T) {
 
-		// first we need to make sure the team has been added to the test database
-		DbClient.AddTeam(ctx, &TEAM)
-
 		user := models.User{
 			FirstName: "Roger",
 			LastName:  "Hogwarts",
