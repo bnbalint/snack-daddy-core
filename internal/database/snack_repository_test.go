@@ -18,10 +18,10 @@ func TestSnackRepository(testingFramework *testing.T) {
 	//  TESTS
 	//
 
-	// --- Subtest: Add Snack ---
+	// --- Subtest: Add Snack (Reminder - single DBClient is used across all tests, cannot duplicate test snack) ---
 	testingFramework.Run("Add Snack", func(t *testing.T) {
 		snack := models.Snack{
-			Name:       "Rice Crispie Treat",
+			Name:       "Bacon Crackers",
 			Sweet:      true,
 			Savory:     false,
 			Difficulty: 2,
