@@ -42,9 +42,9 @@ func Test_GetAllUsers(testFramework *testing.T) {
 		Name:           "Mules",
 		Rink:           "BAIREL",
 		Level:          "D5",
-		PrimaryColor:   "Gold",
-		SecondaryColor: "Black",
-		TernaryColor:   "Brick Red",
+		PrimaryColor:   "#b88907",
+		SecondaryColor: "#000000",
+		TernaryColor:   "#c42323",
 		LogoUrl:        "",
 	}
 
@@ -137,9 +137,9 @@ func Test_AddUser(testFramework *testing.T) {
 		Name:           "Mules",
 		Rink:           "BAIREL",
 		Level:          "D5",
-		PrimaryColor:   "Gold",
-		SecondaryColor: "Black",
-		TernaryColor:   "Brick Red",
+		PrimaryColor:   "#b88907",
+		SecondaryColor: "#000000",
+		TernaryColor:   "#c42323",
 		LogoUrl:        "",
 	}
 
@@ -159,7 +159,7 @@ func Test_AddUser(testFramework *testing.T) {
 	}{
 		{
 			name:           "success",
-			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": [{"Name": "Pecan"}]}`,
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": [{"Name": "Pecan"}]}`,
 			expectedStatus: http.StatusCreated,
 			mockError:      nil,
 			expectBody:     true,
@@ -174,7 +174,7 @@ func Test_AddUser(testFramework *testing.T) {
 		},
 		{
 			name:           "success_noAllergies",
-			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": []}`,
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": []}`,
 			expectedStatus: http.StatusCreated,
 			mockError:      nil,
 			expectBody:     true,
@@ -227,7 +227,7 @@ func Test_AddUser(testFramework *testing.T) {
 		},
 		{
 			name:           "conflict error",
-			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink":"BAIREL", "Level": "D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": []}`,
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink":"BAIREL", "Level": "D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": []}`,
 			expectedStatus: http.StatusConflict,
 			mockError:      &database_errors.ConflictError{},
 			expectBody:     false,
@@ -235,7 +235,7 @@ func Test_AddUser(testFramework *testing.T) {
 		},
 		{
 			name:           "database error",
-			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink": "BAIREL", "Level": "D5", "PrimaryColor": "Gold", "SecondaryColor": "Black", "TernaryColor": "BrickRed", "LogoUrl": ""}], "Allergies": []}`,
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink": "BAIREL", "Level": "D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": []}`,
 			expectedStatus: http.StatusInternalServerError,
 			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
 			expectBody:     false,

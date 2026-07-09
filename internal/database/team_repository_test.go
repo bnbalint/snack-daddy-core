@@ -18,15 +18,15 @@ func TestTeamRepository(testingFramework *testing.T) {
 	//  TESTS
 	//
 
-	// --- Subtest: Add Team ---
+	// --- Subtest: Add Team (Reminder - single DBClient is used across all tests, cannot duplicate test team) ---
 	testingFramework.Run("Add Team", func(t *testing.T) {
 		team := models.Team{
-			Name:           "Mules",
+			Name:           "Monsters",
 			Rink:           "BAIREL",
-			Level:          "D5",
-			PrimaryColor:   "Gold",
-			SecondaryColor: "Black",
-			TernaryColor:   "Brick Red",
+			Level:          "D4",
+			PrimaryColor:   "#e03894",
+			SecondaryColor: "#3c07b8",
+			TernaryColor:   "#08c868",
 			LogoUrl:        "",
 		}
 

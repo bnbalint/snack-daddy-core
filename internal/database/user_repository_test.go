@@ -22,9 +22,9 @@ func TestUserRepository(testingFramework *testing.T) {
 		Name:           "Mules",
 		Rink:           "BAIREL",
 		Level:          "D5",
-		PrimaryColor:   "Gold",
-		SecondaryColor: "Black",
-		TernaryColor:   "Brick Red",
+		PrimaryColor:   "#b88907",
+		SecondaryColor: "#000000",
+		TernaryColor:   "#c42323",
 		LogoUrl:        "",
 	}
 
