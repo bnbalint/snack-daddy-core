@@ -54,8 +54,8 @@ func Test_GetSnackLog(testFramework *testing.T) {
 
 	TEAM := models.Team{
 		Name:           "Mules",
-		Rink:           "BAIREL",
-		Level:          "D5",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
 		PrimaryColor:   "#b88907",
 		SecondaryColor: "#000000",
 		TernaryColor:   "#c42323",

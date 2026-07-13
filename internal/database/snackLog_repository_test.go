@@ -29,8 +29,8 @@ func TestSnackLogRepository(testingFramework *testing.T) {
 
 	TEAM := models.Team{
 		Name:           "SnackLogRepoTeam",
-		Rink:           "BAIREL",
-		Level:          "D5",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
 		PrimaryColor:   "#63ddb4",
 		SecondaryColor: "#000000",
 		TernaryColor:   "#0df033",

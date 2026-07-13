@@ -40,8 +40,8 @@ func Test_GetAllUsers(testFramework *testing.T) {
 	TEAM_MULES := models.Team{
 		ID:             1,
 		Name:           "Mules",
-		Rink:           "BAIREL",
-		Level:          "D5",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
 		PrimaryColor:   "#b88907",
 		SecondaryColor: "#000000",
 		TernaryColor:   "#c42323",
@@ -135,8 +135,8 @@ func Test_AddUser(testFramework *testing.T) {
 	TEAM_MULES := models.Team{
 		ID:             1,
 		Name:           "Mules",
-		Rink:           "BAIREL",
-		Level:          "D5",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
 		PrimaryColor:   "#b88907",
 		SecondaryColor: "#000000",
 		TernaryColor:   "#c42323",

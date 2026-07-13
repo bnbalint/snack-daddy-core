@@ -7,8 +7,8 @@ import (
 type Team struct {
 	ID             int
 	Name           string
-	Rink           string
-	Level          string
+	Rink           Rink
+	Level          Level
 	PrimaryColor   string
 	SecondaryColor string
 	TernaryColor   string

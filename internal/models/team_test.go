@@ -17,8 +17,8 @@ func TestTeamSerialization(testFramework *testing.T) {
 	original := Team{
 		ID:             1,
 		Name:           "Mules",
-		Rink:           "BAIREL",
-		Level:          "D5",
+		Rink:           RinkBairel,
+		Level:          LevelD5,
 		PrimaryColor:   "#b88907",
 		SecondaryColor: "#000000",
 		TernaryColor:   "#c42323",
@@ -32,7 +32,7 @@ func TestTeamSerialization(testFramework *testing.T) {
 	// SERIALIZE
 	teamJson, err := json.Marshal(original)
 	if err != nil {
-		testFramework.Fatalf("Failes to convert team to json: %v", err)
+		testFramework.Fatalf("Failed to convert team to json: %v", err)
 	}
 	fmt.Println("Team json = ", string(teamJson))
 

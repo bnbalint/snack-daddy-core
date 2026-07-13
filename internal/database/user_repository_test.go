@@ -20,8 +20,8 @@ func TestUserRepository(testingFramework *testing.T) {
 
 	TEAM := models.Team{
 		Name:           "UserRepoTestTeam",
-		Rink:           "BAIREL",
-		Level:          "D5",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
 		PrimaryColor:   "#2c54c0",
 		SecondaryColor: "#000000",
 		TernaryColor:   "#e967b7",

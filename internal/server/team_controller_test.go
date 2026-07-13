@@ -139,8 +139,8 @@ func Test_AddTeam(testFramework *testing.T) {
 			mockReturnTeam: &models.Team{
 				ID:    1,
 				Name:  "Mules",
-				Rink:  "BAIREL",
-				Level: "D5",
+				Rink:  models.RinkBairel,
+				Level: models.LevelD5,
 			},
 		},
 		{

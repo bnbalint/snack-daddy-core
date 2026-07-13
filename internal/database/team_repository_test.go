@@ -22,8 +22,8 @@ func TestTeamRepository(testingFramework *testing.T) {
 	testingFramework.Run("Add Team", func(t *testing.T) {
 		team := models.Team{
 			Name:           "Monsters",
-			Rink:           "BAIREL",
-			Level:          "D4",
+			Rink:           models.RinkBairel,
+			Level:          models.LevelD4,
 			PrimaryColor:   "#e03894",
 			SecondaryColor: "#3c07b8",
 			TernaryColor:   "#08c868",
