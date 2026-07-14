@@ -3,57 +3,58 @@
 ## Teams
 ---
 ### GET all teams
- - USAGE:
-   - Dropdown on [Log Snack Delivery](./frontend.md#log-snack-delivery)
-   - USAGE: List on [Team Entry](./frontend.md#team-entry)
- - GET  `/teams`
- - Response
-   ```json
-    [
-      {
-        "ID": 1,
-        "Name": "Mules",
-        "Rink": "BAIREL",
-        "Level": "D5",
-        "PrimaryColor": "#b88907",
-        "SecondaryColor": "#000000",
-        "TernaryColor": "#c42323",
-        "LogoUrl": "",
-        "Created_At": "2026-06-25T12:00:00Z",
-        "Updated_At": "2026-06-25T12:00:00Z"
-      }
-    ]
-   ```
+- USAGE:
+    - Dropdown on [Log Snack Delivery](frontend.md#log-snack-delivery)
+    - List on [Team Entry](frontend.md#team-entry)
+- GET  `/teams`
+- Response
+  ```json
+   [
+     {
+       "id": 1,
+       "name": "Mules",
+       "rink": "BAIREL",
+       "level": "D5",
+       "primary_color": "#b88907",
+       "secondary_color": "#000000",
+       "ternary_color": "#c42323",
+       "logo_url": "",
+       "created_at": "2026-07-01T00:00:01Z",
+       "updated_at": "2026-07-01T00:00:01Z"
+     }
+   ]
+  ```
 
 
 ### Add to teams
- - USAGE: Submit on [View / Modify Snack Difficulty](./frontend.md#view--modify-snack-difficulty)
- - POST `/teams`
- - Body
-    ```json
-      {
-        "Name": "Mules",
-        "Rink": "BAIREL",
-        "Level": "D5",
-        "PrimaryColor": "#b88907",
-        "SecondaryColor": "#000000",
-        "TernaryColor": "#c42323",
-        "LogoUrl": ""
-        }
-    ```
+- USAGE
+  - Submit on [View / Modify Snack Difficulty](frontend.md#view--modify-snack-difficulty)
+- POST `/teams`
+- Body
+   ```json
+     {
+       "name": "Mules",
+       "rink": "BAIREL",
+       "level": "D5",
+       "primary_color": "#b88907",
+       "secondary_color": "#000000",
+       "ternary_color": "#c42323",
+       "logo_url": ""
+       }
+   ```
 - Response
   ```json
     {
-      "ID": 1,
-      "Name": "Mules",
-      "Rink": "BAIREL",
-      "Level": "D5",
-      "PrimaryColor": "#b88907",
-      "SecondaryColor": "#000000",
-      "TernaryColor": "#c42323",
-      "LogoUrl": "",
-      "Created_At": "2026-06-25T12:00:00Z",
-      "Updated_At": "2026-06-25T12:00:00Z"
+      "id": 1,
+      "name": "Mules",
+      "rink": "BAIREL",
+      "level": "D5",
+      "primary_color": "#b88907",
+      "secondary_color": "#000000",
+      "ternary_color": "#c42323",
+      "logo_url": "",
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
       }
   ```
 
@@ -62,42 +63,44 @@
 ---
 
 ### GET all ingredients
- - USAGE: List on [Ingredient Entry](./frontend.md#ingredient-entry)
- - GET  `/ingredients`
- - Response
-    ```json
-      [
-        {
-          "ID": 1,
-          "Name": "Pecan",
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
-        },
-        {
-          "ID": 2,
-          "Name": "Almond Milk",
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
-        }
-      ]
-    ```
+- USAGE
+  - List on [Ingredient Entry](frontend.md#ingredient-entry)
+- GET  `/ingredients`
+- Response
+   ```json
+     [
+       {
+         "id": 1,
+         "name": "Pecan",
+         "created_at": "2026-07-01T00:00:01Z",
+         "updated_at": "2026-07-01T00:00:01Z"
+       },
+       {
+         "id": 2,
+         "name": "Almond Milk",
+         "created_at": "2026-07-01T00:00:01Z",
+         "updated_at": "2026-07-01T00:00:01Z"
+       }
+     ]
+   ```
 
 ### Add to ingredients
- - USAGE: Submit on [Ingredient Entry](./frontend.md#ingredient-entry)
- - POST `\ingredients`
- - Body
-    ```json
-      {
-        "Name": "Pecan"
-      }
-    ```
+- USAGE
+  - Submit on [Ingredient Entry](frontend.md#ingredient-entry)
+- POST `\ingredients`
+- Body
+   ```json
+     {
+       "name": "Pecan"
+     }
+   ```
 - Response
   ```json
     {
-      "ID": 1,
-      "Name": "Pecan",
-      "Created_At": "2026-06-25T12:00:00Z",
-      "Updated_At": "2026-06-25T12:00:00Z"
+      "id": 1,
+      "name": "Pecan",
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
     }
   ```
 
@@ -105,119 +108,121 @@
 ## Users
 ---
 ### GET all users
- - USAGE:
- - GET  `/users`
+- USAGE:
+  - Future admin page of some kind (for viewing stats, registrations, etc)
+- GET  `/users`
 - Response
   ```json
     [
       {
-        "ID": 1,
-        "First_Name": "Roger",
-        "Last_Name": "Hogwarts",
-        "Email": "r.h@gmail.com",
-        "Teams": [
+        "id": 1,
+        "first_name": "Roger",
+        "last_name": "Hogwarts",
+        "email": "r.h@gmail.com",
+        "teams": [
           {
-            "ID": 1,
-            "Name": "Mules",
+            "id": 1,
+            "name": "Mules",
             "Rink": "BAIREL",
             "Level": "D5",
-            "PrimaryColor": "#b88907",
-            "SecondaryColor": "#000000",
-            "TernaryColor": "#c42323",
-            "LogoUrl": "",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
+            "primary_color": "#b88907",
+            "secondary_color": "#000000",
+            "ternary_color": "#c42323",
+            "logo_url": "",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
             }
         ],
-        "Allergies": [
+        "allergies": [
           {
-            "ID": 1,
-            "Name": "Pecan",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
+            "id": 1,
+            "name": "Pecan",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
           }
         ],
-        "Created_At": "2026-06-25T12:00:00Z",
-        "Updated_At": "2026-06-25T12:00:00Z"
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
       },
       {
-        "ID": 2,
-        "First_Name": "Brandi",
-        "Last_Name": "Hogwarts",
-        "Email": "r.h@gmail.com",
-        "Teams": [],
-        "Allergies": [],
-        "Created_At": "2026-06-25T12:00:00Z",
-        "Updated_At": "2026-06-25T12:00:00Z"
-      },
+        "id": 2,
+        "first_name": "Brandi",
+        "last_name": "Hogwarts",
+        "email": "r.h@gmail.com",
+        "teams": [],
+        "allergies": [],
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      }
     ]
   ```
 
 
 ### Add to users
- - USAGE: 
- - POST `/users`
- - Body
-    ```json
-      {
-        "First_Name": "Roger",
-        "Last_Name": "Hogwarts",
-        "Email": "r.h@gmail.com",
-        "Teams": [
-          {
-            "ID": 1,
-            "Name": "Mules",
-            "Rink": "BAIREL",
-            "Level": "D5",
-            "PrimaryColor": "#b88907",
-            "SecondaryColor": "#000000",
-            "TernaryColor": "#c42323",
-            "LogoUrl": "",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
-            }
-        ],
-        "Allergies": [
-          {
-            "ID": 1,
-            "Name": "Pecan",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
-          }
-        ]
-      }
-    ```
+- USAGE:
+  - Create a new user
+- POST `/users`
+- Body
+   ```json
+     {
+       "first_name": "Roger",
+       "last_name": "Hogwarts",
+       "email": "r.h@gmail.com",
+       "teams": [
+         {
+           "id": 1,
+           "name": "Mules",
+           "Rink": "BAIREL",
+           "Level": "D5",
+           "primary_color": "#b88907",
+           "secondary_color": "#000000",
+           "ternary_color": "#c42323",
+           "logo_url": "",
+           "created_at": "2026-07-01T00:00:01Z",
+           "updated_at": "2026-07-01T00:00:01Z"
+           }
+       ],
+       "allergies": [
+         {
+           "id": 1,
+           "name": "Pecan",
+           "created_at": "2026-07-01T00:00:01Z",
+           "updated_at": "2026-07-01T00:00:01Z"
+         }
+       ]
+     }
+   ```
 - Response
   ```json
     {
-      "ID": 1,
-      "First_Name": "Roger",
-      "Last_Name": "Hogwarts",
-      "Email": "r.h@gmail.com",
-      "Teams": [
+      "id": 1,
+      "first_name": "Roger",
+      "last_name": "Hogwarts",
+      "email": "r.h@gmail.com",
+      "teams": [
         {
-          "ID": 1,
-          "Name": "Mules",
+          "id": 1,
+          "name": "Mules",
           "Rink": "BAIREL",
           "Level": "D5",
-          "Primary_Color": "#b88907",
-          "Secondary_Color": "#000000",
-          "Ternary_Color": "#c42323",
-          "Logo_Url": "",
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
+          "primary_color": "#b88907",
+          "secondary_color": "#000000",
+          "ternary_color": "#c42323",
+          "logo_url": "",
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
           }
       ],
-      "Allergies": [
+      "allergies": [
         {
-          "ID": 1,
-          "Name": "Pecan",
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
+          "id": 1,
+          "name": "Pecan",
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
         }
       ],
-      "Created_At": "2026-06-25T12:00:00Z",
-      "Updated_At": "2026-06-25T12:00:00Z"
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
     }
   ```
 
@@ -227,185 +232,187 @@
 ---
 
 ### GET all snacks
- - USAGE:
-   - Dropdown on [Log Snack Delivery](./frontend.md#log-snack-delivery)
-   - Display for [View / Modify Snack Difficulty](./frontend.md#view--modify-snack-difficulty)
-   - List on [Snack Entry](./frontend.md#snack-entry)
- - GET  `/snacks`
+- USAGE:
+    - Dropdown on [Log Snack Delivery](frontend.md#log-snack-delivery)
+    - Display for [View / Modify Snack Difficulty](frontend.md#view--modify-snack-difficulty)
+    - List on [Snack Entry](frontend.md#snack-entry)
+- GET  `/snacks`
 - Response
   ```json
     [
       {
-        "ID": 1,
-        "Name": "Rice Crispie Treat",
-        "Sweet": true,
-        "Savory": false,
-        "Difficulty": 2,
-        "Recipe_Url": "",
-        "Ingredients": [
+        "id": 1,
+        "name": "Rice Crispie Treat",
+        "sweet": true,
+        "savory": false,
+        "difficulty": 2,
+        "recipe_url": "",
+        "ingredients": [
           {
-            "ID": 4,
-            "Name": "Rice Crispy Cereal",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
+            "id": 4,
+            "name": "Rice Crispy Cereal",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
           },
           {
-            "ID": 5,
-            "Name": "Margarine",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
+            "id": 5,
+            "name": "Margarine",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
           },
           {
-            "ID": 6,
-            "Name": "Marshmallow",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
-          },
+            "id": 6,
+            "name": "Marshmallow",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          }
         ],
-        "Created_At": "2026-06-25T12:00:00Z",
-        "Updated_At": "2026-06-25T12:00:00Z"
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
       }
     ]
   ```
 
 
 ### Add to snacks
- - USAGE: Submit on [Snack Entry](./frontend.md#snack-entry)
- - POST `/snacks`
- - Body
-    ```json
-      {
-        "Name": "Rice Crispie Treat",
-        "Sweet": true,
-        "Savory": false,
-        "Difficulty": 2,
-        "Recipe_Url": "",
-        "Ingredients": [
-          {
-            "ID": 4,
-            "Name": "Rice Crispy Cereal",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
-          },
-          {
-            "ID": 5,
-            "Name": "Margarine",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
-          },
-          {
-            "ID": 6,
-            "Name": "Marshmallow",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
-          }
-        ]
-      }
-    ```
+- USAGE
+  - Submit on [Snack Entry](frontend.md#snack-entry)
+- POST `/snacks`
+- Body
+   ```json
+     {
+       "name": "Rice Crispie Treat",
+       "sweet": true,
+       "savory": false,
+       "difficulty": 2,
+       "recipe_url": "",
+       "ingredients": [
+         {
+           "id": 4,
+           "name": "Rice Crispy Cereal",
+           "created_at": "2026-07-01T00:00:01Z",
+           "updated_at": "2026-07-01T00:00:01Z"
+         },
+         {
+           "id": 5,
+           "name": "Margarine",
+           "created_at": "2026-07-01T00:00:01Z",
+           "updated_at": "2026-07-01T00:00:01Z"
+         },
+         {
+           "id": 6,
+           "name": "Marshmallow",
+           "created_at": "2026-07-01T00:00:01Z",
+           "updated_at": "2026-07-01T00:00:01Z"
+         }
+       ]
+     }
+   ```
 - Response
   ```json
     {
-      "ID": 1,
-      "Name": "Rice Crispie Treat",
-      "Sweet": true,
-      "Savory": false,
-      "Difficulty": 2,
-      "Recipe_Url": "",
-      "Ingredients": [
+      "id": 1,
+      "name": "Rice Crispie Treat",
+      "sweet": true,
+      "savory": false,
+      "difficulty": 2,
+      "recipe_url": "",
+      "ingredients": [
         {
-          "ID": 4,
-          "Name": "Rice Crispy Cereal",
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
+          "id": 4,
+          "name": "Rice Crispy Cereal",
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
         },
         {
-          "ID": 5,
-          "Name": "Margarine",
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
+          "id": 5,
+          "name": "Margarine",
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
         },
         {
-          "ID": 6,
-          "Name": "Marshmallow",
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
-        },
+          "id": 6,
+          "name": "Marshmallow",
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+        }
       ],
-      "Created_At": "2026-06-25T12:00:00Z",
-      "Updated_At": "2026-06-25T12:00:00Z"
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
       }
   ```
 
 ### Update snacks
- - USAGE: Submit after modifying difficulty on [View / Modify Snack Difficulty](./frontend.md#view--modify-snack-difficulty)
- - PUT `/snacks`
- - Body
-    ```json
-      [
-        {
-          "ID": 1,
-          "Name": "Rice Crispie Treat",
-          "Sweet": true,
-          "Savory": false,
-          "Difficulty": 5,
-          "Recipe_Url": "",
-          "Ingredients": [
-            {
-              "ID": 4,
-              "Name": "Rice Crispy Cereal",
-              "Created_At": "2026-06-25T12:00:00Z",
-              "Updated_At": "2026-06-25T12:00:00Z"
-            },
-            {
-              "ID": 5,
-              "Name": "Margarine",
-              "Created_At": "2026-06-25T12:00:00Z",
-              "Updated_At": "2026-06-25T12:00:00Z"
-            },
-            {
-              "ID": 6,
-              "Name": "Marshmallow",
-              "Created_At": "2026-06-25T12:00:00Z",
-              "Updated_At": "2026-06-25T12:00:00Z"
-            },
-          ],
-          "Created_At": "2026-06-25T12:00:00Z",
-          "Updated_At": "2026-06-25T12:00:00Z"
-        }
-      ]
-    ```
+- USAGE
+  - Submit after modifying difficulty on [View / Modify Snack Difficulty](frontend.md#view--modify-snack-difficulty)
+- PUT `/snacks`
+- Body
+   ```json
+     [
+       {
+         "id": 1,
+         "name": "Rice Crispie Treat",
+         "sweet": true,
+         "savory": false,
+         "difficulty": 5,
+         "recipe_url": "",
+         "ingredients": [
+           {
+             "id": 4,
+             "name": "Rice Crispy Cereal",
+             "created_at": "2026-07-01T00:00:01Z",
+             "updated_at": "2026-07-01T00:00:01Z"
+           },
+           {
+             "id": 5,
+             "name": "Margarine",
+             "created_at": "2026-07-01T00:00:01Z",
+             "updated_at": "2026-07-01T00:00:01Z"
+           },
+           {
+             "id": 6,
+             "name": "Marshmallow",
+             "created_at": "2026-07-01T00:00:01Z",
+             "updated_at": "2026-07-01T00:00:01Z"
+           }
+         ],
+         "created_at": "2026-07-01T00:00:01Z",
+         "updated_at": "2026-07-01T00:00:01Z"
+       }
+     ]
+   ```
 - Response
   ```json
     [
       {
-        "ID": 1,
-        "Name": "Rice Crispie Treat",
-        "Sweet": true,
-        "Savory": false,
-        "Difficulty": 5,
-        "Recipe_Url": "",
-        "Ingredients": [
+        "id": 1,
+        "name": "Rice Crispie Treat",
+        "sweet": true,
+        "savory": false,
+        "difficulty": 2,
+        "recipe_url": "",
+        "ingredients": [
           {
-            "ID": 4,
-            "Name": "Rice Crispy Cereal",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
+            "id": 4,
+            "name": "Rice Crispy Cereal",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
           },
           {
-            "ID": 5,
-            "Name": "Margarine",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
+            "id": 5,
+            "name": "Margarine",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
           },
           {
-            "ID": 6,
-            "Name": "Marshmallow",
-            "Created_At": "2026-06-25T12:00:00Z",
-            "Updated_At": "2026-06-25T12:00:00Z"
-          },
+            "id": 6,
+            "name": "Marshmallow",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          }
         ],
-        "Created_At": "2026-06-25T12:00:00Z",
-        "Updated_At": "2026-06-25T12:00:00Z"
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
       }
     ]
   ```
@@ -418,40 +425,227 @@
 ---
 
 ## GET all snack_log
- - USAGE: View on [View Snack Log](frontend.md#view-snack-log)
- - GET `/snack-log`
+- USAGE
+  - View on [View Snack Log](frontend.md#view-snack-log)
+- GET `/snack-log`
 - Response
   ```json
-    [
-      {
-
-      }
-    ]
+   [
+    {
+      "id": 1,
+      "snack_id": 1,
+      "snack": {
+        "id": 1,
+        "name": "Rice Crispie Treat",
+        "sweet": true,
+        "savory": false,
+        "difficulty": 2,
+        "recipe_url": "",
+        "ingredients": [
+          {
+            "id": 4,
+            "name": "Rice Crispy Cereal",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 5,
+            "name": "Margarine",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 6,
+            "name": "Marshmallow",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 7,
+            "name": "Vanilla",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          }
+        ],
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      },
+      "team_id": 1,
+      "team": {
+        "id": 1,
+        "name": "Mules",
+        "rink": "BAIREL",
+        "level": "D5",
+        "primary_color": "#b88907",
+        "secondary_color": "#000000",
+        "ternary_color": "#c42323",
+        "logo_url": "logo.com",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      },
+      "date_made": "2026-07-20",
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
+    },
+    {
+      "id": 2,
+      "snack_id": 1,
+      "snack": {
+        "id": 1,
+        "name": "Rice Crispie Treat",
+        "sweet": true,
+        "savory": false,
+        "difficulty": 2,
+        "recipe_url": "",
+        "ingredients": [
+          {
+            "id": 4,
+            "name": "Rice Crispy Cereal",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 5,
+            "name": "Margarine",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 6,
+            "name": "Marshmallow",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 7,
+            "name": "Vanilla",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          }
+        ],
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      },
+      "team_id": 1,
+      "team": {
+        "id": 2,
+        "name": "Monsters",
+        "rink": "BAIREL",
+        "level": "D4",
+        "primary_color": "#2c54c0",
+        "secondary_color": "#000000",
+        "ternary_color": "#e967b7",
+        "logo_url": "logo.com",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      },
+      "date_made": "2026-07-20",
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
+    }
+   ]
   ```
 
 
 ## Add to snack_log
- - USAGE: Submit on [Log Snack Delivery](./frontend.md#log-snack-delivery)
- - POST `/snack-log`
- - Body
-    ```json
-      {
-        "Snack_ID": 1,
-        "Team_ID": 1,
-        "Date_Made": "2026-06-25T12:00:00Z"
-      }
-    ```
+- USAGE
+  - Submit on [Log Snack Delivery](frontend.md#log-snack-delivery)
+- POST `/snack-log`
+- Body
+   ```json
+     {
+       "snack_id": 1,
+       "team_id": 1,
+       "date_made": "2026-06-25"
+     }
+   ```
 - Response
   ```json
     {
-      "ID": 1,
-      "Snack_ID": 1,
-      "Team_ID": 1,
-      "Date_Made": "2026-06-20T12:00:00Z",
-      "Created_At": "2026-06-25T12:00:00Z",
-      "Updated_At": "2026-06-25T12:00:00Z"
+      "id": 1,
+      "snack_id": 1,
+      "snack": {
+        "id": 1,
+        "name": "Rice Crispie Treat",
+        "sweet": true,
+        "savory": false,
+        "difficulty": 2,
+        "recipe_url": "",
+        "ingredients": [
+          {
+            "id": 4,
+            "name": "Rice Crispy Cereal",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 5,
+            "name": "Margarine",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 6,
+            "name": "Marshmallow",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          },
+          {
+            "id": 7,
+            "name": "Vanilla",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          }
+        ],
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      },
+      "team_id": 1,
+      "team": {
+        "id": 1,
+        "name": "Mules",
+        "rink": "BAIREL",
+        "level": "D5",
+        "primary_color": "#b88907",
+        "secondary_color": "#000000",
+        "ternary_color": "#c42323",
+        "logo_url": "logo.com",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      },
+      "date_made": "2026-07-20",
+      "created_at": "2026-07-25T12:00:00Z",
+      "updated_at": "2026-07-25T12:00:00Z"
     }
   ```
+
+
+## Rinks
+---
+
+## GET all rinks
+- USAGE
+  - Display on [Team Entry](./frontend.md#team-entry)
+- GET `/rinks`
+- Response
+  ```json
+  ["BAIREL","UPMC"]
+  ```
+
+
+## Levels
+---
+
+## GET all rinks
+- USAGE
+  - Display on [Team Entry](frontend.md#team-entry)
+- GET `/levels`
+- Response
+  ```json
+  ["D5","D4","D3"]
+  ```
+
+
 
 
 
@@ -461,11 +655,12 @@
 ---
 
 ## Upload logo
- - USAGE: Upload button on [Team Entry](./frontend.md#team-entry)
- - POST `/upload-image`
- - Body
-    ```
-    ```
+- USAGE
+  - Upload button on [Team Entry](frontend.md#team-entry)
+- POST `/upload-image`
+- Body
+   ```json
+   ```
 - Response
-    ```
+    ```json
     ```
