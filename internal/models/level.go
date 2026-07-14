@@ -10,3 +10,7 @@ const (
 	LevelD4 Level = "D4"
 	LevelD3 Level = "D3"
 )
+
+func AllLevels() []Level {
+	return []Level{LevelD5, LevelD4, LevelD3}
+}

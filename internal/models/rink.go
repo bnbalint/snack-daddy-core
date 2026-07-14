@@ -9,3 +9,7 @@ const (
 	RinkBairel Rink = "BAIREL"
 	RinkUPMC   Rink = "UPMC"
 )
+
+func AllRinks() []Rink {
+	return []Rink{RinkBairel, RinkUPMC}
+}

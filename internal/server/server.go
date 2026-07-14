@@ -88,6 +88,14 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	snackLog.GET("", server.GetSnackLog)
 	snackLog.POST("", server.AddToSnackLog)
 
+	// rinks
+	rinks := server.echo.Group("/rinks")
+	rinks.GET("", server.GetAllRinks)
+
+	// levels
+	levels := server.echo.Group("/levels")
+	levels.GET("", server.GetAllLevels)
+
 }
 
 // Start the server on port [environment var = APP_PORT] or
