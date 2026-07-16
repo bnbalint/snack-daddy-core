@@ -22,8 +22,8 @@ func TestSnackRepository(testingFramework *testing.T) {
 	testingFramework.Run("Add Snack", func(t *testing.T) {
 		snack := models.Snack{
 			Name:       "Bacon Crackers",
-			Sweet:      true,
-			Savory:     false,
+			Sweet:      false,
+			Savory:     true,
 			Difficulty: 2,
 			RecipeUrl:  "",
 		}
@@ -54,52 +54,30 @@ func TestSnackRepository(testingFramework *testing.T) {
 		fmt.Print("Retrieved snacks = ", snacks)
 	})
 
-	// --- Subtest: Update Snacks ---
-	testingFramework.Run("Update Snacks", func(t *testing.T) {
-		snack1 := models.Snack{
-			Name:       "Bacon Crackers",
-			Sweet:      false,
-			Savory:     true,
-			Difficulty: 2,
-			RecipeUrl:  "",
-		}
+	// --- Subtest: Update Snack ---
+	testingFramework.Run("Update Snack - Update Difficulty of Existing Snack", func(t *testing.T) {
 
-		snack2 := models.Snack{
-			Name:       "Rice Crispie Treats",
+		// this was added above, lets update the difficulty
+		snack := models.Snack{
+			ID:         1,
+			Name:       "Bacon Crackers",
 			Sweet:      true,
 			Savory:     false,
-			Difficulty: 2,
+			Difficulty: 3,
 			RecipeUrl:  "",
 		}
 
-		snacks := []models.Snack{snack1, snack2}
-
-		updatedSnacks, err := DbClient.UpdateSnacks(ctx, snacks)
+		updatedSnack, err := DbClient.UpdateSnack(ctx, &snack)
 		if err != nil {
-			t.Errorf("unexpected error updating snacks: %v", err)
+			t.Errorf("unexpected error updating snack: %v", err)
 		}
-
-		if updatedSnacks[0].ID == 0 {
-			t.Error("expected snack ID to be populated, got 0")
-		}
-
-		if updatedSnacks[1].ID == 0 {
-			t.Error("expected snack ID to be populated, got 0")
-		}
-
-		fmt.Print("Updated snacks = ", updatedSnacks)
-
-		// update the difficulty and do the update again
-		snack1.Difficulty = 10
-		updatedSnacks, err = DbClient.UpdateSnacks(ctx, snacks)
-		if err != nil {
-			t.Errorf("unexpected error updating snacks: %v", err)
-		}
+		fmt.Print("Updated snack = ", updatedSnack)
 
 		// check that it was changed
-		if updatedSnacks[0].Difficulty != 10 {
-			t.Errorf("expected snack difficulty to be 10, got %v", updatedSnacks[0].Difficulty)
+		if updatedSnack.Difficulty != 3 {
+			t.Errorf("expected snack difficulty to be 3, got %v", updatedSnack.Difficulty)
 		}
 
 	})
+
 }
