@@ -53,4 +53,53 @@ func TestSnackRepository(testingFramework *testing.T) {
 
 		fmt.Print("Retrieved snacks = ", snacks)
 	})
+
+	// --- Subtest: Update Snacks ---
+	testingFramework.Run("Update Snacks", func(t *testing.T) {
+		snack1 := models.Snack{
+			Name:       "Bacon Crackers",
+			Sweet:      false,
+			Savory:     true,
+			Difficulty: 2,
+			RecipeUrl:  "",
+		}
+
+		snack2 := models.Snack{
+			Name:       "Rice Crispie Treats",
+			Sweet:      true,
+			Savory:     false,
+			Difficulty: 2,
+			RecipeUrl:  "",
+		}
+
+		snacks := []models.Snack{snack1, snack2}
+
+		updatedSnacks, err := DbClient.UpdateSnacks(ctx, snacks)
+		if err != nil {
+			t.Errorf("unexpected error updating snacks: %v", err)
+		}
+
+		if updatedSnacks[0].ID == 0 {
+			t.Error("expected snack ID to be populated, got 0")
+		}
+
+		if updatedSnacks[1].ID == 0 {
+			t.Error("expected snack ID to be populated, got 0")
+		}
+
+		fmt.Print("Updated snacks = ", updatedSnacks)
+
+		// update the difficulty and do the update again
+		snack1.Difficulty = 10
+		updatedSnacks, err = DbClient.UpdateSnacks(ctx, snacks)
+		if err != nil {
+			t.Errorf("unexpected error updating snacks: %v", err)
+		}
+
+		// check that it was changed
+		if updatedSnacks[0].Difficulty != 10 {
+			t.Errorf("expected snack difficulty to be 10, got %v", updatedSnacks[0].Difficulty)
+		}
+
+	})
 }

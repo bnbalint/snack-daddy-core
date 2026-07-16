@@ -40,3 +40,23 @@ func (client DatabaseClient) AddSnack(ctx context.Context, snack *models.Snack) 
 	log.Printf("Snack created: %v", snack)
 	return snack, nil
 }
+
+// Save a list of snacks to the database
+func (client DatabaseClient) UpdateSnacks(ctx context.Context, snacks []models.Snack) ([]models.Snack, error) {
+	result := client.DB.WithContext(ctx).
+		Save(&snacks)
+
+	if result.Error != nil {
+
+		// if there is a conflict, return our custom error
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			return nil, &database_errors.ConflictError{}
+		}
+
+		// otherwise, return the error as-is
+		return nil, result.Error
+	}
+
+	log.Printf("Snacks updated: %v", snacks)
+	return snacks, nil
+}

@@ -24,6 +24,7 @@ type SnackDaddyDatabaseClient interface {
 	// Snacks
 	GetAllSnacks(ctx context.Context) ([]models.Snack, error)
 	AddSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error)
+	UpdateSnacks(ctx context.Context, snacks []models.Snack) ([]models.Snack, error)
 
 	// Ingredients
 	GetAllIngredients(ctx context.Context) ([]models.Ingredient, error)
