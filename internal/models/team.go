@@ -5,8 +5,8 @@ import (
 )
 
 type Team struct {
-	ID             int
-	Name           string
+	ID             int    `gorm:"primaryKey;autoIncrement"`
+	Name           string `gorm:"uniqueIndex"` // Tells GORM this field is unique
 	Rink           Rink
 	Level          Level
 	PrimaryColor   string
