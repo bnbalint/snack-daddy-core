@@ -57,15 +57,29 @@ func TestSnackRepository(testingFramework *testing.T) {
 	// --- Subtest: Update Snack ---
 	testingFramework.Run("Update Snack - Update Difficulty of Existing Snack", func(t *testing.T) {
 
-		// this was added above, lets update the difficulty
+		// we can't guarantee what was added in previous tests, so we need to add a snack first, then use the EXACT snack and update it
 		snack := models.Snack{
-			ID:         1,
-			Name:       "Bacon Crackers",
+			Name:       "snack to update",
 			Sweet:      true,
 			Savory:     false,
-			Difficulty: 3,
+			Difficulty: 1,
 			RecipeUrl:  "",
 		}
+
+		// add the snack
+		savedSnack, err := DbClient.AddSnack(ctx, &snack)
+		if err != nil {
+			t.Errorf("unexpected error creating snack: %v", err)
+		}
+		fmt.Print("Saved snack = ", savedSnack)
+
+		if savedSnack.ID == 0 {
+			t.Error("expected snack ID to be populated, got 0")
+		}
+
+		// now update the difficulty
+		savedSnack.Difficulty = 10
+		fmt.Print("Saved snack updated to = ", savedSnack)
 
 		updatedSnack, err := DbClient.UpdateSnack(ctx, &snack)
 		if err != nil {
@@ -74,8 +88,8 @@ func TestSnackRepository(testingFramework *testing.T) {
 		fmt.Print("Updated snack = ", updatedSnack)
 
 		// check that it was changed
-		if updatedSnack.Difficulty != 3 {
-			t.Errorf("expected snack difficulty to be 3, got %v", updatedSnack.Difficulty)
+		if updatedSnack.Difficulty != 10 {
+			t.Errorf("expected snack difficulty to be 10, got %v", updatedSnack.Difficulty)
 		}
 
 	})
