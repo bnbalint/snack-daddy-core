@@ -57,7 +57,8 @@
       "updated_at": "2026-07-01T00:00:01Z"
       }
   ```
-
+- Possible Errors
+  - 400 -> conflict because the team already exists
 
 ## Ingredients
 ---
@@ -103,7 +104,8 @@
       "updated_at": "2026-07-01T00:00:01Z"
     }
   ```
-
+- Possible Errors
+  - 400 -> conflict because the ingredient already exists
 
 ## Users
 ---
@@ -225,7 +227,8 @@
       "updated_at": "2026-07-01T00:00:01Z"
     }
   ```
-
+- Possible Errors
+  - 400 -> conflict because the user already exists
 
 
 ## Snacks
@@ -341,6 +344,8 @@
       "updated_at": "2026-07-01T00:00:01Z"
       }
   ```
+- Possible Errors
+  - 400 -> conflict because the snack already exists
 
 ### Update snacks
 - USAGE
@@ -416,6 +421,7 @@
       }
     ]
   ```
+
 
 
 

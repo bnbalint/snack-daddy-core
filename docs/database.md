@@ -125,6 +125,23 @@ A log of when snacks were made for teams
 
 
 
+# Ranking Table
+---
+
+## snack_rankings
+A log of when snacks were made for teams
+
+| Column     | Type                         | Description                                  |
+|------------|------------------------------|----------------------------------------------|
+| snack_id   | INT REFERENCES snacks(id)    | The id from the snacks table                 |
+| user_id    | INT REFERENCES users(id)     | The id from the users table                  |
+| rank       | snack_rankings_enum NOT NULL | The rank that this user gave this snack      |
+| created_at | TIMESTAMP DEFAULT now()      | The time this row was created, UTC time      |
+| updated_at | TIMESTAMP DEFAULT now()      | The time this row was last updated, UTC time |
+
+Note: PRIMARY KEY (snack_id, user_id)
+
+
 
 
 # Enums
@@ -132,6 +149,7 @@ A log of when snacks were made for teams
 
 - `rinks_enum` - contains the names of rinks where the teams are located
 - `levels_enum` - contains the level indicators used by the rinks
+- `snack_rankings_enum` - contains the valid rankings for a snack
 
 
 

@@ -105,3 +105,30 @@ COMMENT ON COLUMN snack_log.updated_at IS 'The time this row was last updated, U
 CREATE TRIGGER update_snack_log_updated_at
 BEFORE UPDATE ON snack_log FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 COMMENT ON TRIGGER update_snack_log_updated_at ON snack_log IS 'Update the updated_at timestamp column for the snack_log table';
+
+
+
+/*
+ * snack_rankings
+ *
+ */
+CREATE TABLE snack_rankings (
+    snack_id INT REFERENCES snacks(id),
+    user_id INT REFERENCES users(id),
+    rank snack_rankings_enum NOT NULL,
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now(),
+    PRIMARY KEY (snack_id, user_id)
+);
+COMMENT ON TABLE snack_rankings IS 'Ratings of each snack for each user';
+COMMENT ON COLUMN snack_rankings.snack_id IS 'The id from the snacks table';
+COMMENT ON COLUMN snack_rankings.user_id IS 'The id from the users table';
+COMMENT ON COLUMN snack_rankings.rank IS 'The rank that this user assigned to this snack';
+COMMENT ON COLUMN snack_rankings.created_at IS 'The time this row was created, UTC time';
+COMMENT ON COLUMN snack_rankings.updated_at IS 'The time this row was last updated, UTC time';
+
+
+-- add the trigger to snack_rankings
+CREATE TRIGGER update_snack_rankings_updated_at
+BEFORE UPDATE ON snack_rankings FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+COMMENT ON TRIGGER update_snack_rankings_updated_at ON snack_rankings IS 'Update the updated_at timestamp column for the snack_rankings table';
