@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS snack_log;
 DROP TABLE IF EXISTS snack_ingredients;
 DROP TABLE IF EXISTS user_allergies;
 DROP TABLE IF EXISTS team_membership;
-DROP TABLE IF EXISTS snack_rankings;
+DROP TABLE IF EXISTS user_snack_rankings;
 
 
 

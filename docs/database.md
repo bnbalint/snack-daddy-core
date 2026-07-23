@@ -128,7 +128,7 @@ A log of when snacks were made for teams
 # Ranking Table
 ---
 
-## snack_rankings
+## user_snack_rankings
 A log of when snacks were made for teams
 
 | Column     | Type                         | Description                                  |
@@ -149,7 +149,7 @@ Note: PRIMARY KEY (snack_id, user_id)
 
 - `rinks_enum` - contains the names of rinks where the teams are located
 - `levels_enum` - contains the level indicators used by the rinks
-- `snack_rankings_enum` - contains the valid rankings for a snack
+- `snack_ranks_enum` - contains the valid ranks for a snack
 
 
 

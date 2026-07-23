@@ -16,11 +16,11 @@ CREATE TYPE levels_enum AS ENUM ('D5', 'D4', 'D3');
 COMMENT ON TYPE levels_enum IS 'The list of levels available when defining a team in the teams table';
 
 
--- this is the enum to hold the snack rankings
+-- this is the enum to hold the possible snack ranks
 -- REMINDER - you can add more values later, but you can't remove values
 -- this could be in its own table if we anticipated it needing to change more frequently or needing more details
-CREATE TYPE snack_rankings_enum AS ENUM ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'HAVE NOT TRIED', 'UNRANKED');
-COMMENT ON TYPE snack_rankings_enum IS 'The list of snack rankings available when adding an entry to the snack_rankings table';
+CREATE TYPE snack_ranks_enum AS ENUM ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'HAVE NOT TRIED', 'UNRANKED');
+COMMENT ON TYPE snack_ranks_enum IS 'The list of snack ranks available when adding an entry to the user_snack_rankings table';
 
 
 -- this is the function to update the updated column on tables
