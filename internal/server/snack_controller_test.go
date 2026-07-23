@@ -225,3 +225,111 @@ func Test_AddSnack(testFramework *testing.T) {
 		})
 	}
 }
+
+// ---------------------------------------------------------------------
+// UpdateSnack
+// .
+// Tests
+//   - success
+//   - bind error
+//   - conflict error
+//   - database error
+func Test_UpdateSnack(testFramework *testing.T) {
+
+	// Define the tests
+	tests := []struct {
+		name            string
+		requestBody     string
+		expectedStatus  int
+		mockError       error
+		expectBody      bool
+		mockReturnSnack *models.Snack
+	}{
+		{
+			name:           "success",
+			requestBody:    `{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}`,
+			expectedStatus: http.StatusOK,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnSnack: &models.Snack{
+				ID:         1,
+				Name:       "Rice Crispie Treat",
+				Sweet:      true,
+				Savory:     false,
+				Difficulty: 2,
+			},
+		},
+		{
+			name:            "bind error",
+			requestBody:     "invalid json",
+			expectedStatus:  http.StatusUnsupportedMediaType,
+			mockError:       nil,
+			expectBody:      false,
+			mockReturnSnack: nil,
+		},
+		{
+			name:            "conflict error",
+			requestBody:     `{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}`,
+			expectedStatus:  http.StatusConflict,
+			mockError:       &database_errors.ConflictError{},
+			expectBody:      false,
+			mockReturnSnack: nil,
+		},
+		{
+			name:            "database error",
+			requestBody:     `{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}`,
+			expectedStatus:  http.StatusInternalServerError,
+			mockError:       echo.NewHTTPError(http.StatusInternalServerError, "db error"),
+			expectBody:      false,
+			mockReturnSnack: nil,
+		},
+	}
+
+	// Run each test
+	for _, testData := range tests {
+		testFramework.Run(testData.name, func(testFramework *testing.T) {
+			// Setup mock
+			mock := &mockDB{
+				updateSnackFunc: func(ctx context.Context, snack *models.Snack) (*models.Snack, error) {
+					return testData.mockReturnSnack, testData.mockError
+				},
+			}
+
+			// Create server
+			logger := slog.New(slog.DiscardHandler)
+			server := &SnackDaddyEchoServer{
+				DB:     mock,
+				Logger: logger,
+			}
+
+			// Create request body
+			body := []byte(testData.requestBody)
+			request := httptest.NewRequest(http.MethodPut, "/snacks", bytes.NewReader(body))
+			request.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+			rec := httptest.NewRecorder()
+			ctx := echo.New().NewContext(request, rec)
+
+			// Call handler
+			err := server.UpdateSnack(ctx)
+			if err != nil {
+				testFramework.Errorf("UpdateSnack returned error: %v", err)
+			}
+
+			// Check status
+			if rec.Code != testData.expectedStatus {
+				testFramework.Errorf("expected status %d, got %d", testData.expectedStatus, rec.Code)
+			}
+
+			// Check body if expected
+			if testData.expectBody {
+				var snack models.Snack
+				if err := json.Unmarshal(rec.Body.Bytes(), &snack); err != nil {
+					testFramework.Errorf("failed to unmarshal response: %v", err)
+				}
+				if snack.ID != testData.mockReturnSnack.ID || snack.Name != testData.mockReturnSnack.Name {
+					testFramework.Errorf("expected snack %+v, got %+v", testData.mockReturnSnack, snack)
+				}
+			}
+		})
+	}
+}

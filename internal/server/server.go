@@ -29,6 +29,7 @@ type SnackDaddyCoreService interface {
 	// Snacks
 	GetAllSnacks(ctx echo.Context) error
 	AddSnack(ctx echo.Context) error
+	UpdateSnack(ctx echo.Context) error
 
 	// Ingredients
 	GetAllIngredients(ctx echo.Context) error
@@ -65,8 +66,6 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	teams.GET("", server.GetAllTeams)
 	teams.POST("", server.AddTeam)
 	// teams.GET("/:id", server.GetCustomerById)
-	// teams.PUT("/:id", server.UpdateCustomer)
-	// teams.DELETE("/:id", server.DeleteCustomer)
 
 	// users
 	users := server.echo.Group("/users")
@@ -77,6 +76,7 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	snacks := server.echo.Group("/snacks")
 	snacks.GET("", server.GetAllSnacks)
 	snacks.POST("", server.AddSnack)
+	snacks.PUT("", server.UpdateSnack)
 
 	// ingredients
 	ingredients := server.echo.Group("/ingredients")
