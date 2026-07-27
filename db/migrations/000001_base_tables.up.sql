@@ -19,7 +19,7 @@ COMMENT ON TYPE levels_enum IS 'The list of levels available when defining a tea
 -- this is the enum to hold the possible snack ranks
 -- REMINDER - you can add more values later, but you can't remove values
 -- this could be in its own table if we anticipated it needing to change more frequently or needing more details
-CREATE TYPE snack_ranks_enum AS ENUM ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'HAVE NOT TRIED', 'UNRANKED');
+CREATE TYPE snack_ranks_enum AS ENUM ('RANK_1', 'RANK_2', 'RANK_3', 'RANK_4', 'RANK_5', 'RANK_6', 'RANK_7', 'RANK_8', 'RANK_9', 'RANK_10', 'HAVE NOT TRIED', 'UNRANKED');
 COMMENT ON TYPE snack_ranks_enum IS 'The list of snack ranks available when adding an entry to the user_snack_rankings table';
 
 
