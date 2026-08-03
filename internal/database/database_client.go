@@ -33,6 +33,10 @@ type SnackDaddyDatabaseClient interface {
 	// Snack Log
 	GetSnackLog(ctx context.Context) ([]models.SnackLog, error)
 	AddToSnackLog(ctx context.Context, ingredient *models.SnackLog) (*models.SnackLog, error)
+
+	// Users Snack Rankings
+	GetAllUserSnackRankings(ctx context.Context) ([]models.UserSnackRanking, error)
+	AddUserSnackRanking(ctx context.Context, user *models.UserSnackRanking) (*models.UserSnackRanking, error)
 }
 
 type DatabaseClient struct {

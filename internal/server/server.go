@@ -38,6 +38,10 @@ type SnackDaddyCoreService interface {
 	// Snack Log
 	GetSnackLog(ctx echo.Context) error
 	AddToSnackLog(ctx echo.Context) error
+
+	// UserSnackRanking
+	GetAllUserSnackRankings(ctx echo.Context) error
+	AddUserSnackRanking(ctx echo.Context) error
 }
 
 // this is our web server
@@ -95,6 +99,11 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	// levels
 	levels := server.echo.Group("/levels")
 	levels.GET("", server.GetAllLevels)
+
+	// userSnackRankings
+	usersSnackRanking := server.echo.Group("/snack-ranking")
+	usersSnackRanking.GET("", server.GetAllUserSnackRankings)
+	usersSnackRanking.POST("", server.AddUserSnackRanking)
 
 }
 

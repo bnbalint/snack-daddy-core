@@ -58,7 +58,13 @@
       }
   ```
 - Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required Team format
   - 400 -> conflict because the team already exists
+
+
+
+
+
 
 ## Ingredients
 ---
@@ -105,7 +111,12 @@
     }
   ```
 - Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required Ingredient format
   - 400 -> conflict because the ingredient already exists
+
+
+
+
 
 ## Users
 ---
@@ -228,7 +239,9 @@
     }
   ```
 - Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required User format
   - 400 -> conflict because the user already exists
+
 
 
 ## Snacks
@@ -345,7 +358,9 @@
       }
   ```
 - Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required Snack format
   - 400 -> conflict because the snack already exists
+
 
 ### Update snacks
 - USAGE
@@ -421,7 +436,8 @@
       }
     ]
   ```
-
+- Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required Team format
 
 
 
@@ -624,6 +640,8 @@
       "updated_at": "2026-07-25T12:00:00Z"
     }
   ```
+- Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required Team format
 
 
 ## Rinks
@@ -639,6 +657,8 @@
   ```
 
 
+
+
 ## Levels
 ---
 
@@ -650,6 +670,248 @@
   ```json
   ["D5","D4","D3"]
   ```
+
+
+
+
+
+
+## Snack Rankings
+---
+### GET all snack rankings (all users)
+- USAGE:
+  - Future admin page of some kind (for viewing all data)
+- GET  `/snack-rankings`
+- Response
+  ```json
+    [
+      {
+        "snack_id": 1,
+        "snack": {
+          "id": 1,
+          "name": "Rice Crispie Treat",
+          "sweet": true,
+          "savory": false,
+          "difficulty": 2,
+          "recipe_url": "",
+          "ingredients": [
+            {
+              "id": 4,
+              "name": "Rice Crispy Cereal",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 5,
+              "name": "Margarine",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 6,
+              "name": "Marshmallow",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 7,
+              "name": "Vanilla",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            }
+          ],
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+      },
+        "user_id": 1,
+        "user": {
+            "first_name": "Roger",
+            "last_name": "Hogwarts",
+            "email": "r.h@gmail.com",
+            "teams": [
+              {
+                "id": 1,
+                "name": "Mules",
+                "Rink": "BAIREL",
+                "Level": "D5",
+                "primary_color": "#b88907",
+                "secondary_color": "#000000",
+                "ternary_color": "#c42323",
+                "logo_url": "",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+                }
+            ],
+            "allergies": [
+              {
+                "id": 1,
+                "name": "Pecan",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+              }
+            ]
+          },
+        "rank": "RANK_10",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      }
+    ]
+  ```
+
+
+### Add to snack ranking
+- USAGE:
+  - Create a new snack ranking
+- POST `/snack-ranking`
+- Body
+   ```json
+      {
+        "snack_id": 1,
+        "snack": {
+          "id": 1,
+          "name": "Rice Crispie Treat",
+          "sweet": true,
+          "savory": false,
+          "difficulty": 2,
+          "recipe_url": "",
+          "ingredients": [
+            {
+              "id": 4,
+              "name": "Rice Crispy Cereal",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 5,
+              "name": "Margarine",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 6,
+              "name": "Marshmallow",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 7,
+              "name": "Vanilla",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            }
+          ],
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+      },
+        "user_id": 1,
+        "user": {
+            "first_name": "Roger",
+            "last_name": "Hogwarts",
+            "email": "r.h@gmail.com",
+            "teams": [
+              {
+                "id": 1,
+                "name": "Mules",
+                "Rink": "BAIREL",
+                "Level": "D5",
+                "primary_color": "#b88907",
+                "secondary_color": "#000000",
+                "ternary_color": "#c42323",
+                "logo_url": "",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+                }
+            ],
+            "allergies": [
+              {
+                "id": 1,
+                "name": "Pecan",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+              }
+            ]
+          },
+        "rank": "RANK_10",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      }
+   ```
+- Response
+  ```json
+      {
+        "snack_id": 1,
+        "snack": {
+          "id": 1,
+          "name": "Rice Crispie Treat",
+          "sweet": true,
+          "savory": false,
+          "difficulty": 2,
+          "recipe_url": "",
+          "ingredients": [
+            {
+              "id": 4,
+              "name": "Rice Crispy Cereal",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 5,
+              "name": "Margarine",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 6,
+              "name": "Marshmallow",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 7,
+              "name": "Vanilla",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            }
+          ],
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+      },
+        "user_id": 1,
+        "user": {
+            "first_name": "Roger",
+            "last_name": "Hogwarts",
+            "email": "r.h@gmail.com",
+            "teams": [
+              {
+                "id": 1,
+                "name": "Mules",
+                "Rink": "BAIREL",
+                "Level": "D5",
+                "primary_color": "#b88907",
+                "secondary_color": "#000000",
+                "ternary_color": "#c42323",
+                "logo_url": "",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+                }
+            ],
+            "allergies": [
+              {
+                "id": 1,
+                "name": "Pecan",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+              }
+            ]
+          },
+        "rank": "RANK_10",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      }
+  ```
+- Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required UserSnackRanking format
+  - 400 -> conflict because the user/snack entry already exists (would need to use a PUT to update this entry)
 
 
 

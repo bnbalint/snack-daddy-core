@@ -14,7 +14,7 @@ import (
 // Get all users
 // Returns:
 //
-//	200 and a list of all teams
+//	200 and a list of all users
 //	500 for all errors
 func (server *SnackDaddyEchoServer) GetAllUsers(ctx echo.Context) error {
 	server.Logger.Debug("GetAllUsers")

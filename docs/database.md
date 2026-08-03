@@ -77,7 +77,7 @@ Which users are members of which teams
 | updated_at | TIMESTAMP DEFAULT now()                    | The time this row was last updated, UTC time |
 
 Note: PRIMARY KEY (team_id, user_id)
-
+Note: This table is never added to directly, it is populated when a user is created/saved
 
 ## user_allergies
 Which users have allergies
@@ -90,6 +90,7 @@ Which users have allergies
 | updated_at    | TIMESTAMP DEFAULT now()                          | The time this row was last updated, UTC time |
 
 Note: PRIMARY KEY (ingredient_id, user_id)
+Note: This table is never added to directly, it is populated when a user is created/saved
 
 
 ## snack_ingredients
@@ -103,6 +104,7 @@ The ingredients that make up a snack
 | updated_at    | TIMESTAMP DEFAULT now()                          | The time this row was last updated, UTC time |
 
 Note: PRIMARY KEY (ingredient_id, snack_id)
+Note: This table is never added to directly, it is populated when a snack is created/saved
 
 
 
