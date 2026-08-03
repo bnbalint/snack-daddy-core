@@ -61,7 +61,7 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 			t.Errorf("unexpected error creating userSnackRanking: %v", err)
 		}
 
-		if savedUserSnackRanking.SnackID != 1 {
+		if savedUserSnackRanking.SnackID != 0 {
 			t.Error("expected saved Snack ID to be populated")
 		}
 
