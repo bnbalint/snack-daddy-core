@@ -36,6 +36,6 @@ func (client DatabaseClient) AddUserSnackRanking(ctx context.Context, userSnackR
 		return nil, result.Error
 	}
 
-	log.Printf("juser_snack_ranking created: %v", userSnackRanking)
+	log.Printf("user_snack_ranking created: %v", userSnackRanking)
 	return userSnackRanking, nil
 }

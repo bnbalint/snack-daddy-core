@@ -34,7 +34,7 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 	USER := models.User{
 		FirstName: "Roger",
 		LastName:  "Hogwarts",
-		Email:     "r.h@gmail.com",
+		Email:     "RankingTest@gmail.com",
 		Teams:     []models.Team{},
 		Allergies: []models.Ingredient{},
 		CreatedAt: TIME,
@@ -49,9 +49,7 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 	testingFramework.Run("Add UserSnackRanking", func(t *testing.T) {
 
 		userSnackRanking := models.UserSnackRanking{
-			SnackID:   1,
 			Snack:     SNACK,
-			UserID:    1,
 			User:      USER,
 			Rank:      models.SnackRank1,
 			CreatedAt: TIME,
