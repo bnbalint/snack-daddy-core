@@ -101,7 +101,7 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	levels.GET("", server.GetAllLevels)
 
 	// userSnackRankings
-	usersSnackRanking := server.echo.Group("/snack-ranking")
+	usersSnackRanking := server.echo.Group("/snack-rankings")
 	usersSnackRanking.GET("", server.GetAllUserSnackRankings)
 	usersSnackRanking.POST("", server.AddUserSnackRanking)
 

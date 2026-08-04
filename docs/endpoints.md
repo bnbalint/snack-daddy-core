@@ -762,7 +762,7 @@
 ### Add to snack ranking
 - USAGE:
   - Create a new snack ranking
-- POST `/snack-ranking`
+- POST `/snack-rankings`
 - Body
    ```json
       {

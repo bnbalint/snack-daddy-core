@@ -300,7 +300,7 @@ func Test_AddUserSnackRanking(testFramework *testing.T) {
 
 			// Create request body
 			body := []byte(testData.requestBody)
-			request := httptest.NewRequest(http.MethodPost, "/snack-ranking", bytes.NewReader(body))
+			request := httptest.NewRequest(http.MethodPost, "/snack-rankings", bytes.NewReader(body))
 			request.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 			rec := httptest.NewRecorder()
 			ctx := echo.New().NewContext(request, rec)
