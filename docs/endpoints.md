@@ -443,6 +443,62 @@
 
 
 
+
+## Suggested Allergies
+---
+
+### GET all suggested_allergies
+- USAGE
+  - TODO - admin usage
+- GET  `/suggested-allergies`
+- Response
+   ```json
+     [
+       {
+         "id": 1,
+         "name": "Pine nut",
+         "created_at": "2026-07-01T00:00:01Z",
+         "updated_at": "2026-07-01T00:00:01Z"
+       },
+       {
+         "id": 2,
+         "name": "Gluten",
+         "created_at": "2026-07-01T00:00:01Z",
+         "updated_at": "2026-07-01T00:00:01Z"
+       }
+     ]
+   ```
+
+### Add to suggested_allergies
+- USAGE
+  - Submit on [Register User](frontend.md#register-user) for submitting an allergy that is not listed
+- POST `\suggested-allergies`
+- Body
+   ```json
+     {
+       "name": "Pine nut"
+     }
+   ```
+- Response
+  ```json
+    {
+      "id": 1,
+      "name": "Pine nut",
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
+    }
+  ```
+- Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required SuggestedAllergy format
+
+
+
+
+
+
+
+
+
 ## Snack Log
 ---
 

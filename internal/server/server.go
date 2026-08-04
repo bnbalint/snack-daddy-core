@@ -87,6 +87,11 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	ingredients.GET("", server.GetAllIngredients)
 	ingredients.POST("", server.AddIngredient)
 
+	// suggestedAllergies
+	suggestedAllergies := server.echo.Group("/suggested-allergies")
+	suggestedAllergies.GET("", server.GetAllSuggestedAllergies)
+	suggestedAllergies.POST("", server.AddSuggestedAllergy)
+
 	// snacklog
 	snackLog := server.echo.Group("/snack-log")
 	snackLog.GET("", server.GetSnackLog)

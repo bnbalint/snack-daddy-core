@@ -22,6 +22,10 @@ type mockDB struct {
 	getAllIngredientsFunc func(ctx context.Context) ([]models.Ingredient, error)
 	addIngredientsFunc    func(ctx context.Context, snack *models.Ingredient) (*models.Ingredient, error)
 
+	// SuggestedAllergies
+	getAllSuggestedAllergiesFunc func(ctx context.Context) ([]models.SuggestedAllergy, error)
+	addSuggestedAllergyFunc      func(ctx context.Context, snack *models.SuggestedAllergy) (*models.SuggestedAllergy, error)
+
 	// Users
 	getAllUsersFunc func(ctx context.Context) ([]models.User, error)
 	addUserFunc     func(ctx context.Context, snack *models.User) (*models.User, error)

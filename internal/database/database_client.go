@@ -30,6 +30,10 @@ type SnackDaddyDatabaseClient interface {
 	GetAllIngredients(ctx context.Context) ([]models.Ingredient, error)
 	AddIngredient(ctx context.Context, ingredient *models.Ingredient) (*models.Ingredient, error)
 
+	// SuggestedAllergies
+	GetAllSuggestedAllergies(ctx context.Context) ([]models.SuggestedAllergy, error)
+	AddSuggestedAllergy(ctx context.Context, suggestion *models.SuggestedAllergy) (*models.SuggestedAllergy, error)
+
 	// Snack Log
 	GetSnackLog(ctx context.Context) ([]models.SnackLog, error)
 	AddToSnackLog(ctx context.Context, ingredient *models.SnackLog) (*models.SnackLog, error)
