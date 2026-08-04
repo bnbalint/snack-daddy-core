@@ -130,7 +130,7 @@ COMMENT ON COLUMN ingredients.updated_at IS 'The time this row was last updated,
 -- add the triggers to ingredients
 CREATE TRIGGER update_ingredients_updated_at
 BEFORE UPDATE ON ingredients FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-COMMENT ON TRIGGER update_ingredients_updated_at ON ingredients IS 'Update the updated_at timestamp column for the allingredientsergies table';
+COMMENT ON TRIGGER update_ingredients_updated_at ON ingredients IS 'Update the updated_at timestamp column for the ingredients table';
 
 CREATE TRIGGER force_uppercase_ingredient_name
 BEFORE INSERT OR UPDATE ON ingredients FOR EACH ROW EXECUTE FUNCTION force_uppercase_name();
@@ -171,3 +171,33 @@ CREATE TRIGGER force_uppercase_snack_name
 BEFORE INSERT OR UPDATE ON snacks FOR EACH ROW EXECUTE FUNCTION force_uppercase_name();
 COMMENT ON TRIGGER force_uppercase_snack_name ON snacks IS 'Prior to insert or update, force the name column to be all uppercase for data consistency';
 
+
+
+
+
+
+
+/*
+ * suggested_allergies table
+ * this holds items that are not (or were not, at the time) ingredients, but perhaps need to be added
+ */
+CREATE TABLE suggested_allergies (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+COMMENT ON TABLE suggested_allergies IS 'Possible items to add to the ingredients table so that they can be selected as allergies by users';
+COMMENT ON COLUMN suggested_allergies.id IS 'The unique suggestion identifier. Primary key for this table - assigned during insert to the table';
+COMMENT ON COLUMN suggested_allergies.name IS 'The name of the suggestion, cannot be null';
+COMMENT ON COLUMN suggested_allergies.created_at IS 'The time this row was created, UTC time';
+COMMENT ON COLUMN suggested_allergies.updated_at IS 'The time this row was last updated, UTC time';
+
+-- add the triggers to suggested_allergies
+CREATE TRIGGER update_suggested_allergies_updated_at
+BEFORE UPDATE ON suggested_allergies FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+COMMENT ON TRIGGER update_suggested_allergies_updated_at ON suggested_allergies IS 'Update the updated_at timestamp column for the suggested_allergies table';
+
+CREATE TRIGGER force_uppercase_suggested_allergy_name
+BEFORE INSERT OR UPDATE ON suggested_allergies FOR EACH ROW EXECUTE FUNCTION force_uppercase_name();
+COMMENT ON TRIGGER force_uppercase_suggested_allergy_name ON suggested_allergies IS 'Prior to insert or update, force the name column to be all uppercase for data consistency';

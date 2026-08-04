@@ -58,6 +58,15 @@ A list of snacks with flavor profile, difficulty, and optional recipe URL
 
 
 
+## suggested_allergies
+Possible items to add to the ingredients table so that they can be selected as allergies by users
+
+| Column     | Type                                            | Description                                                                                         |
+|------------|-------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| id         | BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY | The unique suggestion identifier. Primary key for this table - assigned during insert to the table  |
+| name       | TEXT NOT NULL                                   | The basic name of the suggestion, cannot be null, converted to all CAPS upon saving                 |
+| created_at | TIMESTAMP DEFAULT now()                         | The time this row was created, UTC time                                                             |
+| updated_at | TIMESTAMP DEFAULT now()                         | The time this row was last updated, UTC time                                                        |
 
 
 

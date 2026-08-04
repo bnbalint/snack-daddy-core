@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS snacks;
 DROP TABLE IF EXISTS ingredients;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS teams;
+DROP TABLE IF EXISTS suggested_allergies;
 
 -- Drop the enums, should they already exist
 DROP TYPE IF EXISTS rinks_enum;
