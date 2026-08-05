@@ -81,4 +81,18 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 
 		fmt.Print("Retrieved userSnackRankings = ", rankings)
 	})
+
+	// --- Subtest: Get All UserSnackRankingsByUserId ---
+	testingFramework.Run("Get All UserSnackRankingsByUserId", func(t *testing.T) {
+		rankings, err := DbClient.GetAllUserSnackRankingsByUserId(ctx, USER.ID)
+		if err != nil {
+			t.Fatalf("unexpected error fetching userSnackRankings: %v", err)
+		}
+
+		if len(rankings) == 0 {
+			t.Errorf("expected some userSnackRankings, got '%d'", len(rankings))
+		}
+
+		fmt.Print("Retrieved userSnackRankings = ", rankings)
+	})
 }

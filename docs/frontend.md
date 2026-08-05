@@ -43,6 +43,8 @@
 - Filter by team
 - Filter by snack
 
+## View Suggested Allergies
+
 
 
 # User Facing

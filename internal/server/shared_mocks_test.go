@@ -35,8 +35,9 @@ type mockDB struct {
 	addToSnackLogFunc func(ctx context.Context, snack *models.SnackLog) (*models.SnackLog, error)
 
 	// UserSnackRankings
-	getAllUserSnackRankingsFunc func(ctx context.Context) ([]models.UserSnackRanking, error)
-	addUserSnackRankingFunc     func(ctx context.Context, snack *models.UserSnackRanking) (*models.UserSnackRanking, error)
+	getAllUserSnackRankingsFunc         func(ctx context.Context) ([]models.UserSnackRanking, error)
+	getAllUserSnackRankingsByUserIdFunc func(ctx context.Context, userId int) ([]models.UserSnackRanking, error)
+	addUserSnackRankingFunc             func(ctx context.Context, snack *models.UserSnackRanking) (*models.UserSnackRanking, error)
 }
 
 func (mock *mockDB) Ready() bool {

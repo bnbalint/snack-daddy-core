@@ -23,6 +23,13 @@ func (mock *mockDB) GetAllUserSnackRankings(ctx context.Context) ([]models.UserS
 	return nil, nil
 }
 
+func (mock *mockDB) GetAllUserSnackRankingsByUserId(ctx context.Context, userId int) ([]models.UserSnackRanking, error) {
+	if mock.getAllUserSnackRankingsByUserIdFunc != nil {
+		return mock.getAllUserSnackRankingsByUserIdFunc(ctx, userId)
+	}
+	return nil, nil
+}
+
 func (mock *mockDB) AddUserSnackRanking(ctx context.Context, user *models.UserSnackRanking) (*models.UserSnackRanking, error) {
 	if mock.addUserSnackRankingFunc != nil {
 		return mock.addUserSnackRankingFunc(ctx, user)

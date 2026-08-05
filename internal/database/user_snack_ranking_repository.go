@@ -16,7 +16,17 @@ func (client DatabaseClient) GetAllUserSnackRankings(ctx context.Context) ([]mod
 	var rankings []models.UserSnackRanking
 	result := client.DB.WithContext(ctx).
 		Find(&rankings)
-	log.Printf("All user_snack_rankings: %v", rankings)
+	log.Printf("All UserSnackRankings: %v", rankings)
+	return rankings, result.Error
+}
+
+// get all userSnackRankings for a single user
+func (client DatabaseClient) GetAllUserSnackRankingsByUserId(ctx context.Context, userId int) ([]models.UserSnackRanking, error) {
+	var rankings []models.UserSnackRanking
+	result := client.DB.WithContext(ctx).
+		Where(&models.UserSnackRanking{UserID: userId}).
+		Find(&rankings)
+	log.Printf("All UserSnackRankings for userId %v: %v", userId, rankings)
 	return rankings, result.Error
 }
 
@@ -36,6 +46,6 @@ func (client DatabaseClient) AddUserSnackRanking(ctx context.Context, userSnackR
 		return nil, result.Error
 	}
 
-	log.Printf("user_snack_ranking created: %v", userSnackRanking)
+	log.Printf("UserSnackRanking created: %v", userSnackRanking)
 	return userSnackRanking, nil
 }

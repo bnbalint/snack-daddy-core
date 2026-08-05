@@ -40,6 +40,7 @@ type SnackDaddyDatabaseClient interface {
 
 	// Users Snack Rankings
 	GetAllUserSnackRankings(ctx context.Context) ([]models.UserSnackRanking, error)
+	GetAllUserSnackRankingsByUserId(ctx context.Context, userId int) ([]models.UserSnackRanking, error)
 	AddUserSnackRanking(ctx context.Context, user *models.UserSnackRanking) (*models.UserSnackRanking, error)
 }
 
