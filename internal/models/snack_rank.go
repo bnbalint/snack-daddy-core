@@ -19,6 +19,10 @@ const (
 	SnackRankUnranked     SnackRank = "UNRANKED"
 )
 
+func (rank SnackRank) String() string {
+	return string(rank)
+}
+
 // Return all possible values for the "enum" type
 func AllSnackRanks() []SnackRank {
 	return []SnackRank{SnackRank1, SnackRank2, SnackRank3, SnackRank4, SnackRank5, SnackRank6, SnackRank7, SnackRank8, SnackRank9, SnackRank10, SnackRankHaveNotTried, SnackRankUnranked}

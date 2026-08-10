@@ -9,6 +9,10 @@ const (
 	RinkUPMC   Rink = "UPMC"
 )
 
+func (rink Rink) String() string {
+	return string(rink)
+}
+
 // Return all possible values for the "enum" type
 func AllRinks() []Rink {
 	return []Rink{RinkBairel, RinkUPMC}

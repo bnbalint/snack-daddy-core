@@ -10,6 +10,10 @@ const (
 	LevelD3 Level = "D3"
 )
 
+func (level Level) String() string {
+	return string(level)
+}
+
 // Return all possible values for the "enum" type
 func AllLevels() []Level {
 	return []Level{LevelD5, LevelD4, LevelD3}
