@@ -422,3 +422,173 @@ func Test_GetUserById(testFramework *testing.T) {
 		})
 	}
 }
+
+// ---------------------------------------------------------------------
+// UpdateUser
+// .
+// Tests
+//   - success
+//   - bind error
+//   - conflict error
+//   - database error
+func Test_UpdateUser(testFramework *testing.T) {
+
+	TEAM_MULES := models.Team{
+		ID:             1,
+		Name:           "Mules",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
+		PrimaryColor:   "#b88907",
+		SecondaryColor: "#000000",
+		TernaryColor:   "#c42323",
+		LogoUrl:        "",
+	}
+
+	ALLERGY_PECAN := models.Ingredient{
+		ID:   1,
+		Name: "Pecan",
+	}
+
+	// Define the tests
+	tests := []struct {
+		name           string
+		requestBody    string
+		expectedStatus int
+		mockError      error
+		expectBody     bool
+		mockReturnUser *models.User
+	}{
+		{
+			name:           "success",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": [{"Name": "Pecan"}]}`,
+			expectedStatus: http.StatusOK,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnUser: &models.User{
+				ID:        1,
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
+				Email:     "r.h@gmail.com",
+				Teams:     []models.Team{TEAM_MULES},
+				Allergies: []models.Ingredient{ALLERGY_PECAN},
+			},
+		},
+		{
+			name:           "success_noAllergies",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": []}`,
+			expectedStatus: http.StatusOK,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnUser: &models.User{
+				ID:        1,
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
+				Email:     "r.h@gmail.com",
+				Teams:     []models.Team{TEAM_MULES},
+				Allergies: []models.Ingredient{},
+			},
+		},
+		{
+			name:           "success_noTeams",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [], "Allergies": [{"Name": "Pecan"}]}`,
+			expectedStatus: http.StatusOK,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnUser: &models.User{
+				ID:        1,
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
+				Email:     "r.h@gmail.com",
+				Teams:     []models.Team{},
+				Allergies: []models.Ingredient{ALLERGY_PECAN},
+			},
+		},
+		{
+			name:           "success_noTeams_noAllergies",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com"}`,
+			expectedStatus: http.StatusOK,
+			mockError:      nil,
+			expectBody:     true,
+			mockReturnUser: &models.User{
+				ID:        1,
+				FirstName: "Roger",
+				LastName:  "Hogwarts",
+				Email:     "r.h@gmail.com",
+				Teams:     []models.Team{},
+				Allergies: []models.Ingredient{},
+			},
+		},
+		{
+			name:           "bind error",
+			requestBody:    "invalid json",
+			expectedStatus: http.StatusUnsupportedMediaType,
+			mockError:      nil,
+			expectBody:     false,
+			mockReturnUser: nil,
+		},
+		{
+			name:           "conflict error",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink":"BAIREL", "Level": "D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": []}`,
+			expectedStatus: http.StatusConflict,
+			mockError:      &database_errors.ConflictError{},
+			expectBody:     false,
+			mockReturnUser: nil,
+		},
+		{
+			name:           "database error",
+			requestBody:    `{"FirstName": "Roger", "LastName": "Hogwarts", "Email": "r.h@gmail.com", "Teams": [{"Name": "Mules", "Rink": "BAIREL", "Level": "D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": []}`,
+			expectedStatus: http.StatusInternalServerError,
+			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
+			expectBody:     false,
+			mockReturnUser: nil,
+		},
+	}
+
+	// Run each test
+	for _, testData := range tests {
+		testFramework.Run(testData.name, func(testFramework *testing.T) {
+			// Setup mock
+			mock := &mockDB{
+				updateUserFunc: func(ctx context.Context, user *models.User) (*models.User, error) {
+					return testData.mockReturnUser, testData.mockError
+				},
+			}
+
+			// Create server
+			logger := slog.New(slog.DiscardHandler)
+			server := &SnackDaddyEchoServer{
+				DB:     mock,
+				Logger: logger,
+			}
+
+			// Create request body
+			body := []byte(testData.requestBody)
+			request := httptest.NewRequest(http.MethodPut, "/users", bytes.NewReader(body))
+			request.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+			rec := httptest.NewRecorder()
+			ctx := echo.New().NewContext(request, rec)
+
+			// Call handler
+			err := server.UpdateUser(ctx)
+			if err != nil {
+				testFramework.Errorf("UpdateUser returned error: %v", err)
+			}
+
+			// Check status
+			if rec.Code != testData.expectedStatus {
+				testFramework.Errorf("expected status %d, got %d", testData.expectedStatus, rec.Code)
+			}
+
+			// Check body if expected
+			if testData.expectBody {
+				var user models.User
+				if err := json.Unmarshal(rec.Body.Bytes(), &user); err != nil {
+					testFramework.Errorf("failed to unmarshal response: %v", err)
+				}
+				if user.ID != testData.mockReturnUser.ID || user.FirstName != testData.mockReturnUser.FirstName {
+					testFramework.Errorf("expected user %+v, got %+v", testData.mockReturnUser, user)
+				}
+			}
+		})
+	}
+}
