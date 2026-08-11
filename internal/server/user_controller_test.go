@@ -305,3 +305,120 @@ func Test_AddUser(testFramework *testing.T) {
 		})
 	}
 }
+
+// ---------------------------------------------------------------------
+// GetUserById
+// .
+// Tests
+//   - success
+//   - userId is not an integer
+//   - userId is less than or equal to 0
+//   - user not found
+//   - generic database error
+func Test_GetUserById(testFramework *testing.T) {
+
+	TEAM_MULES := models.Team{
+		ID:             1,
+		Name:           "Mules",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
+		PrimaryColor:   "#b88907",
+		SecondaryColor: "#000000",
+		TernaryColor:   "#c42323",
+		LogoUrl:        "",
+	}
+
+	// Define the tests
+	tests := []struct {
+		name           string
+		userId         string
+		expectedStatus int
+		mockError      error
+		expectedUser   *models.User // true if body should contain users
+	}{
+		{
+			name:           "success",
+			userId:         "1",
+			expectedStatus: http.StatusOK,
+			mockError:      nil,
+			expectedUser:   &models.User{ID: 1, FirstName: "Roger", LastName: "Hogwarts", Email: "r.h@gmail.com", Teams: []models.Team{TEAM_MULES}, Allergies: []models.Ingredient{}},
+		},
+		{
+			name:           "userId_not_valid_integer",
+			userId:         "bob",
+			expectedStatus: http.StatusBadRequest,
+			mockError:      nil,
+			expectedUser:   nil,
+		},
+		{
+			name:           "userId_less_than_0",
+			userId:         "-2",
+			expectedStatus: http.StatusBadRequest,
+			mockError:      nil,
+			expectedUser:   nil,
+		},
+		{
+			name:           "user_not_found",
+			userId:         "500",
+			expectedStatus: http.StatusNotFound,
+			mockError:      &database_errors.NotFoundError{},
+			expectedUser:   nil,
+		},
+		{
+			name:           "databse error",
+			userId:         "1",
+			expectedStatus: http.StatusInternalServerError,
+			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
+			expectedUser:   nil,
+		},
+	}
+
+	// Run each test
+	for _, testData := range tests {
+		testFramework.Run(testData.name, func(testFramework *testing.T) {
+			// Setup mock
+			mock := &mockDB{
+				getUserByIdFunc: func(ctx context.Context, userId int) (*models.User, error) {
+					return testData.expectedUser, testData.mockError
+				},
+			}
+
+			// Create server
+			logger := slog.New(slog.DiscardHandler)
+			server := &SnackDaddyEchoServer{
+				DB:     mock,
+				Logger: logger,
+			}
+
+			// Create request
+			request := httptest.NewRequest(http.MethodGet, "/", nil)
+			rec := httptest.NewRecorder()
+			ctx := echo.New().NewContext(request, rec)
+			ctx.SetPath("users/:userId")
+			ctx.SetParamNames("userId")
+			ctx.SetParamValues(testData.userId)
+
+			// Call handler
+			err := server.GetUserById(ctx)
+			if err != nil {
+				testFramework.Errorf("GetAllUsers returned error: %v", err)
+			}
+
+			// Check status
+			if rec.Code != testData.expectedStatus {
+				testFramework.Errorf("expected status %d, got %d", testData.expectedStatus, rec.Code)
+			}
+
+			// Check body if expected
+			if testData.expectedUser != nil {
+				var user models.User
+				if err := json.Unmarshal(rec.Body.Bytes(), &user); err != nil {
+					testFramework.Errorf("failed to unmarshal response: %v", err)
+				}
+				if user.ID != testData.expectedUser.ID {
+					testFramework.Errorf("expected user to have ID %v, got %d", testData.expectedUser.ID, user.ID)
+				}
+			}
+		})
+	}
+}

@@ -1,12 +1,15 @@
 package server
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
-	"github.com/labstack/echo/v4"
 	"snack-daddy-core/internal/database/errors"
 	"snack-daddy-core/internal/models"
+
+	"github.com/labstack/echo/v4"
 )
 
 // this is the controller for user
@@ -26,6 +29,50 @@ func (server *SnackDaddyEchoServer) GetAllUsers(ctx echo.Context) error {
 
 	server.Logger.Info(fmt.Sprintf("All users = %v", users))
 	return ctx.JSON(http.StatusOK, users)
+}
+
+// Get single user by ID
+// Returns:
+//
+//	  400 if the userId is not a valid integer
+//		 400 if the userId is 0 or negative
+//		 404 if the userId does not exist
+//		 500 for all other errors
+//		 200 and the user
+func (server *SnackDaddyEchoServer) GetUserById(ctx echo.Context) error {
+
+	// get the id value from the path
+	id := ctx.Param("userId")
+	server.Logger.Debug(fmt.Sprintf("GetUserById - userId = %v", id))
+
+	// convert to integer
+	userId, err := strconv.Atoi(id)
+
+	if err != nil {
+		server.Logger.Info(fmt.Sprintf("UserId (%v) must be a valid integer", userId))
+		return ctx.JSON(http.StatusBadRequest, "UserId must be a valid integer")
+	}
+
+	if userId <= 0 {
+		server.Logger.Info(fmt.Sprintf("UserId (%v) must be greater than 0", userId))
+		return ctx.JSON(http.StatusBadRequest, "UserId must be greater than 0")
+	}
+
+	user, err := server.DB.GetUserById(ctx.Request().Context(), userId)
+	if err != nil {
+
+		// return 404 if the user was not found
+		var notFoundError = &database_errors.NotFoundError{}
+		if errors.As(err, &notFoundError) {
+			return ctx.JSON(http.StatusNotFound, err)
+		}
+
+		// return 500 for all other error
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+
+	server.Logger.Info(fmt.Sprintf("User = %v", user))
+	return ctx.JSON(http.StatusOK, user)
 }
 
 // Add a new user
