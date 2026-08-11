@@ -170,6 +170,49 @@
     ]
   ```
 
+### GET user by id
+- USAGE:
+  - User editing page
+- GET  `/users/{userId}`
+- Response
+  ```json
+      {
+        "id": 1,
+        "first_name": "Roger",
+        "last_name": "Hogwarts",
+        "email": "r.h@gmail.com",
+        "teams": [
+          {
+            "id": 1,
+            "name": "Mules",
+            "Rink": "BAIREL",
+            "Level": "D5",
+            "primary_color": "#b88907",
+            "secondary_color": "#000000",
+            "ternary_color": "#c42323",
+            "logo_url": "",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+            }
+        ],
+        "allergies": [
+          {
+            "id": 1,
+            "name": "Pecan",
+            "created_at": "2026-07-01T00:00:01Z",
+            "updated_at": "2026-07-01T00:00:01Z"
+          }
+        ],
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      }
+  ```
+- Possible Errors
+  - 400 -> userId is null (Java) or unable to be converted to an integer (Go)
+  - 400 -> userId is less than or equal to 0
+  - 404 -> user was not found
+  - 500 -> other error
+
 
 ### Add to users
 - USAGE:
@@ -242,6 +285,77 @@
   - 415 -> JSON body was unable to be parsed into the required User format
   - 400 -> conflict because the user already exists
 
+
+### Update user
+- USAGE:
+  - Update a user (id and email cannot be modified)
+- PUT `/users`
+- Body
+   ```json
+     {
+       "first_name": "Updated",
+       "last_name": "Hogwarts",
+       "email": "r.h@gmail.com",
+       "teams": [
+         {
+           "id": 1,
+           "name": "Mules",
+           "Rink": "BAIREL",
+           "Level": "D5",
+           "primary_color": "#b88907",
+           "secondary_color": "#000000",
+           "ternary_color": "#c42323",
+           "logo_url": "",
+           "created_at": "2026-07-01T00:00:01Z",
+           "updated_at": "2026-07-01T00:00:01Z"
+           }
+       ],
+       "allergies": [
+         {
+           "id": 1,
+           "name": "Pecan",
+           "created_at": "2026-07-01T00:00:01Z",
+           "updated_at": "2026-07-01T00:00:01Z"
+         }
+       ]
+     }
+   ```
+- Response
+  ```json
+    {
+      "id": 1,
+      "first_name": "Updated",
+      "last_name": "Hogwarts",
+      "email": "r.h@gmail.com",
+      "teams": [
+        {
+          "id": 1,
+          "name": "Mules",
+          "Rink": "BAIREL",
+          "Level": "D5",
+          "primary_color": "#b88907",
+          "secondary_color": "#000000",
+          "ternary_color": "#c42323",
+          "logo_url": "",
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+          }
+      ],
+      "allergies": [
+        {
+          "id": 1,
+          "name": "Pecan",
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+        }
+      ],
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-08-11T00:00:01Z"
+    }
+  ```
+- Possible Errors
+  - 415 -> JSON body was unable to be parsed into the required User format
+  - 400 -> database conflict
 
 
 ## Snacks
