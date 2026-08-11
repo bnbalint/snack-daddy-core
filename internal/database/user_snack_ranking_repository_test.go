@@ -84,7 +84,7 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 
 	// --- Subtest: Get All UserSnackRankingsByUserId ---
 	testingFramework.Run("Get All UserSnackRankingsByUserId", func(t *testing.T) {
-		rankings, err := DbClient.GetAllUserSnackRankingsByUserId(ctx, USER.ID)
+		rankings, err := DbClient.GetUserSnackRankingsByUserId(ctx, USER.ID)
 		if err != nil {
 			t.Fatalf("unexpected error fetching userSnackRankings: %v", err)
 		}

@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"snack-daddy-core/internal/database/errors"
@@ -71,4 +72,40 @@ func (server *SnackDaddyEchoServer) AddUserSnackRanking(ctx echo.Context) error 
 	// return 201, and the created userSnackRanking
 	return ctx.JSON(http.StatusCreated, userSnackRanking)
 
+}
+
+// Get UserSnackRankings by userId
+// Returns:
+// - 400 if the userId is not a valid integer
+// - 400 if the userId is 0 or negative
+// - 500 for all other errors
+// - 200 and the user
+func (server *SnackDaddyEchoServer) GetUserSnackRankingsByUserId(ctx echo.Context) error {
+
+	// get the id value from the path
+	id := ctx.Param("userId")
+	server.Logger.Debug(fmt.Sprintf("GetSnackRankingsByUserId - userId = %v", id))
+
+	// convert to integer
+	userId, err := strconv.Atoi(id)
+
+	if err != nil {
+		server.Logger.Info(fmt.Sprintf("UserId (%v) must be a valid integer", userId))
+		return ctx.JSON(http.StatusBadRequest, "UserId must be a valid integer")
+	}
+
+	if userId <= 0 {
+		server.Logger.Info(fmt.Sprintf("UserId (%v) must be greater than 0", userId))
+		return ctx.JSON(http.StatusBadRequest, "UserId must be greater than 0")
+	}
+
+	rankings, err := server.DB.GetUserSnackRankingsByUserId(ctx.Request().Context(), userId)
+	if err != nil {
+
+		server.Logger.Error("Encountered error while querying DB for SnackRankings for user")
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+
+	server.Logger.Info(fmt.Sprintf("Rankings = %v", rankings))
+	return ctx.JSON(http.StatusOK, rankings)
 }

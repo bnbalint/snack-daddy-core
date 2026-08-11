@@ -21,7 +21,7 @@ func (client DatabaseClient) GetAllUserSnackRankings(ctx context.Context) ([]mod
 }
 
 // get all userSnackRankings for a single user
-func (client DatabaseClient) GetAllUserSnackRankingsByUserId(ctx context.Context, userId int) ([]models.UserSnackRanking, error) {
+func (client DatabaseClient) GetUserSnackRankingsByUserId(ctx context.Context, userId int) ([]models.UserSnackRanking, error) {
 	var rankings []models.UserSnackRanking
 	result := client.DB.WithContext(ctx).
 		Where(&models.UserSnackRanking{UserID: userId}).

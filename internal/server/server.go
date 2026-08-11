@@ -44,6 +44,7 @@ type SnackDaddyCoreService interface {
 	// UserSnackRanking
 	GetAllUserSnackRankings(ctx echo.Context) error
 	AddUserSnackRanking(ctx echo.Context) error
+	GetUserSnackRankingsByUserId(ctx echo.Context) error
 }
 
 // this is our web server
@@ -78,6 +79,7 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	users.GET("/:userId", server.GetUserById)
 	users.POST("", server.AddUser)
 	users.PUT("", server.UpdateUser)
+	users.GET("/:userId/snack-rankings", server.GetUserSnackRankingsByUserId)
 
 	// snacks
 	snacks := server.echo.Group("/snacks")
