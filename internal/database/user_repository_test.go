@@ -31,8 +31,10 @@ func TestUserRepository(testingFramework *testing.T) {
 	}
 
 	// --- Subtest: Add User ---
-	testingFramework.Run("Add User", func(t *testing.T) {
+	testingFramework.Run("AddUser_sucess", func(t *testing.T) {
 
+		//--------------------------------------------------
+		// SET VALUES
 		user := models.User{
 			FirstName: "Roger",
 			LastName:  "Hogwarts",
@@ -41,7 +43,12 @@ func TestUserRepository(testingFramework *testing.T) {
 			Allergies: []models.Ingredient{},
 		}
 
+		//--------------------------------------------------
+		// EXECUTE
 		savedUser, err := DbClient.AddUser(ctx, &user)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
 		if err != nil {
 			t.Errorf("unexpected error creating user: %v", err)
 		}
@@ -53,9 +60,15 @@ func TestUserRepository(testingFramework *testing.T) {
 		fmt.Print("Added user = ", savedUser)
 	})
 
-	// --- Subtest: Get All Users ---
-	testingFramework.Run("Get All Users", func(t *testing.T) {
+	// --- Subtest: GetAllUsers ---
+	testingFramework.Run("GetAllUsers_success", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// EXECUTE
 		users, err := DbClient.GetAllUsers(ctx)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
 		if err != nil {
 			t.Fatalf("unexpected error fetching users: %v", err)
 		}
@@ -67,9 +80,11 @@ func TestUserRepository(testingFramework *testing.T) {
 		fmt.Print("Retrieved users = ", users)
 	})
 
-	// --- Subtest: Get User By Id ---
-	testingFramework.Run("Get User By Id - Success", func(t *testing.T) {
+	// --- Subtest: GetUserById_success ---
+	testingFramework.Run("GetUserById_success", func(t *testing.T) {
 
+		//--------------------------------------------------
+		// SET VALUES
 		USER := models.User{
 			FirstName: "Roger",
 			LastName:  "Hogwarts",
@@ -81,8 +96,12 @@ func TestUserRepository(testingFramework *testing.T) {
 		// first save a user to get the ID
 		savedUser, err := DbClient.AddUser(ctx, &USER)
 
-		// get the user by ID
+		//--------------------------------------------------
+		// EXECUTE
 		user, err := DbClient.GetUserById(ctx, savedUser.ID)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
 
 		// verify no error
 		if err != nil {
@@ -97,10 +116,15 @@ func TestUserRepository(testingFramework *testing.T) {
 		}
 	})
 
-	testingFramework.Run("Get User By Id - Not Found", func(t *testing.T) {
+	// --- Subtest: GetUserById_notFound ---
+	testingFramework.Run("GetUserById_notFound", func(t *testing.T) {
 
-		// get the user by ID
+		//--------------------------------------------------
+		// EXECUTE
 		user, err := DbClient.GetUserById(ctx, 500)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
 
 		// verify error
 		expectedError := &database_errors.NotFoundError{}
@@ -111,6 +135,43 @@ func TestUserRepository(testingFramework *testing.T) {
 		// verify nil user
 		if user != nil {
 			t.Fatalf("Expected user to be nil, but user is %v", user)
+		}
+	})
+
+	// --- Subtest: UpdateUser_success ---
+	testingFramework.Run("UpdateUser_success", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// SET VALUES
+		USER := models.User{
+			FirstName: "Roger",
+			LastName:  "Hogwarts",
+			Email:     "UpdateUserTest@gmail.com",
+			Teams:     []models.Team{},
+			Allergies: []models.Ingredient{},
+		}
+
+		// first save a user to get the ID
+		savedUser, err := DbClient.AddUser(ctx, &USER)
+
+		// make an update
+		savedUser.FirstName = "Updated"
+
+		//--------------------------------------------------
+		// EXECUTE
+		updatedUser, err := DbClient.UpdateUser(ctx, savedUser)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
+
+		// verify no error
+		if err != nil {
+			t.Fatalf("unexpected error updating user: %v", err)
+		}
+
+		fmt.Print("Updated user = ", updatedUser)
+		if updatedUser.FirstName != "Updated" {
+			t.Errorf("User name was not updated as expected")
 		}
 	})
 }

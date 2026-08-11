@@ -36,6 +36,13 @@ func (mock *mockDB) AddUser(ctx context.Context, user *models.User) (*models.Use
 	return nil, nil
 }
 
+func (mock *mockDB) UpdateUser(ctx context.Context, user *models.User) (*models.User, error) {
+	if mock.updateUserFunc != nil {
+		return mock.updateUserFunc(ctx, user)
+	}
+	return nil, nil
+}
+
 // ---------------------------------------------------------------------
 // GetAllUsers
 // .

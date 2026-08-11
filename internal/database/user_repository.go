@@ -21,7 +21,8 @@ func (client DatabaseClient) GetAllUsers(ctx context.Context) ([]models.User, er
 	return users, result.Error
 }
 
-// get a single user
+// get a single user by userId
+// if not found, retuen NotFoundError
 func (client DatabaseClient) GetUserById(ctx context.Context, userId int) (*models.User, error) {
 
 	// get the first result by ID
@@ -63,4 +64,35 @@ func (client DatabaseClient) AddUser(ctx context.Context, user *models.User) (*m
 
 	log.Printf("User created: %v", user)
 	return user, nil
+}
+
+// Update a user, excluding the ID and Email fields
+func (client DatabaseClient) UpdateUser(ctx context.Context, user *models.User) (*models.User, error) {
+
+	result := client.DB.WithContext(ctx).
+		Model(&models.User{}).
+		Omit("ID", "Email"). // do not update the ID or Email field
+		Where("id = ?", user.ID).
+		Updates(user)
+
+	if result.Error != nil {
+		log.Printf("Failed to update user: %v", result.Error)
+
+		// if there is a conflict, return our custom error
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			return nil, &database_errors.ConflictError{}
+		}
+
+		// otherwise, return the error as-is
+		return nil, result.Error
+	}
+
+	// Check if the record actually existed to be updated
+	if result.RowsAffected == 0 {
+		log.Printf("no user record was updated")
+		return nil, nil
+	} else {
+		log.Printf("User updated: %v", user)
+		return user, nil
+	}
 }
