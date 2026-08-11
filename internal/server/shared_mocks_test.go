@@ -28,6 +28,7 @@ type mockDB struct {
 
 	// Users
 	getAllUsersFunc func(ctx context.Context) ([]models.User, error)
+	getUserByIdFunc func(ctx context.Context, userId int) (*models.User, error)
 	addUserFunc     func(ctx context.Context, snack *models.User) (*models.User, error)
 
 	// SnackLog

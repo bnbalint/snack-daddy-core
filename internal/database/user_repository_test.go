@@ -1,7 +1,9 @@
 package database
 
 import (
+	"errors"
 	"fmt"
+	database_errors "snack-daddy-core/internal/database/errors"
 	"snack-daddy-core/internal/models"
 	"testing"
 )
@@ -63,5 +65,52 @@ func TestUserRepository(testingFramework *testing.T) {
 		}
 
 		fmt.Print("Retrieved users = ", users)
+	})
+
+	// --- Subtest: Get User By Id ---
+	testingFramework.Run("Get User By Id - Success", func(t *testing.T) {
+
+		USER := models.User{
+			FirstName: "Roger",
+			LastName:  "Hogwarts",
+			Email:     "GetUserByIdTest@gmail.com",
+			Teams:     []models.Team{},
+			Allergies: []models.Ingredient{},
+		}
+
+		// first save a user to get the ID
+		savedUser, err := DbClient.AddUser(ctx, &USER)
+
+		// get the user by ID
+		user, err := DbClient.GetUserById(ctx, savedUser.ID)
+
+		// verify no error
+		if err != nil {
+			t.Fatalf("unexpected error fetching user: %v", err)
+		}
+
+		fmt.Print("Retrieved user = ", user)
+
+		// verify content
+		if user.FirstName != "Roger" {
+			t.Errorf("User does not have correct first name")
+		}
+	})
+
+	testingFramework.Run("Get User By Id - Not Found", func(t *testing.T) {
+
+		// get the user by ID
+		user, err := DbClient.GetUserById(ctx, 500)
+
+		// verify error
+		expectedError := &database_errors.NotFoundError{}
+		if !errors.As(err, &expectedError) {
+			t.Fatalf("Expected NotFoundError but err is: %v", err)
+		}
+
+		// verify nil user
+		if user != nil {
+			t.Fatalf("Expected user to be nil, but user is %v", user)
+		}
 	})
 }

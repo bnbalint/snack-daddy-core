@@ -4,9 +4,9 @@ import "fmt"
 
 type NotFoundError struct {
 	Entity string
-	ID     string
+	ID     int
 }
 
 func (e *NotFoundError) Error() string {
-	return fmt.Sprintf("Unable to find %s with %s", e.Entity, e.ID)
+	return fmt.Sprintf("Unable to find %s with %d", e.Entity, e.ID)
 }

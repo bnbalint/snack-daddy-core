@@ -22,6 +22,13 @@ func (mock *mockDB) GetAllUsers(ctx context.Context) ([]models.User, error) {
 	return nil, nil
 }
 
+func (mock *mockDB) GetUserById(ctx context.Context, userId int) (*models.User, error) {
+	if mock.getUserByIdFunc != nil {
+		return mock.getUserByIdFunc(ctx, userId)
+	}
+	return nil, nil
+}
+
 func (mock *mockDB) AddUser(ctx context.Context, user *models.User) (*models.User, error) {
 	if mock.addUserFunc != nil {
 		return mock.addUserFunc(ctx, user)
