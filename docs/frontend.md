@@ -44,7 +44,7 @@
 - Filter by snack
 
 ## View Suggested Allergies
-
+- Basic table
 
 
 # User Facing

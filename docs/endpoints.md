@@ -4,8 +4,8 @@
 ---
 ### GET all teams
 - USAGE:
-    - Dropdown on [Log Snack Delivery](frontend.md#log-snack-delivery)
-    - List on [Team Entry](frontend.md#team-entry)
+  - Dropdown on [Log Snack Delivery](frontend.md#log-snack-delivery)
+  - List on [Team Entry](frontend.md#team-entry)
 - GET  `/teams`
 - Response
   ```json
@@ -40,7 +40,7 @@
        "secondary_color": "#000000",
        "ternary_color": "#c42323",
        "logo_url": ""
-       }
+     }
    ```
 - Response
   ```json
@@ -55,11 +55,11 @@
       "logo_url": "",
       "created_at": "2026-07-01T00:00:01Z",
       "updated_at": "2026-07-01T00:00:01Z"
-      }
+    }
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required Team format
-  - 400 -> conflict because the team already exists
+  - 415 → JSON body was unable to be parsed into the required Team format
+  - 400 → conflict because the team already exists
 
 
 
@@ -111,8 +111,8 @@
     }
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required Ingredient format
-  - 400 -> conflict because the ingredient already exists
+  - 415 → JSON body was unable to be parsed into the required Ingredient format
+  - 400 → conflict because the ingredient already exists (name must be unique)
 
 
 
@@ -172,7 +172,7 @@
 
 ### GET user by id
 - USAGE:
-  - User editing page
+  - User-facing page for editing user details
 - GET  `/users/{userId}`
 - Response
   ```json
@@ -208,11 +208,10 @@
       }
   ```
 - Possible Errors
-  - 400 -> userId is null (Java) or unable to be converted to an integer (Go)
-  - 400 -> userId is less than or equal to 0
-  - 404 -> user was not found
+  - 400 → userId is null (Java) or unable to be converted to an integer (Go)
+  - 400 → userId is less than or equal to 0
+  - 404 → user was not found
   - 500 -> other error
-
 
 ### Add to users
 - USAGE:
@@ -282,8 +281,8 @@
     }
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required User format
-  - 400 -> conflict because the user already exists
+  - 415 → JSON body was unable to be parsed into the required User format
+  - 400 → conflict because the user already exists
 
 
 ### Update user
@@ -354,8 +353,8 @@
     }
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required User format
-  - 400 -> database conflict
+  - 415 → JSON body was unable to be parsed into the required User format
+  - 400 → database conflict
 
 
 ## Snacks
@@ -363,9 +362,9 @@
 
 ### GET all snacks
 - USAGE:
-    - Dropdown on [Log Snack Delivery](frontend.md#log-snack-delivery)
-    - Display for [View / Modify Snack Difficulty](frontend.md#view--modify-snack-difficulty)
-    - List on [Snack Entry](frontend.md#snack-entry)
+  - Dropdown on [Log Snack Delivery](frontend.md#log-snack-delivery)
+  - Display for [View / Modify Snack Difficulty](frontend.md#view--modify-snack-difficulty)
+  - List on [Snack Entry](frontend.md#snack-entry)
 - GET  `/snacks`
 - Response
   ```json
@@ -469,18 +468,18 @@
       ],
       "created_at": "2026-07-01T00:00:01Z",
       "updated_at": "2026-07-01T00:00:01Z"
-      }
+    }
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required Snack format
-  - 400 -> conflict because the snack already exists
+  - 415 → JSON body was unable to be parsed into the required Snack format
+  - 400 → conflict because the snack already exists
 
 
 ### Update snacks
 - USAGE
   - Submit after modifying difficulty on [View / Modify Snack Difficulty](frontend.md#view--modify-snack-difficulty)
 - PUT `/snacks`
-- Body
+- Body = list of Snacks
    ```json
      [
        {
@@ -515,7 +514,7 @@
        }
      ]
    ```
-- Response
+- Response = list of Snacks
   ```json
     [
       {
@@ -551,19 +550,16 @@
     ]
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required Team format
+  - 415 → JSON body was unable to be parsed into the required Team format
 
 
-
-
-
-
+  
 ## Suggested Allergies
 ---
 
 ### GET all suggested_allergies
 - USAGE
-  - TODO - admin usage
+  - Admin page to [View Suggested Allergies](./frontend.md#view-suggested-allergies)
 - GET  `/suggested-allergies`
 - Response
    ```json
@@ -603,13 +599,7 @@
     }
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required SuggestedAllergy format
-
-
-
-
-
-
+  - 415 → JSON body was unable to be parsed into the required SuggestedAllergy format
 
 
 
@@ -618,9 +608,9 @@
 
 ### GET all snack_log
 - USAGE
-  - View on [View Snack Log](frontend.md#view-snack-log)
+  - View on [View Snack Log](frontend.md#view-snack-log) Admin page
 - GET `/snack-log`
-- Response
+- Response = list of SnackLog entries
   ```json
    [
     {
@@ -811,7 +801,10 @@
     }
   ```
 - Possible Errors
-  - 415 -> JSON body was unable to be parsed into the required Team format
+  - 415 → JSON body was unable to be parsed into the required SnackLog format
+
+
+
 
 
 ## Rinks
@@ -832,7 +825,7 @@
 ## Levels
 ---
 
-### GET all rinks
+### GET all levels
 - USAGE
   - Display on [Team Entry](frontend.md#team-entry)
 - GET `/levels`
@@ -928,7 +921,6 @@
     ]
   ```
 
-
 ### GET all snack rankings (one user)
 - USAGE:
   - As a user, view snacks and their rankings on the drag-and-drop ranking page
@@ -1008,10 +1000,6 @@
       }
     ]
   ```
-
-
-
-
 
 ### Add to snack ranking
 - USAGE:
@@ -1164,10 +1152,167 @@
       }
   ```
 - Possible Errors
+  - 415 → JSON body was unable to be parsed into the required UserSnackRanking format
+  - 400 → conflict because the user/snack entry already exists (would need to use a PUT to update this entry)
+
+
+
+### Update UserSnackRankings
+- USAGE:
+  - Save on the drag-and-drop page for updating Snack Rankings
+- PUT `/snack-rankings`
+- Body
+   ```json
+      [
+        {"snack_id": 1,
+        "snack": {
+          "id": 1,
+          "name": "Rice Crispie Treat",
+          "sweet": true,
+          "savory": false,
+          "difficulty": 2,
+          "recipe_url": "",
+          "ingredients": [
+            {
+              "id": 4,
+              "name": "Rice Crispy Cereal",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 5,
+              "name": "Margarine",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 6,
+              "name": "Marshmallow",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 7,
+              "name": "Vanilla",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            }
+          ],
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+      },
+        "user_id": 1,
+        "user": {
+            "first_name": "Roger",
+            "last_name": "Hogwarts",
+            "email": "r.h@gmail.com",
+            "teams": [
+              {
+                "id": 1,
+                "name": "Mules",
+                "Rink": "BAIREL",
+                "Level": "D5",
+                "primary_color": "#b88907",
+                "secondary_color": "#000000",
+                "ternary_color": "#c42323",
+                "logo_url": "",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+                }
+            ],
+            "allergies": [
+              {
+                "id": 1,
+                "name": "Pecan",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+              }
+            ]
+          },
+        "rank": "RANK_10",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      }
+      ]
+   ```
+- Response
+  ```json
+      [
+        {
+        "snack_id": 1,
+        "snack": {
+          "id": 1,
+          "name": "Rice Crispie Treat",
+          "sweet": true,
+          "savory": false,
+          "difficulty": 2,
+          "recipe_url": "",
+          "ingredients": [
+            {
+              "id": 4,
+              "name": "Rice Crispy Cereal",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 5,
+              "name": "Margarine",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 6,
+              "name": "Marshmallow",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            },
+            {
+              "id": 7,
+              "name": "Vanilla",
+              "created_at": "2026-07-01T00:00:01Z",
+              "updated_at": "2026-07-01T00:00:01Z"
+            }
+          ],
+          "created_at": "2026-07-01T00:00:01Z",
+          "updated_at": "2026-07-01T00:00:01Z"
+      },
+        "user_id": 1,
+        "user": {
+            "first_name": "Roger",
+            "last_name": "Hogwarts",
+            "email": "r.h@gmail.com",
+            "teams": [
+              {
+                "id": 1,
+                "name": "Mules",
+                "Rink": "BAIREL",
+                "Level": "D5",
+                "primary_color": "#b88907",
+                "secondary_color": "#000000",
+                "ternary_color": "#c42323",
+                "logo_url": "",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+                }
+            ],
+            "allergies": [
+              {
+                "id": 1,
+                "name": "Pecan",
+                "created_at": "2026-07-01T00:00:01Z",
+                "updated_at": "2026-07-01T00:00:01Z"
+              }
+            ]
+          },
+        "rank": "RANK_10",
+        "created_at": "2026-07-01T00:00:01Z",
+        "updated_at": "2026-07-01T00:00:01Z"
+      }
+    ]
+  ```
+- Possible Errors
   - 415 -> JSON body was unable to be parsed into the required UserSnackRanking format
-  - 400 -> conflict because the user/snack entry already exists (would need to use a PUT to update this entry)
-
-
+  - 400 -> conflict during the database transaction
 
 
 
