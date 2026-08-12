@@ -109,3 +109,48 @@ func (server *SnackDaddyEchoServer) GetUserSnackRankingsByUserId(ctx echo.Contex
 	server.Logger.Info(fmt.Sprintf("Rankings = %v", rankings))
 	return ctx.JSON(http.StatusOK, rankings)
 }
+
+// Update a list of userSnackRanking
+// Expects a slice of userSnackRanking to be passed in the body of the request
+// Returns:
+//
+//	200 for successful update, returning list of updated userSnackRankings
+//	415 if the body cannot be correctly parsed into a slice of userSnackRanking objects
+//	409 for a database key conflict during the transaction
+//	500 for all other errors
+func (server *SnackDaddyEchoServer) UpdateUserSnackRankings(ctx echo.Context) error {
+	server.Logger.Debug("UpdateUserSnackRankings")
+
+	// create the userSnackRankings slice variable
+	var userSnackRankings []models.UserSnackRanking
+
+	// fill the model with the contents of the request
+	err := ctx.Bind(&userSnackRankings)
+
+	// return a 415 if we could not parse the request body
+	if err != nil {
+		server.Logger.Error("Failed to create userSnackRanking slice from the provided body")
+		return ctx.JSON(http.StatusUnsupportedMediaType, err)
+	}
+
+	// save the user to the database
+	userSnackRankings, dbError := server.DB.UpdateUserSnackRankings(ctx.Request().Context(), userSnackRankings)
+
+	// check for error
+	if dbError != nil {
+		server.Logger.Error("Error encountered while updating userSnackRankings")
+
+		// set the status code based on the error
+		switch dbError.(type) {
+		case *database_errors.ConflictError:
+			return ctx.JSON(http.StatusConflict, dbError)
+
+		default:
+			return ctx.JSON(http.StatusInternalServerError, dbError)
+		}
+	}
+
+	// return 200, and the updated userSnackRanking
+	return ctx.JSON(http.StatusOK, userSnackRankings)
+
+}

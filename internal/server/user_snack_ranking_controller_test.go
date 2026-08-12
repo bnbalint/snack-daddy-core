@@ -300,7 +300,7 @@ func Test_AddUserSnackRanking(testFramework *testing.T) {
 		testFramework.Run(testData.name, func(testFramework *testing.T) {
 			// Setup mock
 			mock := &mockDB{
-				addUserSnackRankingFunc: func(ctx context.Context, user *models.UserSnackRanking) (*models.UserSnackRanking, error) {
+				addUserSnackRankingFunc: func(ctx context.Context, ranking *models.UserSnackRanking) (*models.UserSnackRanking, error) {
 					return testData.mockReturnRanking, testData.mockError
 				},
 			}
@@ -516,6 +516,152 @@ func Test_GetUserSnackRankingsByUserId(testFramework *testing.T) {
 				}
 				if len(rankings) != len(testData.mockRankings) {
 					testFramework.Errorf("expected %d rankings, got %d", len(testData.mockRankings), len(rankings))
+				}
+			}
+		})
+	}
+}
+
+// ---------------------------------------------------------------------
+// UpdateUserSnackRankings
+// .
+// Tests
+//   - success
+//   - bind error
+//   - conflict error
+//   - database error
+func Test_UpdateUserSnackRankings(testFramework *testing.T) {
+
+	//---------------------------------------------
+	//  CONSTANTS - for creating the userSnackRanking
+	//
+
+	SNACK := models.Snack{
+		ID:         1,
+		Name:       "Rice Crispie Treat",
+		Sweet:      true,
+		Savory:     false,
+		Difficulty: 2,
+		RecipeUrl:  "",
+	}
+
+	PECAN := models.Ingredient{
+		ID:   1,
+		Name: "Pecan",
+	}
+
+	TEAM_MULES := models.Team{
+		ID:             1,
+		Name:           "Mules",
+		Rink:           models.RinkBairel,
+		Level:          models.LevelD5,
+		PrimaryColor:   "#b88907",
+		SecondaryColor: "#000000",
+		TernaryColor:   "#c42323",
+		LogoUrl:        "",
+	}
+
+	USER := models.User{
+		ID:        1,
+		FirstName: "Roger",
+		LastName:  "Hogwarts",
+		Email:     "r.h@gmail.com",
+		Teams:     []models.Team{TEAM_MULES},
+		Allergies: []models.Ingredient{PECAN},
+	}
+
+	// Define the tests
+	tests := []struct {
+		name           string
+		requestBody    string
+		expectedStatus int
+		mockError      error
+		expectBody     bool
+		returnedBody   []models.UserSnackRanking
+	}{
+		{
+			name:           "success",
+			requestBody:    `[{"snack_id": 1, "snack": {"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}, "user_id": 1, "user": {"first_name_": "Roger", "last_name": "Hogwarts", "email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": [{"Name": "Pecan"}]}, "rank": "RANK_10"}]`,
+			expectedStatus: http.StatusOK,
+			mockError:      nil,
+			expectBody:     true,
+			returnedBody: []models.UserSnackRanking{models.UserSnackRanking{
+				SnackID: 1,
+				Snack:   SNACK,
+				UserID:  1,
+				User:    USER,
+				Rank:    models.SnackRank10,
+			}},
+		},
+		{
+			name:           "bind error",
+			requestBody:    "invalid json",
+			expectedStatus: http.StatusUnsupportedMediaType,
+			mockError:      nil,
+			expectBody:     false,
+			returnedBody:   nil,
+		},
+		{
+			name:           "conflict error",
+			requestBody:    `[{"snack_id": 1, "snack": {"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}, "user_id": 1, "user": {"first_name_": "Roger", "last_name": "Hogwarts", "email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": [{"Name": "Pecan"}]}, "rank": "RANK_10"}]`,
+			expectedStatus: http.StatusConflict,
+			mockError:      &database_errors.ConflictError{},
+			expectBody:     false,
+			returnedBody:   nil,
+		},
+		{
+			name:           "database error",
+			requestBody:    `[{"snack_id": 1, "snack": {"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}, "user_id": 1, "user": {"first_name_": "Roger", "last_name": "Hogwarts", "email": "r.h@gmail.com", "Teams": [{"Name":"Mules", "Rink":"BAIREL", "Level":"D5", "PrimaryColor": "#b88907", "SecondaryColor": "#000000", "TernaryColor": "#c42323", "LogoUrl": ""}], "Allergies": [{"Name": "Pecan"}]}, "rank": "RANK_10"}]`,
+			expectedStatus: http.StatusInternalServerError,
+			mockError:      echo.NewHTTPError(http.StatusInternalServerError, "db error"),
+			expectBody:     false,
+			returnedBody:   nil,
+		},
+	}
+
+	// Run each test
+	for _, testData := range tests {
+		testFramework.Run(testData.name, func(testFramework *testing.T) {
+			// Setup mock
+			mock := &mockDB{
+				updateUserSnackRankingsFunc: func(ctx context.Context, rankings []models.UserSnackRanking) ([]models.UserSnackRanking, error) {
+					return testData.returnedBody, testData.mockError
+				},
+			}
+
+			// Create server
+			logger := slog.New(slog.DiscardHandler)
+			server := &SnackDaddyEchoServer{
+				DB:     mock,
+				Logger: logger,
+			}
+
+			// Create request body
+			body := []byte(testData.requestBody)
+			request := httptest.NewRequest(http.MethodPut, "/snack-rankings", bytes.NewReader(body))
+			request.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+			rec := httptest.NewRecorder()
+			ctx := echo.New().NewContext(request, rec)
+
+			// Call handler
+			err := server.UpdateUserSnackRankings(ctx)
+			if err != nil {
+				testFramework.Errorf("UpdateUserSnackRankings returned error: %v", err)
+			}
+
+			// Check status
+			if rec.Code != testData.expectedStatus {
+				testFramework.Errorf("expected status %d, got %d", testData.expectedStatus, rec.Code)
+			}
+
+			// Check body if expected
+			if testData.expectBody {
+				var rankings []models.UserSnackRanking
+				if err := json.Unmarshal(rec.Body.Bytes(), &rankings); err != nil {
+					testFramework.Errorf("failed to unmarshal response: %v", err)
+				}
+				if len(rankings) != len(testData.returnedBody) {
+					testFramework.Errorf("expected %v userSnackRanking to be returned, got %+v", len(testData.returnedBody), len(rankings))
 				}
 			}
 		})
