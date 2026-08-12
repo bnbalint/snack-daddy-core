@@ -16,9 +16,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-/**
-* Call the testing function below that contains all of the test scenarios
- */
 func (mock *mockDB) GetSnackLog(ctx context.Context) ([]models.SnackLog, error) {
 	if mock.getSnackLogFunc != nil {
 		return mock.getSnackLogFunc(ctx)
@@ -26,12 +23,16 @@ func (mock *mockDB) GetSnackLog(ctx context.Context) ([]models.SnackLog, error) 
 	return nil, nil
 }
 
-/**
-* Call the testing function below that contains all of the test scenarios
- */
 func (mock *mockDB) AddToSnackLog(ctx context.Context, snackLogEntry *models.SnackLog) (*models.SnackLog, error) {
 	if mock.addToSnackLogFunc != nil {
 		return mock.addToSnackLogFunc(ctx, snackLogEntry)
+	}
+	return nil, nil
+}
+
+func (mock *mockDB) GetAllUsersOnTeam(ctx context.Context, teamId int) ([]models.User, error) {
+	if mock.getAllUsersOnTeamFunc != nil {
+		return mock.getAllUsersOnTeamFunc(ctx, teamId)
 	}
 	return nil, nil
 }

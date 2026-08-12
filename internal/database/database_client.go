@@ -20,6 +20,7 @@ type SnackDaddyDatabaseClient interface {
 	// Users
 	GetAllUsers(ctx context.Context) ([]models.User, error)
 	GetUserById(ctx context.Context, userId int) (*models.User, error)
+	GetAllUsersOnTeam(ctx context.Context, teamId int) ([]models.User, error)
 	AddUser(ctx context.Context, user *models.User) (*models.User, error)
 	UpdateUser(ctx context.Context, uset *models.User) (*models.User, error)
 

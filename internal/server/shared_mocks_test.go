@@ -28,10 +28,11 @@ type mockDB struct {
 	addSuggestedAllergyFunc      func(ctx context.Context, snack *models.SuggestedAllergy) (*models.SuggestedAllergy, error)
 
 	// Users
-	getAllUsersFunc func(ctx context.Context) ([]models.User, error)
-	getUserByIdFunc func(ctx context.Context, userId int) (*models.User, error)
-	addUserFunc     func(ctx context.Context, snack *models.User) (*models.User, error)
-	updateUserFunc  func(ctx context.Context, user *models.User) (*models.User, error)
+	getAllUsersFunc       func(ctx context.Context) ([]models.User, error)
+	getUserByIdFunc       func(ctx context.Context, userId int) (*models.User, error)
+	getAllUsersOnTeamFunc func(ctx context.Context, teamId int) ([]models.User, error)
+	addUserFunc           func(ctx context.Context, snack *models.User) (*models.User, error)
+	updateUserFunc        func(ctx context.Context, user *models.User) (*models.User, error)
 
 	// SnackLog
 	getSnackLogFunc   func(ctx context.Context) ([]models.SnackLog, error)

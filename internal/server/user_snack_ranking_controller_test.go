@@ -585,7 +585,7 @@ func Test_UpdateUserSnackRankings(testFramework *testing.T) {
 			expectedStatus: http.StatusOK,
 			mockError:      nil,
 			expectBody:     true,
-			returnedBody: []models.UserSnackRanking{models.UserSnackRanking{
+			returnedBody: []models.UserSnackRanking{{
 				SnackID: 1,
 				Snack:   SNACK,
 				UserID:  1,

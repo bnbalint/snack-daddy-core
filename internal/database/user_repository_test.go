@@ -56,6 +56,7 @@ func TestUserRepository(testingFramework *testing.T) {
 		if savedUser.ID == 0 {
 			t.Error("expected user ID to be populated, got 0")
 		}
+		TEAM.ID = savedUser.Teams[0].ID // save off the created ID
 
 		fmt.Print("Added user = ", savedUser)
 	})
@@ -136,6 +137,26 @@ func TestUserRepository(testingFramework *testing.T) {
 		if user != nil {
 			t.Fatalf("Expected user to be nil, but user is %v", user)
 		}
+	})
+
+	// --- Subtest: GetAllUsersOnTeam ---
+	testingFramework.Run("GetAllUsersOnTeam_success", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// EXECUTE
+		users, err := DbClient.GetAllUsersOnTeam(ctx, TEAM.ID)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
+		if err != nil {
+			t.Fatalf("unexpected error fetching users: %v", err)
+		}
+
+		if len(users) == 0 {
+			t.Errorf("expected some users, got '%d'", len(users))
+		}
+
+		fmt.Print("Retrieved users = ", users)
 	})
 
 	// --- Subtest: UpdateUser_success ---

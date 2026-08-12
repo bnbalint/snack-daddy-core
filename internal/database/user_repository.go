@@ -96,3 +96,14 @@ func (client DatabaseClient) UpdateUser(ctx context.Context, user *models.User) 
 		return user, nil
 	}
 }
+
+// get all users on a team
+func (client DatabaseClient) GetAllUsersOnTeam(ctx context.Context, teamId int) ([]models.User, error) {
+	var users []models.User
+	result := client.DB.WithContext(ctx).
+		Joins("JOIN team_membership ON team_membership.user_id = users.id").
+		Where("team_membership.team_id = ?", teamId).
+		Find(&users)
+	log.Printf("All users on teamId %v: %v", teamId, users)
+	return users, result.Error
+}
