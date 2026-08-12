@@ -72,3 +72,44 @@ func (client DatabaseClient) UpdateSnack(ctx context.Context, snack *models.Snac
 	}
 
 }
+
+// Update a list of Snacks
+func (client DatabaseClient) UpdateSnacks(ctx context.Context, snacks []models.Snack) ([]models.Snack, error) {
+
+	err := client.DB.Transaction(func(transaction *gorm.DB) error {
+		for index := range snacks {
+			result := transaction.WithContext(ctx).
+				Model(&models.Snack{}).
+				Omit("ID"). // do not update the ID field
+				Where("id = ?", snacks[index].ID).
+				Updates(&snacks[index])
+
+			if result.Error != nil {
+				return result.Error // rollback the transaction
+			}
+
+			// Check if the record actually existed to be updated
+			if result.RowsAffected == 0 {
+				log.Printf("No Snack record was updated for Id %v", snacks[index].ID)
+			} else {
+				log.Printf("Snack updated: %v", snacks[index])
+			}
+		}
+
+		return nil // no error
+	})
+
+	if err != nil {
+		log.Printf("failed to update snacks: %v", err)
+
+		// if there is a conflict, return our custom error
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			return nil, &database_errors.ConflictError{}
+		}
+
+		// otherwise, return the error as-is
+		return nil, err
+	}
+
+	return snacks, nil
+}

@@ -17,6 +17,7 @@ type mockDB struct {
 	getAllSnacksFunc func(ctx context.Context) ([]models.Snack, error)
 	addSnackFunc     func(ctx context.Context, snack *models.Snack) (*models.Snack, error)
 	updateSnackFunc  func(ctx context.Context, snack *models.Snack) (*models.Snack, error)
+	updateSnacksFunc func(ctx context.Context, snacks []models.Snack) ([]models.Snack, error)
 
 	// Ingredients
 	getAllIngredientsFunc func(ctx context.Context) ([]models.Ingredient, error)
