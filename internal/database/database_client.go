@@ -44,6 +44,7 @@ type SnackDaddyDatabaseClient interface {
 	GetAllUserSnackRankings(ctx context.Context) ([]models.UserSnackRanking, error)
 	GetUserSnackRankingsByUserId(ctx context.Context, userId int) ([]models.UserSnackRanking, error)
 	AddUserSnackRanking(ctx context.Context, user *models.UserSnackRanking) (*models.UserSnackRanking, error)
+	UpdateUserSnackRankings(ctx context.Context, rankings []models.UserSnackRanking) ([]models.UserSnackRanking, error)
 }
 
 type DatabaseClient struct {

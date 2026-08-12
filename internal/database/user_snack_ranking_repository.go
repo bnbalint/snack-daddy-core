@@ -49,3 +49,44 @@ func (client DatabaseClient) AddUserSnackRanking(ctx context.Context, userSnackR
 	log.Printf("UserSnackRanking created: %v", userSnackRanking)
 	return userSnackRanking, nil
 }
+
+// Update a list of UserSnackRankings
+func (client DatabaseClient) UpdateUserSnackRankings(ctx context.Context, rankings []models.UserSnackRanking) ([]models.UserSnackRanking, error) {
+
+	err := client.DB.Transaction(func(transaction *gorm.DB) error {
+		for index := range rankings {
+			result := transaction.WithContext(ctx).
+				Model(&models.UserSnackRanking{}).
+				Omit("SnackID", "UserID"). // do not update the ID field
+				Where("snack_id = ? AND user_id = ?", rankings[index].SnackID, rankings[index].UserID).
+				Updates(&rankings[index])
+
+			if result.Error != nil {
+				return result.Error // rollback the transaction
+			}
+
+			// Check if the record actually existed to be updated
+			if result.RowsAffected == 0 {
+				log.Printf("No UserSnackRanking record was updated for snackId %v and userId %v", rankings[index].SnackID, rankings[index].UserID)
+			} else {
+				log.Printf("UserSnackRanking updated: %v", rankings[index])
+			}
+		}
+
+		return nil // no error
+	})
+
+	if err != nil {
+		log.Printf("failed to update rankings: %v", err)
+
+		// if there is a conflict, return our custom error
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			return nil, &database_errors.ConflictError{}
+		}
+
+		// otherwise, return the error as-is
+		return nil, err
+	}
+
+	return rankings, nil
+}

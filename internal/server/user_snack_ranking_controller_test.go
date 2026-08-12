@@ -37,6 +37,13 @@ func (mock *mockDB) AddUserSnackRanking(ctx context.Context, user *models.UserSn
 	return nil, nil
 }
 
+func (mock *mockDB) UpdateUserSnackRankings(ctx context.Context, rankings []models.UserSnackRanking) ([]models.UserSnackRanking, error) {
+	if mock.updateUserSnackRankingsFunc != nil {
+		return mock.updateUserSnackRankingsFunc(ctx, rankings)
+	}
+	return nil, nil
+}
+
 // ---------------------------------------------------------------------
 // GetAllUserSnackRankings
 // .

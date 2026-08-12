@@ -45,8 +45,8 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 	//  TESTS
 	//
 
-	// --- Subtest: Add User Snack Ranking ---
-	testingFramework.Run("Add UserSnackRanking", func(t *testing.T) {
+	// --- Subtest: AddUserSnackRanking ---
+	testingFramework.Run("AddUserSnackRanking", func(t *testing.T) {
 
 		userSnackRanking := models.UserSnackRanking{
 			Snack:     SNACK,
@@ -64,12 +64,18 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 		if savedUserSnackRanking.SnackID == 0 {
 			t.Error("expected saved Snack ID to be populated")
 		}
+		SNACK.ID = savedUserSnackRanking.SnackID // save this for other tests
+
+		if savedUserSnackRanking.UserID == 0 {
+			t.Error("expected saved UserID to be populated")
+		}
+		USER.ID = savedUserSnackRanking.UserID // save this for other tests
 
 		fmt.Print("Added userSnackRanking = ", savedUserSnackRanking)
 	})
 
-	// --- Subtest: Get All UserSnackRankings ---
-	testingFramework.Run("Get All UserSnackRankings", func(t *testing.T) {
+	// --- Subtest: GetAllUserSnackRankings ---
+	testingFramework.Run("GetAllUserSnackRankings", func(t *testing.T) {
 		rankings, err := DbClient.GetAllUserSnackRankings(ctx)
 		if err != nil {
 			t.Fatalf("unexpected error fetching userSnackRankings: %v", err)
@@ -82,8 +88,8 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 		fmt.Print("Retrieved userSnackRankings = ", rankings)
 	})
 
-	// --- Subtest: Get All UserSnackRankingsByUserId ---
-	testingFramework.Run("Get All UserSnackRankingsByUserId", func(t *testing.T) {
+	// --- Subtest: GetUserSnackRankingsByUserId ---
+	testingFramework.Run("GetUserSnackRankingsByUserId", func(t *testing.T) {
 		rankings, err := DbClient.GetUserSnackRankingsByUserId(ctx, USER.ID)
 		if err != nil {
 			t.Fatalf("unexpected error fetching userSnackRankings: %v", err)
@@ -94,5 +100,32 @@ func TestUserSnackRankingRepository(testingFramework *testing.T) {
 		}
 
 		fmt.Print("Retrieved userSnackRankings = ", rankings)
+	})
+
+	// --- Subtest: UpdateUserSnackRankings ---
+	testingFramework.Run("UpdateUserSnackRankings", func(t *testing.T) {
+
+		userSnackRanking := models.UserSnackRanking{
+			Snack:     SNACK,
+			SnackID:   SNACK.ID,
+			User:      USER,
+			UserID:    USER.ID,
+			Rank:      models.SnackRank5,
+			CreatedAt: TIME,
+			UpdatedAt: TIME,
+		}
+
+		rankings := []models.UserSnackRanking{userSnackRanking}
+
+		savedUserSnackRankings, err := DbClient.UpdateUserSnackRankings(ctx, rankings)
+		if err != nil {
+			t.Errorf("unexpected error updating userSnackRankings: %v", err)
+		}
+
+		if len(savedUserSnackRankings) == 0 {
+			t.Error("Expected updated UserSnackRankings to be returned, but got length 0")
+		}
+
+		fmt.Print("Updated userSnackRanking = ", savedUserSnackRankings)
 	})
 }
