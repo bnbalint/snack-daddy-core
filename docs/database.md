@@ -154,6 +154,21 @@ Note: PRIMARY KEY (snack_id, user_id)
 
 
 
+# Database Auditing
+---
+
+## audit_log
+| Column         | Type                                            | Description                                                                                                                                                          |
+|----------------|-------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id             | BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY | The unique identifier of this row. Primary key for this table - assigned during insert                                                                               |
+| table_name     | TEXT NOT NULL                                   | The name of the table where the change occurred                                                                                                                      |
+| action         | TEXT NOT NULL                                   | Whether the change was an INSERT, UPDATE or a DELETE                                                                                                                 |
+| changed_fields | JSONB                                           | For an UPDATE, shows the change in each field that was modified. For an INSERT, shows the valiues that were added. For a DELETE, shows the values that were removed. |
+| db_user        | TEXT NOT NULL                                   | The database user that performed the change - set automatically to session_user                                                                                      |
+| app_user       | TEXT                                            | The application user that performed the change - must be set by the application prior to the query. Defaults to "" if the app.current_user setting is not set        |
+| created_at     | TIMESTAMP DEFAULT now()                         | The time this row was created, UTC time                                                                                                                              |
+| updated_at     | TIMESTAMP DEFAULT now()                         | The time this row was last updated, UTC time                                                                                                                         |
+
 
 # Enums
 ---
@@ -167,5 +182,10 @@ Note: PRIMARY KEY (snack_id, user_id)
 # Functions
 ---
 
-- `update_updated_at_column` - updates the value in the updated_at column when a row is updated. Used on all tables
-- `force_uppercase_name` - prior to INSERT or UPDATE, converts the value of the `name` column to all uppercase
+- `update_updated_at_column` - updates the value in the updated_at column when a row is updated. Used with a trigger on all tables
+- `force_uppercase_name` - converts the value of the `name` column to all uppercase. Used with a trigger prior to INSERT or UPDATEs
+- `audit_function` - inserts a row into the `audit_log` table with the details on the databsse change. Records if the change was a DELETE, INSERT or UPDATE and the specific columns that were changed. Attached with a trigger on all tables
+
+
+
+
