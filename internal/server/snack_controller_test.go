@@ -234,61 +234,61 @@ func Test_AddSnack(testFramework *testing.T) {
 }
 
 // ---------------------------------------------------------------------
-// UpdateSnack
+// UpdateSnacks
 // .
 // Tests
 //   - success
 //   - bind error
 //   - conflict error
 //   - database error
-func Test_UpdateSnack(testFramework *testing.T) {
+func Test_UpdateSnacks(testFramework *testing.T) {
 
 	// Define the tests
 	tests := []struct {
-		name            string
-		requestBody     string
-		expectedStatus  int
-		mockError       error
-		expectBody      bool
-		mockReturnSnack *models.Snack
+		name             string
+		requestBody      string
+		expectedStatus   int
+		mockError        error
+		expectBody       bool
+		mockReturnSnacks []models.Snack
 	}{
 		{
 			name:           "success",
-			requestBody:    `{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}`,
+			requestBody:    `[{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}]`,
 			expectedStatus: http.StatusOK,
 			mockError:      nil,
 			expectBody:     true,
-			mockReturnSnack: &models.Snack{
+			mockReturnSnacks: []models.Snack{{
 				ID:         1,
 				Name:       "Rice Crispie Treat",
 				Sweet:      true,
 				Savory:     false,
 				Difficulty: 2,
-			},
+			}},
 		},
 		{
-			name:            "bind error",
-			requestBody:     "invalid json",
-			expectedStatus:  http.StatusUnsupportedMediaType,
-			mockError:       nil,
-			expectBody:      false,
-			mockReturnSnack: nil,
+			name:             "bind error",
+			requestBody:      "invalid json",
+			expectedStatus:   http.StatusUnsupportedMediaType,
+			mockError:        nil,
+			expectBody:       false,
+			mockReturnSnacks: nil,
 		},
 		{
-			name:            "conflict error",
-			requestBody:     `{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}`,
-			expectedStatus:  http.StatusConflict,
-			mockError:       &database_errors.ConflictError{},
-			expectBody:      false,
-			mockReturnSnack: nil,
+			name:             "conflict error",
+			requestBody:      `[{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}]`,
+			expectedStatus:   http.StatusConflict,
+			mockError:        &database_errors.ConflictError{},
+			expectBody:       false,
+			mockReturnSnacks: nil,
 		},
 		{
-			name:            "database error",
-			requestBody:     `{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}`,
-			expectedStatus:  http.StatusInternalServerError,
-			mockError:       echo.NewHTTPError(http.StatusInternalServerError, "db error"),
-			expectBody:      false,
-			mockReturnSnack: nil,
+			name:             "database error",
+			requestBody:      `[{"ID": 1, "Name": "Rice Crispie Treat", "Sweet": true, "Savory": false, "Difficulty": 2}]`,
+			expectedStatus:   http.StatusInternalServerError,
+			mockError:        echo.NewHTTPError(http.StatusInternalServerError, "db error"),
+			expectBody:       false,
+			mockReturnSnacks: nil,
 		},
 	}
 
@@ -297,8 +297,8 @@ func Test_UpdateSnack(testFramework *testing.T) {
 		testFramework.Run(testData.name, func(testFramework *testing.T) {
 			// Setup mock
 			mock := &mockDB{
-				updateSnackFunc: func(ctx context.Context, snack *models.Snack) (*models.Snack, error) {
-					return testData.mockReturnSnack, testData.mockError
+				updateSnacksFunc: func(ctx context.Context, snacks []models.Snack) ([]models.Snack, error) {
+					return testData.mockReturnSnacks, testData.mockError
 				},
 			}
 
@@ -317,9 +317,9 @@ func Test_UpdateSnack(testFramework *testing.T) {
 			ctx := echo.New().NewContext(request, rec)
 
 			// Call handler
-			err := server.UpdateSnack(ctx)
+			err := server.UpdateSnacks(ctx)
 			if err != nil {
-				testFramework.Errorf("UpdateSnack returned error: %v", err)
+				testFramework.Errorf("UpdateSnacks returned error: %v", err)
 			}
 
 			// Check status
@@ -329,12 +329,12 @@ func Test_UpdateSnack(testFramework *testing.T) {
 
 			// Check body if expected
 			if testData.expectBody {
-				var snack models.Snack
-				if err := json.Unmarshal(rec.Body.Bytes(), &snack); err != nil {
+				var snacks []models.Snack
+				if err := json.Unmarshal(rec.Body.Bytes(), &snacks); err != nil {
 					testFramework.Errorf("failed to unmarshal response: %v", err)
 				}
-				if snack.ID != testData.mockReturnSnack.ID || snack.Name != testData.mockReturnSnack.Name {
-					testFramework.Errorf("expected snack %+v, got %+v", testData.mockReturnSnack, snack)
+				if len(snacks) != len(testData.mockReturnSnacks) {
+					testFramework.Errorf("expected %d snacks, got %d", len(testData.mockReturnSnacks), len(snacks))
 				}
 			}
 		})
