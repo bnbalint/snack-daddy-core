@@ -61,7 +61,7 @@ func TestUserRepository(testingFramework *testing.T) {
 		fmt.Print("Added user = ", savedUser)
 	})
 
-	// --- Subtest: GetAllUsers ---
+	// --- Subtest: GetAllUsers_success ---
 	testingFramework.Run("GetAllUsers_success", func(t *testing.T) {
 
 		//--------------------------------------------------

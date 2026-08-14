@@ -1,7 +1,9 @@
 package database
 
 import (
+	"errors"
 	"fmt"
+	database_errors "snack-daddy-core/internal/database/errors"
 	"snack-daddy-core/internal/models"
 	"testing"
 )
@@ -68,6 +70,66 @@ func TestTeamRepository(testingFramework *testing.T) {
 		}
 
 		fmt.Print("Retrieved teams = ", teams)
+	})
+
+	// --- Subtest: GetTeamById_success ---
+	testingFramework.Run("GetTeamById_success", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// SET VALUES
+		team := models.Team{
+			Name:           "GetTeamById_Test",
+			Rink:           models.RinkBairel,
+			Level:          models.LevelD4,
+			PrimaryColor:   "#e03894",
+			SecondaryColor: "#3c07b8",
+			TernaryColor:   "#08c868",
+			LogoUrl:        "",
+		}
+
+		// first save a team to get the ID
+		savedTeam, err := DbClient.AddTeam(ctx, &team)
+
+		//--------------------------------------------------
+		// EXECUTE
+		foundTeam, err := DbClient.GetTeamById(ctx, savedTeam.ID)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
+
+		// verify no error
+		if err != nil {
+			t.Fatalf("unexpected error fetching team: %v", err)
+		}
+
+		fmt.Print("Retrieved team = ", foundTeam)
+
+		// verify content
+		if foundTeam.Name != "GetTeamById_Test" {
+			t.Errorf("Team does not have correct name")
+		}
+	})
+
+	// --- Subtest: GetTeamById_notFound ---
+	testingFramework.Run("GetTeamById_notFound", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// EXECUTE
+		team, err := DbClient.GetTeamById(ctx, 500)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
+
+		// verify error
+		expectedError := &database_errors.NotFoundError{}
+		if !errors.As(err, &expectedError) {
+			t.Fatalf("Expected NotFoundError but err is: %v", err)
+		}
+
+		// verify nil user
+		if team != nil {
+			t.Fatalf("Expected user to be nil, but user is %v", team)
+		}
 	})
 
 	// --- Subtest: UpdateTeam (Reminder - single DBClient is used across all tests, cannot duplicate test team) ---

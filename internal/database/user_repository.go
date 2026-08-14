@@ -22,7 +22,7 @@ func (client DatabaseClient) GetAllUsers(ctx context.Context) ([]models.User, er
 }
 
 // get a single user by userId
-// if not found, retuen NotFoundError
+// if not found, return NotFoundError
 func (client DatabaseClient) GetUserById(ctx context.Context, userId int) (*models.User, error) {
 
 	// get the first result by ID

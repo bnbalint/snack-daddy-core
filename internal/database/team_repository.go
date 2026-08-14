@@ -22,6 +22,31 @@ func (client DatabaseClient) GetAllTeams(ctx context.Context) ([]models.Team, er
 	return teams, result.Error
 }
 
+// get a single team by teamId
+// if not found, return NotFoundError
+func (client DatabaseClient) GetTeamById(ctx context.Context, teamId int) (*models.Team, error) {
+
+	// get the first result by ID
+	var team models.Team
+	result := client.DB.WithContext(ctx).
+		First(&team, teamId)
+
+	if result.Error != nil {
+
+		// no result
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			log.Printf("No team found for teamId %v", teamId)
+			return nil, &database_errors.NotFoundError{Entity: "Team", ID: teamId}
+		}
+
+		// otherwise, return error as-is
+		return nil, result.Error
+	}
+
+	log.Printf("Team for teamId %v = %v", teamId, team)
+	return &team, result.Error
+}
+
 // Add a team to the teams table
 func (client DatabaseClient) AddTeam(ctx context.Context, team *models.Team) (*models.Team, error) {
 	result := client.DB.WithContext(ctx).
@@ -41,7 +66,6 @@ func (client DatabaseClient) AddTeam(ctx context.Context, team *models.Team) (*m
 	log.Printf("Team created: %v", team)
 	return team, nil
 }
-
 
 // Update a team, excluding the ID field
 func (client DatabaseClient) UpdateTeam(ctx context.Context, team *models.Team) (*models.Team, error) {

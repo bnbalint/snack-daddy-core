@@ -73,6 +73,7 @@ func (server *SnackDaddyEchoServer) registerRoutes() {
 	teams := server.echo.Group("/teams")
 	teams.GET("", server.GetAllTeams)
 	teams.POST("", server.AddTeam)
+	teams.PUT("", server.UpdateTeam)
 
 	// users
 	users := server.echo.Group("/users")

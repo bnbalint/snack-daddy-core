@@ -15,6 +15,7 @@ type SnackDaddyDatabaseClient interface {
 
 	// Teams
 	GetAllTeams(ctx context.Context) ([]models.Team, error)
+	GetTeamById(ctx context.Context, teamId int) (*models.Team, error)
 	AddTeam(ctx context.Context, team *models.Team) (*models.Team, error)
 	UpdateTeam(ctv context.Context, team *models.Team) (*models.Team, error)
 
