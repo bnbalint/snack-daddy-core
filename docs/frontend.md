@@ -10,9 +10,14 @@
   - Ingredients (checkboxes)
 - View existing snacks down the side (scroll bar)
 
+## View/Edit Snacks
+- View all snacks as small rectangles (name and difficultly displayed)
+- Expand rectangles to see all details
+- Click small pencil icon to edit the details of a snack
+
 
 ## View / Modify Snack Difficulty
-- ** Drag and drop into numbered buckets (1-10)  TODO **
+- Drag and drop into numbered buckets (1-10)
 
 
 ## Team Entry
@@ -23,6 +28,9 @@
   - Colors (color picker)
   - Upload image of logo
 - View existing teams down the side (scroll bar)
+
+## View/Edit Teams
+- TODO
 
 
 ## Ingredient Entry
@@ -43,8 +51,13 @@
 - Filter by team
 - Filter by snack
 
+
 ## View Suggested Allergies
 - Basic table
+
+
+
+
 
 
 # User Facing
@@ -55,7 +68,7 @@
  - Email
  - Team(s)  [or a spouse]
  - Allergies (checkboxes)
-   - option for other with text --> this needs to be emailed to Britni so it can be added to the backend
+   - option for other with text --> this has its own submit button that uses a separate endpoint
  - Password
 
 
@@ -74,13 +87,11 @@
     - first name, last name, email address
     - team membership
     - allergies
- - ** Modify allergies - TODO **
- - ** Modify team membership - TODO **
 
 
 ## View / Modify Snack Ranking
-- Bucket for "Have not had"
-- Bucket for "No Rating" (aka do not remember, but have had)
+- Bucket for "HAVE_NOT_TRIED"
+- Bucket for "UNRANKED" (aka do not remember, but have had)
 - Bucket for "My Top 3"
   - Limit to 3 in this bucket
   - Preserve order in the bucket

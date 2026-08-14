@@ -478,6 +478,7 @@
 ### Update snacks
 - USAGE
   - Submit after modifying difficulty on [View / Modify Snack Difficulty](frontend.md#view--modify-snack-difficulty)
+  - Update the details of a single snack on [View/Edit Snacks](./frontend.md#viewedit-snacks)
 - PUT `/snacks`
 - Body = list of Snacks
    ```json
@@ -550,7 +551,8 @@
     ]
   ```
 - Possible Errors
-  - 415 → JSON body was unable to be parsed into the required Team format
+  - 415 → JSON body was unable to be parsed into the required list of Snack format
+  - 400 → database conflict when saving
 
 
   
