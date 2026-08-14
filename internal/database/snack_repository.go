@@ -41,38 +41,6 @@ func (client DatabaseClient) AddSnack(ctx context.Context, snack *models.Snack) 
 	return snack, nil
 }
 
-// Update a snack in the database
-func (client DatabaseClient) UpdateSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error) {
-
-	result := client.DB.WithContext(ctx).
-		Model(&models.Snack{}).
-		Omit("ID"). // do not update the ID field
-		Where("id = ?", snack.ID).
-		Updates(snack)
-
-	if result.Error != nil {
-		log.Printf("failed to update snack: %v", result.Error)
-
-		// if there is a conflict, return our custom error
-		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			return nil, &database_errors.ConflictError{}
-		}
-
-		// otherwise, return the error as-is
-		return nil, result.Error
-	}
-
-	// Check if the record actually existed to be updated
-	if result.RowsAffected == 0 {
-		log.Printf("no snack record was updated")
-		return nil, nil
-	} else {
-		log.Printf("Snack updated: %v", snack)
-		return snack, nil
-	}
-
-}
-
 // Update a list of Snacks
 func (client DatabaseClient) UpdateSnacks(ctx context.Context, snacks []models.Snack) ([]models.Snack, error) {
 

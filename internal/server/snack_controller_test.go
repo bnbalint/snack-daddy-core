@@ -29,13 +29,6 @@ func (mock *mockDB) AddSnack(ctx context.Context, snack *models.Snack) (*models.
 	return nil, nil
 }
 
-func (mock *mockDB) UpdateSnack(ctx context.Context, snack *models.Snack) (*models.Snack, error) {
-	if mock.updateSnackFunc != nil {
-		return mock.updateSnackFunc(ctx, snack)
-	}
-	return nil, nil
-}
-
 func (mock *mockDB) UpdateSnacks(ctx context.Context, snacks []models.Snack) ([]models.Snack, error) {
 	if mock.updateSnacksFunc != nil {
 		return mock.updateSnacksFunc(ctx, snacks)
