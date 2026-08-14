@@ -105,8 +105,8 @@ func TestTeamRepository(testingFramework *testing.T) {
 		fmt.Print("Retrieved team = ", foundTeam)
 
 		// verify content
-		if foundTeam.Name != "GetTeamById_Test" {
-			t.Errorf("Team does not have correct name")
+		if foundTeam.Rink != "BAIREL" {
+			t.Errorf("Team does not have correct rink")
 		}
 	})
 
