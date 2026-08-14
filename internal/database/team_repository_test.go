@@ -18,10 +18,13 @@ func TestTeamRepository(testingFramework *testing.T) {
 	//  TESTS
 	//
 
-	// --- Subtest: Add Team (Reminder - single DBClient is used across all tests, cannot duplicate test team) ---
-	testingFramework.Run("Add Team", func(t *testing.T) {
+	// --- Subtest: AddTeam (Reminder - single DBClient is used across all tests, cannot duplicate test team) ---
+	testingFramework.Run("AddTeam", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// SET VALUES
 		team := models.Team{
-			Name:           "Monsters",
+			Name:           "AddTeamTest",
 			Rink:           models.RinkBairel,
 			Level:          models.LevelD4,
 			PrimaryColor:   "#e03894",
@@ -30,7 +33,12 @@ func TestTeamRepository(testingFramework *testing.T) {
 			LogoUrl:        "",
 		}
 
+		//--------------------------------------------------
+		// EXECUTE
 		savedTeam, err := DbClient.AddTeam(ctx, &team)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
 		if err != nil {
 			t.Errorf("unexpected error creating team: %v", err)
 		}
@@ -42,9 +50,15 @@ func TestTeamRepository(testingFramework *testing.T) {
 		fmt.Print("Added team = ", savedTeam)
 	})
 
-	// --- Subtest: Get All Teams ---
-	testingFramework.Run("Get All Teams", func(t *testing.T) {
+	// --- Subtest: GetAllTeams ---
+	testingFramework.Run("GetAllTeams", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// EXECUTE
 		teams, err := DbClient.GetAllTeams(ctx)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
 		if err != nil {
 			t.Fatalf("unexpected error fetching teams: %v", err)
 		}
@@ -54,5 +68,52 @@ func TestTeamRepository(testingFramework *testing.T) {
 		}
 
 		fmt.Print("Retrieved teams = ", teams)
+	})
+
+	// --- Subtest: UpdateTeam (Reminder - single DBClient is used across all tests, cannot duplicate test team) ---
+	testingFramework.Run("UpdateTeam", func(t *testing.T) {
+
+		//--------------------------------------------------
+		// SET VALUES
+		team := models.Team{
+			Name:           "UpdateTeamTest",
+			Rink:           models.RinkBairel,
+			Level:          models.LevelD4,
+			PrimaryColor:   "#e03894",
+			SecondaryColor: "#3c07b8",
+			TernaryColor:   "#08c868",
+			LogoUrl:        "",
+		}
+
+		//--------------------------------------------------
+		// CONFIGURE
+		// first add the team
+		savedTeam, err := DbClient.AddTeam(ctx, &team)
+		if err != nil {
+			t.Errorf("unexpected error creating team: %v", err)
+		}
+
+		if savedTeam.ID == 0 {
+			t.Error("expected team ID to be populated, got 0")
+		}
+
+		// update a value
+		savedTeam.PrimaryColor = "#000000"
+
+		//--------------------------------------------------
+		// EXECUTE
+		updatedTeam, err := DbClient.UpdateTeam(ctx, savedTeam)
+
+		//--------------------------------------------------
+		// VERIFY RESULTS
+		if err != nil {
+			t.Errorf("unexpected error updating team: %v", err)
+		}
+
+		if updatedTeam.PrimaryColor != "#000000" {
+			t.Error("expected Primary Color to be updated")
+		}
+
+		fmt.Print("Updated team = ", updatedTeam)
 	})
 }

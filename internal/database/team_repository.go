@@ -41,3 +41,35 @@ func (client DatabaseClient) AddTeam(ctx context.Context, team *models.Team) (*m
 	log.Printf("Team created: %v", team)
 	return team, nil
 }
+
+
+// Update a team, excluding the ID field
+func (client DatabaseClient) UpdateTeam(ctx context.Context, team *models.Team) (*models.Team, error) {
+
+	result := client.DB.WithContext(ctx).
+		Model(&models.Team{}).
+		Omit("ID"). // do not update the ID field
+		Where("id = ?", team.ID).
+		Updates(team)
+
+	if result.Error != nil {
+		log.Printf("Failed to update team: %v", result.Error)
+
+		// if there is a conflict, return our custom error
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			return nil, &database_errors.ConflictError{}
+		}
+
+		// otherwise, return the error as-is
+		return nil, result.Error
+	}
+
+	// Check if the record actually existed to be updated
+	if result.RowsAffected == 0 {
+		log.Printf("no team record was updated")
+		return nil, nil
+	} else {
+		log.Printf("Team updated: %v", team)
+		return team, nil
+	}
+}

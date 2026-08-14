@@ -29,6 +29,13 @@ func (mock *mockDB) AddTeam(ctx context.Context, team *models.Team) (*models.Tea
 	return nil, nil
 }
 
+func (mock *mockDB) UpdateTeam(ctx context.Context, team *models.Team) (*models.Team, error) {
+	if mock.updateTeamFunc != nil {
+		return mock.updateTeamFunc(ctx, team)
+	}
+	return nil, nil
+}
+
 // ---------------------------------------------------------------------
 // GetAllTeams
 // .

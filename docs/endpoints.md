@@ -59,6 +59,47 @@
   ```
 - Possible Errors
   - 415 → JSON body was unable to be parsed into the required Team format
+  - 400 → request body is null (Java)
+  - 400 → Team in the request body already has an ID 
+  - 400 → conflict because the team already exists
+
+
+### Update a team
+- USAGE
+  - Edit team on [View/Edit Teams](./frontend.md#viewedit-snacks)
+- PUT `/teams`
+- Body
+   ```json
+     {
+       "name": "Mules",
+       "rink": "BAIREL",
+       "level": "D5",
+       "primary_color": "#b88907",
+       "secondary_color": "#000000",
+       "ternary_color": "#c42323",
+       "logo_url": ""
+     }
+   ```
+- Response
+  ```json
+    {
+      "id": 1,
+      "name": "Mules",
+      "rink": "BAIREL",
+      "level": "D5",
+      "primary_color": "#b88907",
+      "secondary_color": "#000000",
+      "ternary_color": "#c42323",
+      "logo_url": "",
+      "created_at": "2026-07-01T00:00:01Z",
+      "updated_at": "2026-07-01T00:00:01Z"
+    }
+  ```
+- Possible Errors
+  - 415 → JSON body was unable to be parsed into the required Team format
+  - 400 → request body is null (Java)
+  - 400 → Team in the request body does NOT have an ID
+  - 400 → Team does not already exist in the database
   - 400 → conflict because the team already exists
 
 

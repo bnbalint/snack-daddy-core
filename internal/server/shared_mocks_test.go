@@ -12,6 +12,7 @@ type mockDB struct {
 	// Teams
 	getAllTeamsFunc func(ctx context.Context) ([]models.Team, error)
 	addTeamFunc     func(ctx context.Context, team *models.Team) (*models.Team, error)
+	updateTeamFunc  func(ctx context.Context, team *models.Team) (*models.Team, error)
 
 	// Snacks
 	getAllSnacksFunc func(ctx context.Context) ([]models.Snack, error)
